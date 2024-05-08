@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Utils.AxisButton;
 import frc.robot.Utils.Gamepad;
+import frc.robot.Utils.Helpers;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
@@ -81,25 +82,23 @@ public void initializeButtons(
 }
 public double getDriveY() {
     double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_Y.getNumber());
-    speed = applyDeadband(speed, Constants.Drivetrain.TRANSLATION_DEADBAND);
+    speed = Helpers.applyDeadband(speed, Constants.Drivetrain.TRANSLATION_DEADBAND);
     return speed;
 }
 
 public double getDriveX() {
     double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_X.getNumber());
-    speed = applyDeadband(speed, Constants.Drivetrain.TRANSLATION_DEADBAND);
+    speed = Helpers.applyDeadband(speed, Constants.Drivetrain.TRANSLATION_DEADBAND);
     return speed;
 }
 
 public double getRotationX() {
     double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber());
-    speed = applyDeadband(speed, Constants.Drivetrain.ROTATION_DEADBAND);
+    speed = Helpers.applyDeadband(speed, Constants.Drivetrain.ROTATION_DEADBAND);
+
     return speed;
 }
-private double applyDeadband(double speed, double rotationDeadband) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'applyDeadband'");
-}
+
 
 protected double getSpeedFromAxis(Joystick gamepad, int axisNumber) {
         return gamepad.getRawAxis(axisNumber);

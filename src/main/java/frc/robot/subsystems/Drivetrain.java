@@ -16,6 +16,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -166,7 +167,16 @@ public class Drivetrain extends SubsystemBase {
     public void periodic() {
     updateDesiredStates();
     setModuleStates(_Io.setpoint.moduleStates);
+    SmartDashboard.putNumber("Vx", _Io.desiredChassisSpeeds.vxMetersPerSecond);
+     SmartDashboard.putNumber("Vy", _Io.desiredChassisSpeeds.vyMetersPerSecond);
+      SmartDashboard.putNumber("rotation", _Io.desiredChassisSpeeds.omegaRadiansPerSecond);
+       SmartDashboard.putNumber("heading degrees", getHeading().getDegrees());
+       SmartDashboard.putNumber("heading radians", getHeading().getRadians());
+       
+
         super.periodic();
+
+
     }
     public Rotation2d getHeading(){
         return _Io.heading;
@@ -207,5 +217,6 @@ public class Drivetrain extends SubsystemBase {
         }
         return false;
     }
+    
 
 }

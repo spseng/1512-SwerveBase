@@ -33,6 +33,8 @@ public class Constants {
 
      // Driver Settings
     public static final double DRIVE_SPEED = 1.9;
+    public static final double MAX_ANG_VEL = 5.0;
+    public static final double MAX_DRIVE_SPEED_MPS = 4.0;
     public static final double TURN_SPEED = 0.19; // Radians per update
     public static final double TRANSLATION_DEADBAND = 0.05;
     public static final double ROTATION_DEADBAND = 0.05;
