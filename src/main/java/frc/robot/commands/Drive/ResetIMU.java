@@ -22,7 +22,7 @@ private long _timeout;
     public void execute() {
         // TODO Auto-generated method stub
         super.execute();
-        _drivetrain.calibrateSteering();
+        _drivetrain.ZeroIMU();
     }
     @Override
     public boolean isFinished() {

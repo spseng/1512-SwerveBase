@@ -1,14 +1,19 @@
 package frc.robot.commands.Drive;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.OI;
+import frc.robot.Utils.Helpers;
+import frc.robot.Utils.Vector2d;
 import frc.robot.subsystems.Drivetrain;
 
 public class Drive extends Command{
 
     private final Drivetrain _drivetrain;
     private final OI _oi;
+    private int segmentationArray[] = new int[360 / 5];
     
 
     public Drive(OI oi, Drivetrain drivetrain){
@@ -25,28 +30,32 @@ public class Drive extends Command{
     public void execute() {
         // TODO Auto-generated method stub
         super.execute();
-        double leftX = _oi.getDriveX();
-        double leftY = _oi.getDriveY();
+        double vx = _oi.getDriveX(); // meters per second
+        double vy = _oi.getDriveY(); // meters per second
 
-        double leftR = Math.sqrt(Math.pow(leftX, 2) + Math.pow(leftY, 2));
-        double driveSpeed = (leftR < Constants.Drivetrain.TRANSLATION_DEADBAND) ? 0 : leftR * Constants.Drivetrain.DRIVE_SPEED;
-
-        double rightX = -_oi.getRotationX();
-       
-
-        if (rightX > Constants.Drivetrain.ROTATION_DEADBAND) {
-            _drivetrain.rotate(-rightX);
+        for (int i = 0; i < segmentationArray.length; i++) {
+            double angle = 360 / segmentationArray.length;
+            segmentationArray[i] = (int) angle * i;
         }
-        else {
-            _drivetrain.rotate(0);
+
+        Vector2d vec = Helpers.axisToSegmentedUnitCircleRadians(
+                _oi.getDriveY(), _oi.getDriveX(), segmentationArray);
+
+        vx = vec.x() * Constants.Drivetrain.DRIVE_SPEED; // mps
+        vy = vec.y() * Constants.Drivetrain.DRIVE_SPEED; // mps
+
+       
+        double rot = -_oi.getRotationX(); // radians per second
+        Rotation2d rotation = _drivetrain.isRedAlliance() ? _drivetrain.getHeading().plus(new Rotation2d(Math.PI)) : _drivetrain.getHeading();
+
+        if (rot > Constants.Drivetrain.ROTATION_DEADBAND || vx > Constants.Drivetrain.TRANSLATION_DEADBAND || vy > Constants.Drivetrain.TRANSLATION_DEADBAND) {
+           _drivetrain.setVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(vx,vy,rot, rotation));
+        }  else {
+            _drivetrain.setVelocity(new ChassisSpeeds());
         }
 
         // Check if either joystick is beyond the dead zone
-        if (driveSpeed > 0) {
-            _drivetrain.move(leftX, leftY);
-        }  else {
-            _drivetrain.move();
-        }
+       
     }
     
 }

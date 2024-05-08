@@ -47,6 +47,20 @@ public class Helpers {
     public static double joystickToAngle(double x, double y) {
         return Units.radiansToDegrees(Math.atan2(y, x));
     }
+    public static Vector2d axisToSegmentedUnitCircleRadians(double x, double y, int[] array) {
+        double angle = joystickToAngle(x, y);
+        angle = (angle + 360) % 360;
+        angle = angle / 360;
+        int segment = (int) (angle * array.length);
+        double power = Math.hypot(x, y);
+        if (power > 1) {
+            power = 1;
+        }
+        return new Vector2d(
+                power * Math.cos(Units.degreesToRadians(array[segment])),
+                power * Math.sin(Units.degreesToRadians(array[segment])));
+    }
+
 
 
 
