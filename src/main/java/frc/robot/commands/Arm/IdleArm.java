@@ -16,7 +16,7 @@ public class IdleArm extends Command {
     public void execute() {
         // TODO Auto-generated method stub
         super.execute();
-        _arm.setArmPosition(_arm.getAngle());
+        //_arm.setArmPosition(_arm.getAngle());
     }
     
 }

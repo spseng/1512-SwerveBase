@@ -26,7 +26,7 @@ public class ShootWoofer extends Command{
     public void initialize() {
         // TODO Auto-generated method stub
         super.initialize();
-        _arm.setArmPosition(Constants.Arm.SHOOT_SUB_ANGLE);
+        _arm.setAngle(Constants.Arm.SHOOT_SUB_ANGLE);
         _shooter.setSpeed(Constants.Shooter.SHOOTER_SUBWOOFER_SPEED);
         timeout = System.currentTimeMillis() + Constants.Shooter.SHOOT_WOOF_DELAY;
     }
@@ -45,7 +45,7 @@ public class ShootWoofer extends Command{
     @Override
     public void end(boolean interrupted) {
         // TODO Auto-generated method stub
-        _arm.setArmPosition(Constants.Arm.ARM_INTAKE_ANGLE);
+        _arm.setAngle(Constants.Arm.ARM_INTAKE_ANGLE);
         super.end(interrupted);
     }
     

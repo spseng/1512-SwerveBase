@@ -103,15 +103,17 @@ public class Constants {
    public static final double INTAKE_SPEED  = 0.80;
     }
    public static class Arm{
-    public static final double AMP_SCORING_ANGLE = -0.308; // Rads
-    public static final double ARM_INTAKE_ANGLE = 0.232; // Rad
-    public static final double ARM_MAX_ANGLE = -0.423; // TODO change this to what it is
-
+    public static final double AMP_SCORING_ANGLE = 0.11; // Rads
+    public static final double ARM_INTAKE_ANGLE = 0.0; // Rad
+    public static final double ARM_MAX_ANGLE = 0.27; // TODO change this to what it is
+    public static final double ARM_CLIMB_ANGLE = 0.11;
+    public static final double ROTATE_TICK = 0.0075;
         // Shooter Angle Alignment PID
     public static final double SHOOTING_ANGLE_KP = 7.0;
     public static final double SHOOTING_ANGLE_KI = 0.000;
     public static final double SHOOTING_ANGLE_KD = 0.5;
     public static final double TOLLERENCE = 0.05;
+
     public static final double SHOOT_SUB_ANGLE = 0.00; //TODO change this
    }
   

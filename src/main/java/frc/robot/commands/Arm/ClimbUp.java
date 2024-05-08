@@ -20,7 +20,7 @@ public class ClimbUp extends Command{
     public void execute() {
         // TODO Auto-generated method stub
         super.execute();
-        _arm.setArmPosition(Constants.Arm.ARM_MAX_ANGLE);
+        _arm.setAngle(Constants.Arm.ARM_CLIMB_ANGLE);
     }
     @Override
     public boolean isFinished() {

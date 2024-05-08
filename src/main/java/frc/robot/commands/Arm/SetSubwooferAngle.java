@@ -20,7 +20,7 @@ public class SetSubwooferAngle extends Command{
     public void execute() {
         // TODO Auto-generated method stub
         super.execute();
-        _arm.setArmPosition(Constants.Arm.SHOOT_SUB_ANGLE);
+        _arm.setAngle(Constants.Arm.SHOOT_SUB_ANGLE);
     }
     @Override
     public boolean isFinished() {

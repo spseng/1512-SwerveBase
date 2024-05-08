@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.units.Angle;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -24,6 +25,7 @@ public class Arm extends SubsystemBase {
     private final PIDController _angleController;
     private double goalAngle;
     private double motorOut;
+    
 
     public Arm(){
         _encoder = new CANcoder(RobotMap.CAN.ANGLE_ALIGNMENT_ENCODER_CAN);
@@ -35,7 +37,7 @@ public class Arm extends SubsystemBase {
         _angleController = new PIDController(SHOOTING_ANGLE_KP, SHOOTING_ANGLE_KI, SHOOTING_ANGLE_KD);
 
         goalAngle = ARM_INTAKE_ANGLE;  
-        _encoder.setPosition(.25);
+        _encoder.setPosition(0.0);
         
     }
     public void updateDashBoard(){
@@ -44,14 +46,14 @@ public class Arm extends SubsystemBase {
 
         SmartDashboard.putNumber("Angle", getAngle());
         SmartDashboard.putNumber("Motor Out", motorOut);
-        SmartDashboard.putNumber("goal angle", getGoalAngle());
+        SmartDashboard.putNumber("goal angle", getGoalRoatation());
   
     }
     public boolean isLowestAngle(){
         return !_lowButton.get();
     }
     public boolean isHighestAngle(){
-        return !_highButton.get();
+        return !_highButton.get() || getEncoderPosition() < ARM_MAX_ANGLE || getEncoderPosition() > 0.3;
     }
     public double getAngle(){
         return _encoder.getAbsolutePosition().getValueAsDouble();
@@ -62,30 +64,53 @@ public class Arm extends SubsystemBase {
           
         }
     }
-    public void StopArm(){
-        _motor.set(0);
-    }
-    public void setMotorOut(double speed){
-        motorOut = speed;
-        _motor.set(speed);
-    }
-    public boolean isInverted(){
-        return _motor.getInverted();
-    }
-    public double getGoalAngle(){
-        return goalAngle;
-    }
-    public void setGoalAngle(double angle){
+    public void setArmRotation(double angle){
         goalAngle = angle;
     }
-    public void setArmPosition(double position){
-        goalAngle = position;
-        while ((goalAngle > getAngle() && !isHighestAngle()) || (goalAngle > getAngle() && !isLowestAngle())) {
-            setMotorOut(getPIDasMotorOut(_angleController.calculate(goalAngle)));  
+    public double getGoalRoatation(){
+        return goalAngle;
+    }
+    public void rotateArmAngle(double amount) {
+        if((amount < 0 && !isHighestAngle()) || (amount > 0 && !isLowestAngle())) {
+            goalAngle = Math.min(Math.max(goalAngle + amount, ARM_MAX_ANGLE), ARM_INTAKE_ANGLE);
         }
     }
-    public double getPIDasMotorOut(double PIDin){
-        return (-PIDin/100);
+    public void setAngle(double angle){
+       setArmRotation(angle);
+       motorOut = Math.max(Math.min(_angleController.calculate(getEncoderPosition(), getGoalRoatation()), 1), -1);
+    if (isLowestAngle() && motorOut > 0) {
+        setArmRotation(getEncoderPosition());
+        motorOut = 0;
+    }
+
+    if ((isHighestAngle()) && motorOut < 0) {
+        setArmRotation(getEncoderPosition());
+        motorOut = 0;
+    }
+    _motor.set(motorOut);
+    
+    }
+    
+    public double getEncoderPosition(){
+        return _encoder.getAbsolutePosition().getValueAsDouble();
+    }
+    public void setMotorDirect(double speed){
+        _motor.set(speed);
+    }
+
+
+    
+    @Override
+    public void periodic() {
+        // TODO Auto-generated method stub
+        SmartDashboard.putBoolean("Is Lowest", isLowestAngle());
+        SmartDashboard.putBoolean("Is Highest", isHighestAngle());
+
+        SmartDashboard.putNumber("Angle", getAngle());
+        SmartDashboard.putNumber("Motor Out", motorOut);
+        SmartDashboard.putNumber("goal angle", getGoalRoatation());
+
+        super.periodic();
     }
 
 

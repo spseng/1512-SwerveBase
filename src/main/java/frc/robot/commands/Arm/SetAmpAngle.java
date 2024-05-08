@@ -20,7 +20,7 @@ public class SetAmpAngle extends Command{
     public void execute() {
         // TODO Auto-generated method stub
         super.execute();
-        _arm.setArmPosition(Constants.Arm.AMP_SCORING_ANGLE);
+        _arm.setAngle(Constants.Arm.AMP_SCORING_ANGLE);
     }
     @Override
     public boolean isFinished() {

@@ -24,7 +24,7 @@ public class IntakeNote extends Command {
     public void initialize() {
         // TODO Auto-generated method stub
         super.initialize();
-        _arm.setArmPosition(Constants.Arm.ARM_INTAKE_ANGLE);
+        _arm.setAngle(Constants.Arm.ARM_INTAKE_ANGLE);
     }
     @Override
     public void execute() {
@@ -46,6 +46,7 @@ public class IntakeNote extends Command {
     public void end(boolean interrupted) {
         // TODO Auto-generated method stub
         super.end(interrupted);
+        _intake.setIntakeSpeed(0);
         _indexer.setIndexerSpeedTimed(Constants.In.BACKOUT_TIME, Constants.In.BACKOUT_SPEED);
     }
     
