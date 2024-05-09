@@ -157,7 +157,7 @@ public class Constants {
     public static final KinematicLimits DRIVE_KINEMATIC_LIMITS = null;
     public static final long DISABLE_TIME = 500;
     public static final double HEADING_kI = 0;
-    public static final double HEADING_kP = 0;
+    public static final double HEADING_kP = 1.0;
     public static final double HEADING_kD = 0;
 
     }

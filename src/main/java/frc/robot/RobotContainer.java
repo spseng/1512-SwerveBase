@@ -71,7 +71,7 @@ public class RobotContainer {
   }
   public void init(){
     _indexer = new Indexer();
-    _drivetrain = new Drivetrain(_gyro);
+    _drivetrain = new Drivetrain();
     _shooter = new Shooter();
     _intake = new Intake();
     _arm = new Arm();

@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.kauailabs.navx.frc.AHRS;
+import com.kauailabs.navx.frc.AHRS.SerialDataType;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -15,6 +16,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -49,10 +51,10 @@ public class Drivetrain extends SubsystemBase {
 
     private final SwerveModule[] _modules;
 
-    private static final int NORTH_EAST_IDX = 1;
-    private static final int NORTH_WEST_IDX = 2;
-    private static final int SOUTH_EAST_IDX = 3;
-    private static final int SOUTH_WEST_IDX = 4;
+    private static final int NORTH_EAST_IDX = 0;
+    private static final int NORTH_WEST_IDX = 1;
+    private static final int SOUTH_EAST_IDX = 2;
+    private static final int SOUTH_WEST_IDX = 3;
 
     private final SwerveSetpointGenerator _setpointGenerator;
     private final KinematicLimits _limits;
@@ -73,11 +75,13 @@ public class Drivetrain extends SubsystemBase {
 
 
 
-    public Drivetrain(AHRS imu){
-        _gyro = imu;
+    public Drivetrain(){
+        _Io = new SystemIO();
+        _gyro = new AHRS(SPI.Port.kMXP);
+
         _yawoffset = _gyro.getYaw();
         readIMU();
-        _Io = new SystemIO();
+        
         _modules = new SwerveModule[4];
 
         _modules[NORTH_WEST_IDX] = new SwerveModule(RobotMap.CAN.FL_DRIVE_CAN, RobotMap.CAN.FL_STEER_CAN, Constants.Drivetrain.NORTH_WEST_CONFIG); // TODO CHANGUS
