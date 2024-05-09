@@ -9,6 +9,7 @@ public class IdleShooter extends Command {
     private final Shooter _shooter;
     public IdleShooter(Shooter shooter){
         _shooter = shooter;
+        addRequirements(_shooter);
     }
     @Override
     public void execute() {

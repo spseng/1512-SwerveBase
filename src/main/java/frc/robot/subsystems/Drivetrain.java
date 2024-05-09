@@ -103,7 +103,7 @@ public class Drivetrain extends SubsystemBase {
                         _modules[SOUTH_EAST_IDX].getSwerveModuleLocation(),
                         _modules[NORTH_EAST_IDX].getSwerveModuleLocation()
                 });
-        _heading = new SwerveHeadingController(NORTH_EAST_IDX);     
+        _heading = new SwerveHeadingController(0.2);     
         _limits = Constants.Drivetrain.DRIVE_KINEMATIC_LIMITS;
         ZeroIMU();
         readModules();

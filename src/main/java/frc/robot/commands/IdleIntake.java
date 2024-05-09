@@ -11,6 +11,7 @@ public class IdleIntake extends Command {
     private final Intake _intake;
     public IdleIntake(Intake intake){
       _intake = intake;
+      addRequirements(_intake);
     }
     @Override
     public void execute() {

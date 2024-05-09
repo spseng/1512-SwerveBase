@@ -154,11 +154,16 @@ public class Constants {
 
      // Autonomous Constants
     public static final double AUTONOMOUS_POSITION_MAX_ERROR = 0.04; // Meters
-    public static final KinematicLimits DRIVE_KINEMATIC_LIMITS = null;
+    public static final KinematicLimits DRIVE_KINEMATIC_LIMITS = new KinematicLimits();
+    static{
+        DRIVE_KINEMATIC_LIMITS.maxDriveAcceleration = Double.MAX_VALUE;
+        DRIVE_KINEMATIC_LIMITS.maxDriveVelocity = MAX_DRIVE_SPEED_MPS;
+        DRIVE_KINEMATIC_LIMITS.maxSteeringVelocity = Double.MAX_VALUE;
+    }
     public static final long DISABLE_TIME = 500;
     public static final double HEADING_kI = 0;
     public static final double HEADING_kP = 1.0;
-    public static final double HEADING_kD = 0;
+    public static final double HEADING_kD = 1.0;
 
     }
     public static class Shooter{
@@ -175,7 +180,7 @@ public class Constants {
     public static final double GOAL_HEIGHT = 2.44; // Meters
     public static final long AMP_SCORE_TIME = 1500; //ms
     public static final long SHOOT_WOOF_DELAY = 2000; //ms
-    public static final double IDLE_SHOOTER_SPEED = 0.2;
+    public static final double IDLE_SHOOTER_SPEED = 0.0;
 
     
 

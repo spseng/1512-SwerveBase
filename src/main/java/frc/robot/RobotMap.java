@@ -19,8 +19,8 @@ public static class CAN {
     public static final int LOADING_MOTOR_CAN = 10;
     public static final int SHOOTER_MOTOR_CAN = 11;
     public static final int ANGLE_ALIGNMENT_MOTOR_CAN = 2;
-    public static final int ANGLE_ALIGNMENT_ENCODER_CAN = 2;
-    public static final int ARM_CANCODER = 15;
+    public static final int ANGLE_ALIGNMENT_ENCODER_CAN = 15;
+  
 }
 public static class DIO {
      // Button IDs
