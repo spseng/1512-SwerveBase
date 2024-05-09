@@ -78,7 +78,7 @@ public class RobotContainer {
     _oi = new OI();
 
 
-    _arm.setDefaultCommand(new IdleArm(_arm));
+    _arm.setDefaultCommand(new IdleArm(_arm, _oi));
     _drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
     _shooter.setDefaultCommand(new IdleShooter(_shooter));
     _indexer.setDefaultCommand( new IdleIndexer(_indexer));

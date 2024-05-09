@@ -79,8 +79,8 @@ public final class SwerveModule {
 
        _driveMotor.setIdleMode(Constants.Drivetrain.DRIVE_IDLE_MODE);
        _steerMotor.setIdleMode(Constants.Drivetrain.STEER_IDLE_MODE);
-       _driveMotor.setSmartCurrentLimit(drivePort);
-       _steerMotor.setSmartCurrentLimit(drivePort);
+       _driveMotor.setSmartCurrentLimit(Constants.Drivetrain.DRIVE_CURRENT_LIMIT);
+       _steerMotor.setSmartCurrentLimit(Constants.Drivetrain.STEER_CURRENT_LIMIT);
 
        _driveMotor.burnFlash();
        _steerMotor.burnFlash();

@@ -112,6 +112,13 @@ public void stopRumbleDriver() {
         _driverGamepad.setRumble(GenericHID.RumbleType.kBothRumble, 0);
 
 }
+public boolean getArmUp(){
+    return _driverGamepad.getYButton().getAsBoolean();
+}
+public boolean getArmDown(){
+    return _driverGamepad.getAButton().getAsBoolean();
+}
+
 
 
 }

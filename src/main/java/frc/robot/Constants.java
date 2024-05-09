@@ -142,9 +142,9 @@ public class Constants {
 
 
     // Turning PID
-    public static final double STEER_KP = 2.0;
+    public static final double STEER_KP = 3.0;
     public static final double STEER_KI = 0.000;
-    public static final double STEER_KD = .2;
+    public static final double STEER_KD = 1.0;
     public static final double STEER_FF = 0.0;
 
     // Autonomous Drive PID
@@ -164,6 +164,9 @@ public class Constants {
     public static final double HEADING_kI = 0;
     public static final double HEADING_kP = 1.0;
     public static final double HEADING_kD = 1.0;
+
+    public static final int STEER_CURRENT_LIMIT = 25;
+    public static final int DRIVE_CURRENT_LIMIT = 40;
 
     }
     public static class Shooter{
@@ -224,6 +227,7 @@ public class Constants {
     public static final double SHOOTING_ANGLE_KD = 0.5;
     public static final double TOLLERENCE = 0.05;
     public static final double SHOOT_SUB_ANGLE = 0.00; //TODO change this
+    public static final double MANUAL_ARM_MOVE_SPEED = .45;
    }
   
 
