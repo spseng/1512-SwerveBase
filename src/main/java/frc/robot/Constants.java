@@ -142,9 +142,9 @@ public class Constants {
 
 
     // Turning PID
-    public static final double STEER_KP = 3.0;
+    public static final double STEER_KP = 1.0;
     public static final double STEER_KI = 0.000;
-    public static final double STEER_KD = 1.0;
+    public static final double STEER_KD = 0.5;
     public static final double STEER_FF = 0.0;
 
     // Autonomous Drive PID
@@ -162,10 +162,10 @@ public class Constants {
     }
     public static final long DISABLE_TIME = 500;
     public static final double HEADING_kI = 0;
-    public static final double HEADING_kP = 1.0;
+    public static final double HEADING_kP = 6.0;
     public static final double HEADING_kD = 1.0;
 
-    public static final int STEER_CURRENT_LIMIT = 25;
+    public static final int STEER_CURRENT_LIMIT = 10;
     public static final int DRIVE_CURRENT_LIMIT = 40;
 
     }

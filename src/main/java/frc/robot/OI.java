@@ -67,15 +67,15 @@ public void initializeButtons(
     Arm arm
 ){
 
-    _driverLeftTrigger.whileTrue(new IntakeNote(intake, indexer, arm));
-    _driverRightTrigger.whileTrue(new ShootWoofer(arm, shooter, indexer));
+    _driverLeftTrigger.onTrue(new IntakeNote(intake, indexer, arm));
+    _driverRightTrigger.onTrue(new ShootWoofer(arm, shooter, indexer));
     //this is where we map commands
 
    _driverGamepad.getLeftBumper().whileTrue(new RejectIntake(intake, indexer));
-   _driverGamepad.getRightBumper().whileTrue(new SetAmpAngle(arm));
+   _driverGamepad.getRightBumper().onTrue(new SetAmpAngle(arm));
    _driverGamepad.getXButton().onTrue(new SetIntakeAngle(arm));
-   _driverGamepad.getAButton().onTrue(new ShootAmp(indexer, shooter));
-   _driverGamepad.getYButton().onTrue(new ClimbUp(arm));
+   //_driverGamepad.getAButton().onTrue(new ShootAmp(indexer, shooter));
+   //_driverGamepad.getYButton().onTrue(new ClimbUp(arm));
    _driverGamepad.getBButton().onTrue(new ResetIMU(drivetrain));
     
 

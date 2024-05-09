@@ -32,6 +32,7 @@ public class Arm extends SubsystemBase {
         _motor = new CANSparkMax(RobotMap.CAN.ANGLE_ALIGNMENT_MOTOR_CAN, MotorType.kBrushed);
 
         _angleController = new PIDController(SHOOTING_ANGLE_KP, SHOOTING_ANGLE_KI, SHOOTING_ANGLE_KD);
+     
 
         goalAngle = ARM_INTAKE_ANGLE;  
     }
@@ -79,7 +80,7 @@ public class Arm extends SubsystemBase {
         }
     }
     public double getPIDasMotorOut(double PIDin){
-        return (-PIDin/100);
+        return (PIDin/100);
     }
 
 
