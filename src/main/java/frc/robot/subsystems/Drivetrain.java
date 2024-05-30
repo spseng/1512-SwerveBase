@@ -2,9 +2,7 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 
-import com.ctre.phoenix6.BaseStatusSignal;
 import com.kauailabs.navx.frc.AHRS;
-import com.kauailabs.navx.frc.AHRS.SerialDataType;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -12,14 +10,12 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
@@ -91,17 +87,18 @@ public class Drivetrain extends SubsystemBase {
 
         _kinematics = new SwerveDriveKinematics(
             _modules[NORTH_EAST_IDX].getSwerveModuleLocation(),
-            _modules[NORTH_EAST_IDX].getSwerveModuleLocation(),
-            _modules[NORTH_EAST_IDX].getSwerveModuleLocation(),
-            _modules[NORTH_EAST_IDX].getSwerveModuleLocation()
+            _modules[NORTH_WEST_IDX].getSwerveModuleLocation(),
+            _modules[SOUTH_EAST_IDX].getSwerveModuleLocation(),
+            _modules[SOUTH_WEST_IDX].getSwerveModuleLocation()
         );
         _setpointGenerator = new SwerveSetpointGenerator(
                 _kinematics,
                 new Translation2d[] {
+                        _modules[NORTH_EAST_IDX].getSwerveModuleLocation(),
                         _modules[NORTH_WEST_IDX].getSwerveModuleLocation(),
-                        _modules[SOUTH_WEST_IDX].getSwerveModuleLocation(),
                         _modules[SOUTH_EAST_IDX].getSwerveModuleLocation(),
-                        _modules[NORTH_EAST_IDX].getSwerveModuleLocation()
+                        _modules[SOUTH_WEST_IDX].getSwerveModuleLocation()
+                      
                 });
         _heading = new SwerveHeadingController(0.2);     
         _limits = Constants.Drivetrain.DRIVE_KINEMATIC_LIMITS;
@@ -172,8 +169,8 @@ public class Drivetrain extends SubsystemBase {
     readIMU();
     readModules();
     updateDesiredStates();
-    updateShuffleBoard();
     setModuleStates(_Io.setpoint.moduleStates);
+      updateShuffleBoard();
     
       
        
@@ -184,6 +181,9 @@ public class Drivetrain extends SubsystemBase {
     }
     public Rotation2d getHeading(){
         return _Io.heading;
+    }
+    public double getModulencoder(int mod){
+        return _modules[mod].getSwervePosition().angle.getDegrees();
     }
     public void incrementHeadingControllerAngle() {
         Rotation2d heading = getHeading();
@@ -203,6 +203,11 @@ public class Drivetrain extends SubsystemBase {
         for (int module = 0; module < _modules.length; module++) {
             _Io.measuredPositions[module] = _modules[module].getSwervePosition();
             _Io.measuredStates[module] = _modules[module].getSwerveModuleState();
+            // Log encoder values for debugging
+            SmartDashboard.putNumber("Module " + module + " Position", _Io.measuredPositions[module].distanceMeters);
+            SmartDashboard.putNumber("Module " + module + " Angle", _Io.measuredPositions[module].angle.getDegrees());
+            SmartDashboard.putNumber("Module " + module + " State Velocity", _Io.measuredStates[module].speedMetersPerSecond);
+            SmartDashboard.putNumber("Module " + module + " State Angle", _Io.measuredStates[module].angle.getDegrees());
         }
     }
     public double getModuleAngle(int module){
@@ -226,6 +231,7 @@ public class Drivetrain extends SubsystemBase {
         _yawoffset = _gyro.getYaw();
         readIMU();
     }
+    
     public void readIMU() {
         double yawDegrees = _gyro.getYaw();
         double yawAllianceOffsetDegrees = isRedAlliance() ? 180.0 : 0;

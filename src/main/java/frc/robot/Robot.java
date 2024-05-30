@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  private int _updateTick;
 
   private RobotContainer _robotContainer;
 
@@ -29,7 +28,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    _robotContainer = new RobotContainer(this);
+    _robotContainer = new RobotContainer();
     DriverStation.silenceJoystickConnectionWarning(true);
     _robotContainer.init();
     

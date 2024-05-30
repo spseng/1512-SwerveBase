@@ -5,7 +5,6 @@
 //Linus Krenkel is more mature and responsable then jackjack
 package frc.robot;
 
-import static frc.robot.Constants.Drivetrain.STEER_POSITION_FACTOR;
 
 import com.revrobotics.CANSparkBase.IdleMode;
 
@@ -144,7 +143,7 @@ public class Constants {
     // Turning PID
     public static final double STEER_KP = 1.0;
     public static final double STEER_KI = 0.000;
-    public static final double STEER_KD = 0.5;
+    public static final double STEER_KD = 0.05;
     public static final double STEER_FF = 0.0;
 
     // Autonomous Drive PID

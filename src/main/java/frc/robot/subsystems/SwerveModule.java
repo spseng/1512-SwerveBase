@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.Drivetrain.MOTOR_MIN_OUTPUT;
 
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
@@ -10,7 +9,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -111,6 +109,9 @@ public class SwerveModule extends SubsystemBase {
      public SwerveModulePosition getSwervePosition(){
          return new SwerveModulePosition(
             _driveEncoder.getPosition(), new Rotation2d((_steerAbsoluteEncoder.getPosition() - _chassisAngularOffset)));
+     }
+     public double getChassisAngularOffset(){
+        return _chassisAngularOffset;
      }
 
     public SwerveModuleState getSwerveModuleState(){

@@ -2,7 +2,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Utils.AxisButton;
 import frc.robot.Utils.Gamepad;
@@ -12,14 +11,11 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-import frc.robot.Utils.Helpers.*;
-import frc.robot.commands.Arm.ClimbUp;
 import frc.robot.commands.Arm.SetAmpAngle;
 import frc.robot.commands.Arm.SetIntakeAngle;
 import frc.robot.commands.Drive.ResetIMU;
 import frc.robot.commands.TopLevel.IntakeNote;
 import frc.robot.commands.TopLevel.RejectIntake;
-import frc.robot.commands.TopLevel.ShootAmp;
 import frc.robot.commands.TopLevel.ShootWoofer;
 
 public class OI {
