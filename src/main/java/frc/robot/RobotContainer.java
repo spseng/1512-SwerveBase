@@ -10,16 +10,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.IdleIndexer;
-import frc.robot.commands.IdleIntake;
-import frc.robot.commands.IdleShooter;
-import frc.robot.commands.Arm.IdleArm;
 import frc.robot.commands.Drive.Drive;
-import frc.robot.subsystems.Arm;
+
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Indexer;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -30,10 +24,6 @@ import frc.robot.subsystems.Shooter;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
  private Drivetrain _drivetrain;
-  private Intake _intake;
-  private Shooter _shooter;
-  private Indexer _indexer;
-  private Arm _arm;
 
 
   private OI _oi;
@@ -66,21 +56,17 @@ public class RobotContainer {
     
   }
   public void init(){
-    _indexer = new Indexer();
+
     _drivetrain = new Drivetrain();
-    _shooter = new Shooter();
-    _intake = new Intake();
-    _arm = new Arm();
+  
     _oi = new OI();
 
 
-    _arm.setDefaultCommand(new IdleArm(_arm, _oi));
-    _drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
-    _shooter.setDefaultCommand(new IdleShooter(_shooter));
-    _indexer.setDefaultCommand( new IdleIndexer(_indexer));
-    _intake.setDefaultCommand( new IdleIntake(_intake));
 
-    _oi.initializeButtons(_drivetrain, _shooter, _indexer, _intake, _arm);
+    _drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
+
+
+    _oi.initializeButtons(_drivetrain);
     
 
   }

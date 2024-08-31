@@ -6,17 +6,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Utils.AxisButton;
 import frc.robot.Utils.Gamepad;
 import frc.robot.Utils.Helpers;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Indexer;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
-import frc.robot.commands.Arm.SetAmpAngle;
-import frc.robot.commands.Arm.SetIntakeAngle;
+
 import frc.robot.commands.Drive.ResetIMU;
-import frc.robot.commands.TopLevel.IntakeNote;
-import frc.robot.commands.TopLevel.RejectIntake;
-import frc.robot.commands.TopLevel.ShootWoofer;
+import frc.robot.subsystems.Drivetrain;
+
 
 public class OI {
     
@@ -56,20 +49,13 @@ public OI(){
 }
 
 public void initializeButtons(
-    Drivetrain drivetrain,
-    Shooter shooter,
-    Indexer indexer,
-    Intake intake,
-    Arm arm
+    Drivetrain drivetrain
+   
 ){
 
-    _driverLeftTrigger.onTrue(new IntakeNote(intake, indexer, arm));
-    _driverRightTrigger.onTrue(new ShootWoofer(arm, shooter, indexer));
+
     //this is where we map commands
 
-   _driverGamepad.getLeftBumper().whileTrue(new RejectIntake(intake, indexer));
-   _driverGamepad.getRightBumper().onTrue(new SetAmpAngle(arm));
-   _driverGamepad.getXButton().onTrue(new SetIntakeAngle(arm));
    //_driverGamepad.getAButton().onTrue(new ShootAmp(indexer, shooter));
    //_driverGamepad.getYButton().onTrue(new ClimbUp(arm));
    _driverGamepad.getBButton().onTrue(new ResetIMU(drivetrain));
