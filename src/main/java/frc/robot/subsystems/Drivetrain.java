@@ -26,15 +26,15 @@ import frc.robot.Utils.SwerveSetpointGenerator.KinematicLimits;
 
 public class Drivetrain extends SubsystemBase {
 
-    public static class SystemIO {
-        ChassisSpeeds desiredChassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
-        SwerveModuleState[] measuredStates = new SwerveModuleState[] {
+    public static class SystemIO { // this is a wrapper for all inputs and output to drive
+        ChassisSpeeds desiredChassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0); // chassis speeds is a velocity in x & y and rotation in radians per seonds
+        SwerveModuleState[] measuredStates = new SwerveModuleState[] { // state array to control modules
                 new SwerveModuleState(),
                 new SwerveModuleState(),
                 new SwerveModuleState(),
                 new SwerveModuleState()
         };
-        SwerveModulePosition[] measuredPositions = new SwerveModulePosition[] {
+        SwerveModulePosition[] measuredPositions = new SwerveModulePosition[] { // position is robot relative
                 new SwerveModulePosition(),
                 new SwerveModulePosition(),
                 new SwerveModulePosition(),
@@ -42,7 +42,7 @@ public class Drivetrain extends SubsystemBase {
         };
         Rotation2d heading = new Rotation2d(0.0);
 
-        SwerveSetpoint setpoint = new SwerveSetpoint(new ChassisSpeeds(), new SwerveModuleState[4]);
+        SwerveSetpoint setpoint = new SwerveSetpoint(new ChassisSpeeds(), new SwerveModuleState[4]); // cheesy stuff 
     }
 
     private SwerveModule[] _modules;
@@ -54,7 +54,7 @@ public class Drivetrain extends SubsystemBase {
 
     private final SwerveSetpointGenerator _setpointGenerator;
     private final KinematicLimits _limits;
-    private final SwerveDriveKinematics _kinematics;
+    private final SwerveDriveKinematics _kinematics; // physical layout of chassis
 
     private double _yawoffset;
 
@@ -62,7 +62,7 @@ public class Drivetrain extends SubsystemBase {
 
     private SystemIO _Io;
 
-    private final AHRS _gyro;
+    private final AHRS _gyro; // navX might want to swit ch to pigeon 2
 
 
 
@@ -73,10 +73,10 @@ public class Drivetrain extends SubsystemBase {
 
     public Drivetrain(){
         _Io = new SystemIO();
-        _gyro = new AHRS(SPI.Port.kMXP);
+        _gyro = new AHRS(SPI.Port.kMXP); // I think that this is right
 
-        _yawoffset = _gyro.getYaw();
-        readIMU();
+        _yawoffset = _gyro.getYaw(); // zero gyro on init
+        readIMU(); // method to update gyro
         
         _modules = new SwerveModule[4];
 
@@ -85,7 +85,7 @@ public class Drivetrain extends SubsystemBase {
         _modules[SOUTH_WEST_IDX] = new SwerveModule(RobotMap.CAN.BL_DRIVE_CAN, RobotMap.CAN.BL_STEER_CAN, Constants.Drivetrain.SOUTH_WEST_CONFIG); // TODO CHANGUS
         _modules[SOUTH_EAST_IDX] = new SwerveModule(RobotMap.CAN.BR_DRIVE_CAN, RobotMap.CAN.BR_STEER_CAN, Constants.Drivetrain.SOUTH_EAST_CONFIG); // TODO CHANGUS
 
-        _kinematics = new SwerveDriveKinematics(
+        _kinematics = new SwerveDriveKinematics( //location in where it is on chassis
             _modules[NORTH_EAST_IDX].getSwerveModuleLocation(),
             _modules[NORTH_WEST_IDX].getSwerveModuleLocation(),
             _modules[SOUTH_EAST_IDX].getSwerveModuleLocation(),
@@ -99,19 +99,30 @@ public class Drivetrain extends SubsystemBase {
                         _modules[SOUTH_EAST_IDX].getSwerveModuleLocation(),
                         _modules[SOUTH_WEST_IDX].getSwerveModuleLocation()
                       
-                });
-        _heading = new SwerveHeadingController(0.2);     
+                }); // chessy stuff
+        _heading = new SwerveHeadingController(0.2);     // not sure if we want to use this
         _limits = Constants.Drivetrain.DRIVE_KINEMATIC_LIMITS;
-        ZeroIMU();
-        readModules();
-        setSetpointFromMeasuredModules();
+        ZeroIMU(); // resets heading
+        readModules(); // gets encoders 
+        setSetpointFromMeasuredModules(); // cheesy stuff
         }
 
         public void setRawChassisSpeeds(ChassisSpeeds speeds) {
         SwerveModuleState[] desiredModuleState = _kinematics.toSwerveModuleStates(speeds);
         
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredModuleState, Constants.Drivetrain.MAX_TURING_SPEED); // TODO CHanGUS
-        _Io.setpoint.moduleStates = desiredModuleState;
+        _Io.setpoint.moduleStates = desiredModuleState; // desaturate wheel speeds makes it so that no wheel is required to do more than it can.
+    }
+
+    @Override
+    public void periodic() {
+        readIMU(); // gets data from IMU
+        readModules(); // gets Encoder Data
+        updateShuffleBoard(); // log
+        updateDesiredStates(); // 
+        setModuleStates(_Io.setpoint.moduleStates); // sets modules new desired states
+       
+
     }
     public SwerveSetpoint getSetpoint() {
         return _Io.setpoint;
@@ -129,20 +140,20 @@ public class Drivetrain extends SubsystemBase {
         ChassisSpeeds updatedChassisSpeeds = new ChassisSpeeds(
                 twistVel.dx / Constants.UPDATE_PERIOD,
                 twistVel.dy / Constants.UPDATE_PERIOD,
-                twistVel.dtheta / Constants.UPDATE_PERIOD);
+                twistVel.dtheta / Constants.UPDATE_PERIOD); // all of this is to conserve heading
 
         _Io.setpoint = _setpointGenerator.generateSetpoint(
                 _limits,
                 _Io.setpoint,
                 updatedChassisSpeeds,
-                Constants.UPDATE_PERIOD);
+                Constants.UPDATE_PERIOD); // updates the setpoint of IO
     }
     public void setModuleStates(SwerveModuleState[] states) {
         for (int module = 0; module < _modules.length; module++) {
             _modules[module].setModuleState(states[module]);
         }
     }
-    public void setVelocity(ChassisSpeeds chassisSpeeds) {
+    public void setVelocity(ChassisSpeeds chassisSpeeds) { // this method is main way of interfaceing
         _Io.desiredChassisSpeeds = chassisSpeeds;
     }
     public ChassisSpeeds getMeasuredChassisSpeeds() {
@@ -164,27 +175,12 @@ public class Drivetrain extends SubsystemBase {
     public SwerveModulePosition[] getSwerveModuleMeasuredPositions() {
         return _Io.measuredPositions;
     }
-    @Override
-    public void periodic() {
-    readIMU();
-    readModules();
-    updateDesiredStates();
-    setModuleStates(_Io.setpoint.moduleStates);
-      updateShuffleBoard();
-    
-      
-       
-
-        super.periodic();
-
-
-    }
     public Rotation2d getHeading(){
         return _Io.heading;
     }
-    public double getModulencoder(int mod){
-        return _modules[mod].getSwervePosition().angle.getDegrees();
-    }
+    // public double getModulencoder(int mod){
+    //     return _modules[mod].getSwervePosition().angle.getDegrees();
+    // }
     public void incrementHeadingControllerAngle() {
         Rotation2d heading = getHeading();
         _heading.goToHeading(
