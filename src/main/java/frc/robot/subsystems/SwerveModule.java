@@ -55,7 +55,7 @@ public class SwerveModule extends SubsystemBase {
         _steeringController.setFeedbackDevice(_steerAbsoluteEncoder);
 
         _steerAbsoluteEncoder.setPositionConversionFactor(Constants.Drivetrain.STEER_POSITION_FACTOR); //TODO finish this
-        _steerAbsoluteEncoder.setVelocityConversionFactor(Constants.Drivetrain.STEER_VELOCITY_FACTOR);
+        _steerAbsoluteEncoder.setVelocityConversionFactor(Constants.Drivetrain.STEER_VELOCITY_FACTOR); // TODO this might be the root of problems
 
         _driveEncoder.setPositionConversionFactor(Constants.Drivetrain.DRIVE_POSITION_FACTOR);
         _driveEncoder.setVelocityConversionFactor(Constants.Drivetrain.DRIVE_VELOCITY_FACTOR);
