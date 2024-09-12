@@ -100,6 +100,21 @@ public boolean getArmUp(){
 public boolean getArmDown(){
     return _driverGamepad.getAButton().getAsBoolean();
 }
+public double getSnapHeading(){
+    double heading;
+    if (_driverGamepad.povUp(null).getAsBoolean()){
+        heading = 0.0;
+    } else if (_driverGamepad.povDown(null).getAsBoolean()){
+        heading = 180.0;
+    } else if (_driverGamepad.povLeft(null).getAsBoolean()){
+        heading = 90.0;
+    } else if (_driverGamepad.povLeft(null).getAsBoolean()){
+        heading = 270.0;
+    } else {
+        heading = 0.0;
+    }
+    return heading;
+}
 
 
 

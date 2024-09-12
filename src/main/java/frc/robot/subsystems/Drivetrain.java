@@ -195,6 +195,9 @@ public class Drivetrain extends SubsystemBase {
     public void initializeHeadingController() {
         _heading.goToHeading(getHeading());
     }
+    public void setHeadinRotation2D(Rotation2d heading){
+        _heading.goToHeading(heading);
+    }
     public void readModules() {
         for (int module = 0; module < _modules.length; module++) {
             _Io.measuredPositions[module] = _modules[module].getSwervePosition();
