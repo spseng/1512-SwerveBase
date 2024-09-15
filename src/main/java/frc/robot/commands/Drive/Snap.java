@@ -10,7 +10,7 @@ public class Snap extends Command  {
 
     private final Drivetrain _drivetrain;
     private final OI _oi;
-    private Rotation2d _heading;
+    
 
 
     public Snap(Drivetrain drivetrain, OI oi ){

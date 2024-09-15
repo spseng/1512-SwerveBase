@@ -8,6 +8,7 @@ import frc.robot.Utils.Gamepad;
 import frc.robot.Utils.Helpers;
 
 import frc.robot.commands.Drive.ResetIMU;
+import frc.robot.commands.Drive.Snap;
 import frc.robot.subsystems.Drivetrain;
 
 
@@ -59,6 +60,11 @@ public void initializeButtons(
    //_driverGamepad.getAButton().onTrue(new ShootAmp(indexer, shooter));
    //_driverGamepad.getYButton().onTrue(new ClimbUp(arm));
    _driverGamepad.getBButton().onTrue(new ResetIMU(drivetrain));
+   _povButtonDown.onTrue(new Snap(drivetrain, this));
+   _povButtonLeft.onTrue(new Snap(drivetrain, this));
+   _povButtonUp.onTrue(new Snap(drivetrain, this));
+   _povButtonRight.onTrue(new Snap(drivetrain, this));
+ 
     
 
 }
