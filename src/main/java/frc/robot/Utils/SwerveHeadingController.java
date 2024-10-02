@@ -8,22 +8,21 @@ import frc.robot.Constants;
 // rewritten (probably poorly) by xavier bradford 03/09/24
 public class SwerveHeadingController {
 
+    private final PIDController _PIDController;
     // state machine
     private HeadingState _headingState;
     private Rotation2d _targetHeading;
-    private final PIDController _PIDController;
-
     // the timestamp at which the heading controller will enable again (after being temporarily disabled)
     private long _disableTime;
 
     public SwerveHeadingController(double kDt) {
         _PIDController = new PIDController(
-            Constants.Drivetrain.HEADING_kP,
-            Constants.Drivetrain.HEADING_kI,
-            Constants.Drivetrain.HEADING_kD,
-            kDt
+                Constants.Drivetrain.HEADING_kP,
+                Constants.Drivetrain.HEADING_kI,
+                Constants.Drivetrain.HEADING_kD,
+                kDt
         );
-                
+
         _PIDController.enableContinuousInput(-Math.PI, Math.PI);
         _headingState = HeadingState.OFF;
         _targetHeading = new Rotation2d();
@@ -45,7 +44,7 @@ public class SwerveHeadingController {
 
     /**
      * Temporarily disable the heading controller. It will be reenabled after a small amount of time.
-     * 
+     *
      * @see Constants.Drivetrain.DISABLE_TIME
      */
     public void temporaryDisable() {
@@ -55,6 +54,7 @@ public class SwerveHeadingController {
 
     /**
      * Sets the target heading of the heading controller and enables it.
+     *
      * @param targetHeading the heading to hold.
      */
     public void goToHeading(Rotation2d heading) {
@@ -72,10 +72,10 @@ public class SwerveHeadingController {
 
     /**
      * Get the output of the PID controller given a certain input.
-     * 
-     * @param heading The current heading of the drivetrain. This could be a gyro value or a vision value or some combination of both.
+     *
+     * @param heading       The current heading of the drivetrain. This could be a gyro value or a vision value or some combination of both.
      * @param measuredSpeed measured speed of the robot [vx, vy, omega]
-     * @param maxSpeed The max speed of the robot 
+     * @param maxSpeed      The max speed of the robot
      * @return The "power" that the heading controller outputs.
      */
     public double getRotationCorrection(Rotation2d heading) {
@@ -97,20 +97,19 @@ public class SwerveHeadingController {
             default:
                 break;
         }
-    
+
         double error = _targetHeading.minus(heading).getRadians();
         if (isAtTargetAngle(heading)) {
             power = 0;
-        } else if(error > Constants.Drivetrain.HEADING_TOLERANCE) {
+        } else if (error > Constants.Drivetrain.HEADING_TOLERANCE) {
             power += 0.05;
-        } else if(error < -Constants.Drivetrain.HEADING_TOLERANCE) {
+        } else if (error < -Constants.Drivetrain.HEADING_TOLERANCE) {
             power -= 0.05;
         }
 
         return power;
     }
-    
-    
+
 
     public enum HeadingState {
         OFF(0),

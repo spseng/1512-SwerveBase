@@ -14,7 +14,10 @@ public class Helpers {
             return 0.0;
         }
     }
-    /** Normalize all wheel speeds if the magnitude of any wheel is greater than 1.0. */
+
+    /**
+     * Normalize all wheel speeds if the magnitude of any wheel is greater than 1.0.
+     */
     public static void normalize(double[] wheelSpeeds) {
         double maxMagnitude = Math.abs(wheelSpeeds[0]);
         for (int i = 1; i < wheelSpeeds.length; i++) {
@@ -29,10 +32,11 @@ public class Helpers {
             }
         }
     }
-        /**
+
+    /**
      * Wraps the angle so that its always between 0 -> (2 * pi)
      *
-     * @param angle that needs to be wrapped
+     * @param angle   that needs to be wrapped
      * @param radians boolean to calculate radians vs degrees
      */
     public static double angleWrap(double angle, boolean radians) {
@@ -47,6 +51,7 @@ public class Helpers {
     public static double joystickToAngle(double x, double y) {
         return Units.radiansToDegrees(Math.atan2(y, x));
     }
+
     public static Vector2d axisToSegmentedUnitCircleRadians(double x, double y, int[] array) {
         double angle = joystickToAngle(x, y);
         angle = (angle + 360) % 360;
@@ -60,16 +65,6 @@ public class Helpers {
                 power * Math.cos(Units.degreesToRadians(array[segment])),
                 power * Math.sin(Units.degreesToRadians(array[segment])));
     }
-
-
-
-
-
-
-
-
-
-
 
 
 }

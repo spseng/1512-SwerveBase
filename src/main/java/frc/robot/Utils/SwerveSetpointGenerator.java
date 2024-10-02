@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,16 +17,9 @@ import java.util.Optional;
  */
 public class SwerveSetpointGenerator {
 
-    public static class KinematicLimits {
-        public double maxDriveVelocity;
-        public double maxDriveAcceleration;
-        public double maxSteeringVelocity;
-    }
-
     private final SwerveDriveKinematics _kinematics;
     private final Translation2d[] _modulePositions;
     private final double EPSILON = 1e-9;
-
     public SwerveSetpointGenerator(
             final SwerveDriveKinematics kinematics, final Translation2d[] modulePositions) {
         _modulePositions = modulePositions;
@@ -51,11 +45,6 @@ public class SwerveSetpointGenerator {
         }
     }
 
-    @FunctionalInterface
-    private interface Function2d {
-        double f(double x, double y);
-    }
-
     private double findRootRegula(
             Function2d func,
             double x_0,
@@ -76,7 +65,7 @@ public class SwerveSetpointGenerator {
             // 0 and guess on same side of root, so use upper bracket.
             return s_guess
                     + (1.0 - s_guess)
-                            * findRootRegula(func, x_guess, y_guess, f_guess, x_1, y_1, f_1, iterations_left - 1);
+                    * findRootRegula(func, x_guess, y_guess, f_guess, x_1, y_1, f_1, iterations_left - 1);
         } else {
             // Use lower bracket.
             return s_guess
@@ -138,14 +127,14 @@ public class SwerveSetpointGenerator {
     /**
      * Generate a new setpoint.
      *
-     * @param limits The kinematic limits to respect for this setpoint.
+     * @param limits       The kinematic limits to respect for this setpoint.
      * @param prevSetpoint The previous setpoint motion. Normally, you'd pass in the previous
-     *     iteration setpoint instead of the actual measured/estimated kinematic state.
+     *                     iteration setpoint instead of the actual measured/estimated kinematic state.
      * @param desiredState The desired state of motion, such as from the driver sticks or a path
-     *     following algorithm.
-     * @param dt The loop time.
+     *                     following algorithm.
+     * @param dt           The loop time.
      * @return A Setpoint object that satisfies all of the KinematicLimits while converging to
-     *     desiredState quickly.
+     * desiredState quickly.
      */
     public SwerveSetpoint generateSetpoint(
             final KinematicLimits limits,
@@ -320,14 +309,14 @@ public class SwerveSetpointGenerator {
             double s =
                     min_s
                             * findDriveMaxS(
-                                    prev_vx[i],
-                                    prev_vy[i],
-                                    Math.hypot(prev_vx[i], prev_vy[i]),
-                                    vx_min_s,
-                                    vy_min_s,
-                                    Math.hypot(vx_min_s, vy_min_s),
-                                    max_vel_step,
-                                    kMaxIterations);
+                            prev_vx[i],
+                            prev_vy[i],
+                            Math.hypot(prev_vx[i], prev_vy[i]),
+                            vx_min_s,
+                            vy_min_s,
+                            Math.hypot(vx_min_s, vy_min_s),
+                            max_vel_step,
+                            kMaxIterations);
             min_s = Math.min(min_s, s);
         }
 
@@ -354,5 +343,16 @@ public class SwerveSetpointGenerator {
             }
         }
         return new SwerveSetpoint(retSpeeds, retStates);
+    }
+
+    @FunctionalInterface
+    private interface Function2d {
+        double f(double x, double y);
+    }
+
+    public static class KinematicLimits {
+        public double maxDriveVelocity;
+        public double maxDriveAcceleration;
+        public double maxSteeringVelocity;
     }
 }

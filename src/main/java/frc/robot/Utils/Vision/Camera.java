@@ -1,10 +1,9 @@
 package frc.robot.Utils.Vision;
 
-import org.photonvision.PhotonCamera;
-import org.photonvision.targeting.PhotonPipelineResult;
-
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonPipelineResult;
 
 public class Camera {
     private final String _camName;
@@ -18,7 +17,7 @@ public class Camera {
     private final PhotonCamera _photonCamera;
 
 
-      public Camera(String camName, double x, double y, double z, double pitch, double yaw, double roll) {
+    public Camera(String camName, double x, double y, double z, double pitch, double yaw, double roll) {
         _camName = camName;
         _camX = x;
         _camY = y;
@@ -27,21 +26,20 @@ public class Camera {
         _camYaw = yaw;
         _camRoll = roll;
         _photonCamera = new PhotonCamera(_camName);
-      }
-    
-      public Transform3d getCameraLoction(){
+    }
+
+    public Transform3d getCameraLoction() {
         return new Transform3d(_camX, _camY, _camZ, new Rotation3d(_camPitch, _camYaw, _camRoll));
 
-      }
-      public PhotonPipelineResult getLatestResult(){
+    }
+
+    public PhotonPipelineResult getLatestResult() {
         return _photonCamera.getLatestResult();
-      }
+    }
 
-      public boolean isTargetinSight(){
+    public boolean isTargetinSight() {
         return this.isTargetinSight();
-      }
-
-      
+    }
 
 
 }

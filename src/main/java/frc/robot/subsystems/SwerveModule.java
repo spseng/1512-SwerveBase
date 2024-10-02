@@ -27,13 +27,9 @@ public class SwerveModule extends SubsystemBase {
     private final AbsoluteEncoder _steerAbsoluteEncoder;
 
     private final RelativeEncoder _driveEncoder;
-
-    private SwerveModuleState _desiredModuleState = new SwerveModuleState(0.0, new Rotation2d());
-
-    private double _chassisAngularOffset;
-     
     private final Translation2d _moduleLoaction;
-
+    private SwerveModuleState _desiredModuleState = new SwerveModuleState(0.0, new Rotation2d());
+    private double _chassisAngularOffset;
 
 
     public SwerveModule(int steerPort, int drivePort, ModuleConfiguration config) {
@@ -70,31 +66,32 @@ public class SwerveModule extends SubsystemBase {
         _steeringController.setI(Constants.Drivetrain.STEER_KI);
         _steeringController.setD(Constants.Drivetrain.STEER_KD);
         _steeringController.setFF(Constants.Drivetrain.STEER_FF);
-        _steeringController.setOutputRange(Constants.Drivetrain.MOTOR_MIN_OUTPUT,Constants.Drivetrain.MOTOR_MAX_OUTPUT); 
+        _steeringController.setOutputRange(Constants.Drivetrain.MOTOR_MIN_OUTPUT, Constants.Drivetrain.MOTOR_MAX_OUTPUT);
         _driveController.setP(Constants.Drivetrain.DRIVE_KP);
         _driveController.setI(Constants.Drivetrain.DRIVE_KI);
         _driveController.setD(Constants.Drivetrain.DRIVE_KD);
         _driveController.setFF(Constants.Drivetrain.DRIVE_FF);
         _driveController.setOutputRange(Constants.Drivetrain.MOTOR_MIN_OUTPUT, Constants.Drivetrain.MOTOR_MAX_OUTPUT);
 
-       _driveMotor.setIdleMode(Constants.Drivetrain.DRIVE_IDLE_MODE);
-       _steerMotor.setIdleMode(Constants.Drivetrain.STEER_IDLE_MODE);
-       _driveMotor.setSmartCurrentLimit(Constants.Drivetrain.DRIVE_CURRENT_LIMIT);
-       _steerMotor.setSmartCurrentLimit(Constants.Drivetrain.STEER_CURRENT_LIMIT);
+        _driveMotor.setIdleMode(Constants.Drivetrain.DRIVE_IDLE_MODE);
+        _steerMotor.setIdleMode(Constants.Drivetrain.STEER_IDLE_MODE);
+        _driveMotor.setSmartCurrentLimit(Constants.Drivetrain.DRIVE_CURRENT_LIMIT);
+        _steerMotor.setSmartCurrentLimit(Constants.Drivetrain.STEER_CURRENT_LIMIT);
 
-       _driveMotor.burnFlash();
-       _steerMotor.burnFlash();
+        _driveMotor.burnFlash();
+        _steerMotor.burnFlash();
 
 
         _desiredModuleState.angle = new Rotation2d(_steerAbsoluteEncoder.getPosition());
         _driveEncoder.setPosition(0);
-     }
+    }
 
 
     public void zeroPosition() {
         _driveEncoder.setPosition(0);
     }
-    public void setModuleState(SwerveModuleState state){
+
+    public void setModuleState(SwerveModuleState state) {
         SwerveModuleState correctedState = new SwerveModuleState();
         correctedState.speedMetersPerSecond = state.speedMetersPerSecond;
         correctedState.angle = state.angle.plus(Rotation2d.fromRadians(_chassisAngularOffset));
@@ -104,24 +101,27 @@ public class SwerveModule extends SubsystemBase {
         _driveController.setReference(optimizedState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
         _steeringController.setReference(optimizedState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
 
-        _desiredModuleState = state;     
+        _desiredModuleState = state;
     }
-     public SwerveModulePosition getSwervePosition(){
-         return new SwerveModulePosition(
-            _driveEncoder.getPosition(), new Rotation2d((_steerAbsoluteEncoder.getPosition() - _chassisAngularOffset)));
-     }
-     public double getChassisAngularOffset(){
-        return _chassisAngularOffset;
-     }
 
-    public SwerveModuleState getSwerveModuleState(){
-        return new SwerveModuleState(_driveEncoder.getVelocity(), new Rotation2d(_steerAbsoluteEncoder.getPosition()- _chassisAngularOffset));
+    public SwerveModulePosition getSwervePosition() {
+        return new SwerveModulePosition(
+                _driveEncoder.getPosition(), new Rotation2d((_steerAbsoluteEncoder.getPosition() - _chassisAngularOffset)));
     }
-    public Translation2d getSwerveModuleLocation(){
+
+    public double getChassisAngularOffset() {
+        return _chassisAngularOffset;
+    }
+
+    public SwerveModuleState getSwerveModuleState() {
+        return new SwerveModuleState(_driveEncoder.getVelocity(), new Rotation2d(_steerAbsoluteEncoder.getPosition() - _chassisAngularOffset));
+    }
+
+    public Translation2d getSwerveModuleLocation() {
         return _moduleLoaction;
     }
-    
-    
+
+
     public static class ModuleConfiguration {
         public String moduleName = "";
 

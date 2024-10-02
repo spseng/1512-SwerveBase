@@ -7,14 +7,8 @@ import frc.robot.Constants;
 
 public class Vector2d {
     protected static final Vector2d IDENTITY = new Vector2d();
-
-    public static Vector2d identity() {
-        return IDENTITY;
-    }
-
     protected double _x;
     protected double _y;
-
     public Vector2d() {
         _x = 0;
         _y = 0;
@@ -33,6 +27,14 @@ public class Vector2d {
     public Vector2d(final Vector2d start, final Vector2d end) {
         _x = end._x - start._x;
         _y = end._y - start._y;
+    }
+
+    public static Vector2d identity() {
+        return IDENTITY;
+    }
+
+    public static boolean epsilonEquals(double a, double b, double epsilon) {
+        return (a - epsilon <= b) && (a + epsilon >= b);
     }
 
     public void setX(double x) {
@@ -113,7 +115,9 @@ public class Vector2d {
         return isWithinAngle(A, B, C, false);
     }
 
-    /** Assumes an angle centered at the origin. */
+    /**
+     * Assumes an angle centered at the origin.
+     */
     public boolean isWithinAngle(Vector2d A, Vector2d C, boolean vertical) {
         return isWithinAngle(A, identity(), C, vertical);
     }
@@ -133,15 +137,12 @@ public class Vector2d {
     public Translation2d toTranslation() {
         return new Translation2d(this._x, this._y);
     }
-    public static boolean epsilonEquals(double a, double b, double epsilon) {
-        return (a - epsilon <= b) && (a + epsilon >= b);
-    }
 
     public boolean equals(Vector2d other) {
         return epsilonEquals(_x, other._x, Constants.EPSILON)
                 && epsilonEquals(_y, other._y, Constants.EPSILON);
     }
-   
+
 }
 
 
