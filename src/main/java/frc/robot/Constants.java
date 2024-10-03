@@ -33,7 +33,7 @@ public class Constants {
         public static final double DRIVE_SPEED = 1.9;
         public static final double MAX_ANG_VEL = 5.0;
         public static final double MAX_DRIVE_SPEED_MPS = 4.0;
-        public static final double TURN_SPEED = 0.19; // Radians per update
+        public static final double TURN_SPEED = 0.24; // Radians per update
         public static final double TRANSLATION_DEADBAND = 0.05;
         public static final double ROTATION_DEADBAND = 0.05;
 
@@ -80,13 +80,13 @@ public class Constants {
         public static final IdleMode DRIVE_IDLE_MODE = IdleMode.kBrake;
         public static final IdleMode STEER_IDLE_MODE = IdleMode.kBrake;
         // Steering PID
-        public static final double DRIVE_KP = 0.008;
+        public static final double DRIVE_KP = 0.19;
         public static final double DRIVE_KI = 0.0;
         public static final double DRIVE_KD = 0.005;
-        public static final double DRIVE_FF = 0 / FREE_SPEED_RPS;
+        public static final double DRIVE_FF = 1.0 / FREE_SPEED_RPS;
         // Turning PID
-        public static final double STEER_KP = 0.01;
-        public static final double STEER_KI = 0.000;
+        public static final double STEER_KP = 1.8;
+        public static final double STEER_KI = 0.0;
         public static final double STEER_KD = 0.05;
         public static final double STEER_FF = 0.0;
         // Autonomous Drive PID
@@ -103,13 +103,15 @@ public class Constants {
         public static final int STEER_CURRENT_LIMIT = 10;
         public static final int DRIVE_CURRENT_LIMIT = 40;
 
+        //Encoder Offset set manually
+
         static {
             SOUTH_EAST_CONFIG.moduleName = "South East";
 
             SOUTH_EAST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, -SWERVE_WE_POS); // -,-
 
             SOUTH_EAST_CONFIG.encoderInverted = false;
-            SOUTH_EAST_CONFIG.encoderOffset = -0.48828125;
+            //SOUTH_EAST_CONFIG.encoderOffset = 0.0;
         }
 
         static {
@@ -118,7 +120,8 @@ public class Constants {
             NORTH_EAST_CONFIG.position = new Translation2d(SWERVE_NS_POS, -SWERVE_WE_POS); // +,-
 
             NORTH_EAST_CONFIG.encoderInverted = false;
-            NORTH_EAST_CONFIG.encoderOffset = 0.28564453125;
+            //NORTH_EAST_CONFIG.encoderOffset = 0.0;
+
         }
 
         static {
@@ -127,7 +130,7 @@ public class Constants {
             NORTH_WEST_CONFIG.position = new Translation2d(SWERVE_NS_POS, SWERVE_WE_POS); // +,+
 
             NORTH_WEST_CONFIG.encoderInverted = false;
-            NORTH_WEST_CONFIG.encoderOffset = -0.407470703125;
+            //NORTH_WEST_CONFIG.encoderOffset = 0.0;
         }
 
         static {
@@ -136,7 +139,7 @@ public class Constants {
             SOUTH_WEST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, SWERVE_WE_POS); // -,+
 
             SOUTH_WEST_CONFIG.encoderInverted = false;
-            SOUTH_WEST_CONFIG.encoderOffset = -0.497314453125;
+            //SOUTH_WEST_CONFIG.encoderOffset = 0.0;
         }
 
         static {

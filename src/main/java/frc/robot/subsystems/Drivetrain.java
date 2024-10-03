@@ -49,10 +49,10 @@ public class Drivetrain extends SubsystemBase {
 
         _modules = new SwerveModule[4];
 
-        _modules[NORTH_WEST_IDX] = new SwerveModule(RobotMap.CAN.FL_DRIVE_CAN, RobotMap.CAN.FL_STEER_CAN, Constants.Drivetrain.NORTH_WEST_CONFIG); // TODO CHANGUS
-        _modules[NORTH_EAST_IDX] = new SwerveModule(RobotMap.CAN.FR_DRIVE_CAN, RobotMap.CAN.FR_STEER_CAN, Constants.Drivetrain.NORTH_EAST_CONFIG); // TODO CHANGUS
-        _modules[SOUTH_WEST_IDX] = new SwerveModule(RobotMap.CAN.BL_DRIVE_CAN, RobotMap.CAN.BL_STEER_CAN, Constants.Drivetrain.SOUTH_WEST_CONFIG); // TODO CHANGUS
-        _modules[SOUTH_EAST_IDX] = new SwerveModule(RobotMap.CAN.BR_DRIVE_CAN, RobotMap.CAN.BR_STEER_CAN, Constants.Drivetrain.SOUTH_EAST_CONFIG); // TODO CHANGUS
+        _modules[NORTH_WEST_IDX] = new SwerveModule(RobotMap.CAN.FL_STEER_CAN, RobotMap.CAN.FL_DRIVE_CAN, Constants.Drivetrain.NORTH_WEST_CONFIG); // TODO CHANGUS
+        _modules[NORTH_EAST_IDX] = new SwerveModule(RobotMap.CAN.FR_STEER_CAN, RobotMap.CAN.FR_DRIVE_CAN, Constants.Drivetrain.NORTH_EAST_CONFIG); // TODO CHANGUS
+        _modules[SOUTH_WEST_IDX] = new SwerveModule(RobotMap.CAN.BL_STEER_CAN, RobotMap.CAN.BL_DRIVE_CAN, Constants.Drivetrain.SOUTH_WEST_CONFIG); // TODO CHANGUS
+        _modules[SOUTH_EAST_IDX] = new SwerveModule(RobotMap.CAN.BR_STEER_CAN, RobotMap.CAN.BR_DRIVE_CAN, Constants.Drivetrain.SOUTH_EAST_CONFIG); // TODO CHANGUS
 
         _kinematics = new SwerveDriveKinematics( //location in where it is on chassis
                 _modules[NORTH_EAST_IDX].getSwerveModuleLocation(),
@@ -201,7 +201,7 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("Vy", _Io.desiredChassisSpeeds.vyMetersPerSecond);
         SmartDashboard.putNumber("rotation", _Io.desiredChassisSpeeds.omegaRadiansPerSecond);
         SmartDashboard.putNumber("heading degrees", getHeading().getDegrees());
-        SmartDashboard.putNumber("NW_DESIRED_HEADING", getModuleAngle(NORTH_EAST_IDX));
+        SmartDashboard.putNumber("NW_DESIRED_HEADING", _Io.measuredPositions[NORTH_WEST_IDX].angle.getDegrees());
         SmartDashboard.putNumber("NE_DESIRED_HEADING", _Io.measuredPositions[NORTH_EAST_IDX].angle.getDegrees());
         SmartDashboard.putNumber("SW_DESIRED_HEADING", _Io.measuredPositions[SOUTH_WEST_IDX].angle.getDegrees());
         SmartDashboard.putNumber("SE_DESIRED_HEADING", _Io.measuredPositions[SOUTH_EAST_IDX].angle.getDegrees());
@@ -209,6 +209,9 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("NE_ACTAUL_HEADING", _modules[NORTH_EAST_IDX].getSwervePosition().angle.getDegrees());
         SmartDashboard.putNumber("SW_ACTAUL_HEADING", _modules[SOUTH_WEST_IDX].getSwervePosition().angle.getDegrees());
         SmartDashboard.putNumber("SE_ACTAUL_HEADING", _modules[SOUTH_EAST_IDX].getSwervePosition().angle.getDegrees());
+        SmartDashboard.putNumber("SE_ACTAUL_HEADING_DRIVE_TEST", _modules[SOUTH_EAST_IDX].getDriveEncoderPosition());
+        SmartDashboard.putNumber("SE_ACTAUL_HEADING_STEER_TEST", _modules[SOUTH_EAST_IDX].getSteerEncoderPosition());
+        SmartDashboard.putNumber("TEST2", System.currentTimeMillis());
     }
 
     public void ZeroIMU() {

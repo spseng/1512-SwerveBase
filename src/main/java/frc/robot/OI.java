@@ -116,7 +116,7 @@ public class OI {
             heading = 180.0;
         } else if (_driverGamepad.povLeft(null).getAsBoolean()) {
             heading = 90.0;
-        } else if (_driverGamepad.povLeft(null).getAsBoolean()) {
+        } else if (_driverGamepad.povRight(null).getAsBoolean()) {
             heading = 270.0;
         } else {
             heading = 0.0;

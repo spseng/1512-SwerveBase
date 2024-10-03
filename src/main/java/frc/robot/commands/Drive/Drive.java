@@ -8,6 +8,7 @@ import frc.robot.OI;
 import frc.robot.Utils.Helpers;
 import frc.robot.Utils.Vector2d;
 import frc.robot.subsystems.Drivetrain;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drive extends Command {
 
@@ -42,6 +43,9 @@ public class Drive extends Command {
         double rot = -_oi.getRotationX(); // radians per second
         Vector2d vec = Helpers.axisToSegmentedUnitCircleRadians(
                 _oi.getDriveY(), _oi.getDriveX(), segmentationArray);
+        SmartDashboard.putNumber("vec.x", vec.x());
+        SmartDashboard.putNumber("vec.y", vec.y());
+        SmartDashboard.putNumber("vec.x+vec.y", vec.x()+vec.y());
 
         vx = vec.x() * Constants.Drivetrain.MAX_DRIVE_SPEED_MPS; // mps
         vy = vec.y() * Constants.Drivetrain.MAX_DRIVE_SPEED_MPS; // mps

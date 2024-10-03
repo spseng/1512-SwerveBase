@@ -33,7 +33,7 @@ public class SwerveModule extends SubsystemBase {
 
 
     public SwerveModule(int steerPort, int drivePort, ModuleConfiguration config) {
-        _chassisAngularOffset = config.encoderOffset;
+        //_chassisAngularOffset = config.encoderOffset;
         _steerMotor = new CANSparkMax(steerPort, com.revrobotics.CANSparkLowLevel.MotorType.kBrushless);
         _driveMotor = new CANSparkMax(drivePort, com.revrobotics.CANSparkLowLevel.MotorType.kBrushless);
         _moduleLoaction = config.position;
@@ -107,6 +107,14 @@ public class SwerveModule extends SubsystemBase {
     public SwerveModulePosition getSwervePosition() {
         return new SwerveModulePosition(
                 _driveEncoder.getPosition(), new Rotation2d((_steerAbsoluteEncoder.getPosition() - _chassisAngularOffset)));
+    }
+
+    public double getDriveEncoderPosition() {
+        return _driveEncoder.getPosition();
+    }
+
+    public double getSteerEncoderPosition() {
+        return _steerAbsoluteEncoder.getPosition();
     }
 
     public double getChassisAngularOffset() {
