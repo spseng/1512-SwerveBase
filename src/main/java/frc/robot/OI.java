@@ -48,11 +48,7 @@ public class OI {
         _driverRightTrigger = new Trigger(_driverRightTriggerButton::get);
     }
 
-    public void initializeButtons(
-            Drivetrain drivetrain
-
-    ) {
-
+    public void initializeButtons(Drivetrain drivetrain) {
 
         //this is where we map commands
 
@@ -63,7 +59,6 @@ public class OI {
         _povButtonLeft.onTrue(new Snap(drivetrain, this));
         _povButtonUp.onTrue(new Snap(drivetrain, this));
         _povButtonRight.onTrue(new Snap(drivetrain, this));
-
 
     }
 

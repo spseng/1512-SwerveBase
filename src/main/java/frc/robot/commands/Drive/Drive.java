@@ -15,6 +15,7 @@ public class Drive extends Command {
     private final Drivetrain _drivetrain;
     private final OI _oi;
     private int segmentationArray[] = new int[360 / 5];
+    // creates 72 segments and 5 degrees each
 
 
     public Drive(OI oi, Drivetrain drivetrain) {
@@ -31,18 +32,22 @@ public class Drive extends Command {
 
     @Override
     public void execute() {
-        // TODO Auto-generated method stub
 
         double vx;
         double vy;
 
         for (int i = 0; i < segmentationArray.length; i++) {
-            double angle = 360 / segmentationArray.length;
-            segmentationArray[i] = (int) angle * i;
+            double angle = 360.0 / segmentationArray.length;
+            segmentationArray[i] = (int) (angle * i);
         }
+        // creates segment of angles
+        
         double rot = -_oi.getRotationX(); // radians per second
         Vector2d vec = Helpers.axisToSegmentedUnitCircleRadians(
                 _oi.getDriveY(), _oi.getDriveX(), segmentationArray);
+                // gets x and y in a unit circle based on segmentation array.
+                // basically normalising the x and y.
+        
         SmartDashboard.putNumber("vec.x", vec.x());
         SmartDashboard.putNumber("vec.y", vec.y());
         SmartDashboard.putNumber("vec.x+vec.y", vec.x()+vec.y());
@@ -50,11 +55,13 @@ public class Drive extends Command {
         vx = vec.x() * Constants.Drivetrain.MAX_DRIVE_SPEED_MPS; // mps
         vy = vec.y() * Constants.Drivetrain.MAX_DRIVE_SPEED_MPS; // mps
 
-        rot = Math.signum(rot) * rot * rot;
+        rot = Math.signum(rot) * rot * rot; // square rot without loosing plus or minus
         rot = rot * Constants.Drivetrain.MAX_ANG_VEL;
 
 
         Rotation2d rotation = _drivetrain.isRedAlliance() ? _drivetrain.getHeading().plus(new Rotation2d(Math.PI)) : _drivetrain.getHeading();
+        // determine the current rotation
+        // switches 180 degree depending on the current alliance
 
         if (rot > Constants.Drivetrain.ROTATION_DEADBAND || vx > Constants.Drivetrain.TRANSLATION_DEADBAND || vy > Constants.Drivetrain.TRANSLATION_DEADBAND) {
             _drivetrain.readModules();
@@ -63,7 +70,6 @@ public class Drive extends Command {
             _drivetrain.readModules();
             _drivetrain.setVelocity(new ChassisSpeeds());
         }
-
         // Check if either joystick is beyond the dead zone
 
     }
