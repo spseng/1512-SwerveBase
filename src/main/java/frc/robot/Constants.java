@@ -80,10 +80,10 @@ public class Constants {
         public static final IdleMode DRIVE_IDLE_MODE = IdleMode.kBrake;
         public static final IdleMode STEER_IDLE_MODE = IdleMode.kBrake;
         // Steering PID
-        public static final double DRIVE_KP = 0.19;
+        public static final double DRIVE_KP = 0.2;
         public static final double DRIVE_KI = 0.0;
-        public static final double DRIVE_KD = 0.005;
-        public static final double DRIVE_FF = 1.0 / FREE_SPEED_RPS;
+        public static final double DRIVE_KD = 0.05;
+        public static final double DRIVE_FF = 0.0 / FREE_SPEED_RPS;
         // Turning PID
         public static final double STEER_KP = 1.8;
         public static final double STEER_KI = 0.0;

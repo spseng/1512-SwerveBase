@@ -2,13 +2,13 @@ package frc.robot.commands.Drive;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.OI;
 import frc.robot.Utils.Helpers;
 import frc.robot.Utils.Vector2d;
 import frc.robot.subsystems.Drivetrain;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drive extends Command {
 
@@ -57,6 +57,7 @@ public class Drive extends Command {
         SmartDashboard.putNumber("vx", vx);
         SmartDashboard.putNumber("vy", vy);
         SmartDashboard.putNumber("rot", rot);
+        SmartDashboard.putNumber("DESIRED_VELOCITY", Math.hypot(vx, vy)/2);
 
 
         Rotation2d rotation = _drivetrain.isRedAlliance() ? _drivetrain.getHeading().plus(new Rotation2d(Math.PI)) : _drivetrain.getHeading();
@@ -65,7 +66,8 @@ public class Drive extends Command {
 
         if (Math.abs(rot) > Constants.Drivetrain.ROTATION_DEADBAND || Math.abs(vx) > Constants.Drivetrain.TRANSLATION_DEADBAND || Math.abs(vy) > Constants.Drivetrain.TRANSLATION_DEADBAND) {
             _drivetrain.readModules();
-            _drivetrain.setVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, rot, rotation));
+            //_drivetrain.setVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, rot, rotation));
+            _drivetrain.setVelocity(new ChassisSpeeds(vx, vy, rot));
         } else {
             _drivetrain.readModules();
             _drivetrain.setVelocity(new ChassisSpeeds());

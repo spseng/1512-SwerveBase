@@ -209,9 +209,10 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("NE_ACTAUL_HEADING", _modules[NORTH_EAST_IDX].getSwervePosition().angle.getDegrees());
         SmartDashboard.putNumber("SW_ACTAUL_HEADING", _modules[SOUTH_WEST_IDX].getSwervePosition().angle.getDegrees());
         SmartDashboard.putNumber("SE_ACTAUL_HEADING", _modules[SOUTH_EAST_IDX].getSwervePosition().angle.getDegrees());
-        SmartDashboard.putNumber("SE_ACTAUL_HEADING_DRIVE_TEST", _modules[SOUTH_EAST_IDX].getDriveEncoderPosition());
-        SmartDashboard.putNumber("SE_ACTAUL_HEADING_STEER_TEST", _modules[SOUTH_EAST_IDX].getSteerEncoderPosition());
-        SmartDashboard.putNumber("TEST2", System.currentTimeMillis());
+        SmartDashboard.putNumber("NW_ACTAUL_VELOCITY", _modules[NORTH_WEST_IDX].getDriveVelocity());
+        SmartDashboard.putNumber("NE_ACTAUL_VELOCITY", _modules[NORTH_EAST_IDX].getDriveVelocity());
+        SmartDashboard.putNumber("SW_ACTAUL_VELOCITY", _modules[SOUTH_WEST_IDX].getDriveVelocity());
+        SmartDashboard.putNumber("SE_ACTAUL_VELOCITY", _modules[SOUTH_EAST_IDX].getDriveVelocity());
     }
 
     public void ZeroIMU() {
