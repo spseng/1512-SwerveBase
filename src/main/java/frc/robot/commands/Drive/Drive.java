@@ -47,10 +47,6 @@ public class Drive extends Command {
                 _oi.getDriveY(), _oi.getDriveX(), segmentationArray);
                 // gets x and y in a unit circle based on segmentation array.
                 // basically normalising the x and y.
-        
-        SmartDashboard.putNumber("vec.x", vec.x());
-        SmartDashboard.putNumber("vec.y", vec.y());
-        SmartDashboard.putNumber("vec.x+vec.y", vec.x()+vec.y());
 
         vx = vec.x() * Constants.Drivetrain.MAX_DRIVE_SPEED_MPS; // mps
         vy = vec.y() * Constants.Drivetrain.MAX_DRIVE_SPEED_MPS; // mps
@@ -58,12 +54,16 @@ public class Drive extends Command {
         rot = Math.signum(rot) * rot * rot; // square rot without loosing plus or minus
         rot = rot * Constants.Drivetrain.MAX_ANG_VEL;
 
+        SmartDashboard.putNumber("vx", vx);
+        SmartDashboard.putNumber("vy", vy);
+        SmartDashboard.putNumber("rot", rot);
+
 
         Rotation2d rotation = _drivetrain.isRedAlliance() ? _drivetrain.getHeading().plus(new Rotation2d(Math.PI)) : _drivetrain.getHeading();
         // determine the current rotation
         // switches 180 degree depending on the current alliance
 
-        if (rot > Constants.Drivetrain.ROTATION_DEADBAND || vx > Constants.Drivetrain.TRANSLATION_DEADBAND || vy > Constants.Drivetrain.TRANSLATION_DEADBAND) {
+        if (Math.abs(rot) > Constants.Drivetrain.ROTATION_DEADBAND || Math.abs(vx) > Constants.Drivetrain.TRANSLATION_DEADBAND || Math.abs(vy) > Constants.Drivetrain.TRANSLATION_DEADBAND) {
             _drivetrain.readModules();
             _drivetrain.setVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, rot, rotation));
         } else {
