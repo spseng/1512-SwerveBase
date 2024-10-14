@@ -98,7 +98,7 @@ public class Constants {
         public static final KinematicLimits DRIVE_KINEMATIC_LIMITS = new KinematicLimits();
         public static final long DISABLE_TIME = 500;
         public static final double HEADING_kI = 0;
-        public static final double HEADING_kP = 6.0;
+        public static final double HEADING_kP = 8.0;
         public static final double HEADING_kD = 1.0;
         public static final int STEER_CURRENT_LIMIT = 10;
         public static final int DRIVE_CURRENT_LIMIT = 40;

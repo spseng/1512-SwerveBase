@@ -66,8 +66,8 @@ public class Drive extends Command {
 
         if (Math.abs(rot) > Constants.Drivetrain.ROTATION_DEADBAND || Math.abs(vx) > Constants.Drivetrain.TRANSLATION_DEADBAND || Math.abs(vy) > Constants.Drivetrain.TRANSLATION_DEADBAND) {
             _drivetrain.readModules();
-            //_drivetrain.setVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, rot, rotation));
-            _drivetrain.setVelocity(new ChassisSpeeds(vx, vy, rot));
+            _drivetrain.setVelocity(ChassisSpeeds.fromRobotRelativeSpeeds(vx, vy, rot, rotation));
+            //_drivetrain.setVelocity(new ChassisSpeeds(vx, vy, rot));
         } else {
             _drivetrain.readModules();
             _drivetrain.setVelocity(new ChassisSpeeds());
