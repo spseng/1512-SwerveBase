@@ -69,8 +69,9 @@ public class Drivetrain extends SubsystemBase {
                         _modules[SOUTH_WEST_IDX].getSwerveModuleLocation()
 
                 }); // chessy stuff
-        _heading = new SwerveHeadingController(0.2);     // not sure if we want to use this
+        _heading = new SwerveHeadingController(Constants.UPDATE_PERIOD);     // not sure if we want to use this
         _limits = Constants.Drivetrain.DRIVE_KINEMATIC_LIMITS;
+        
         ZeroIMU(); // resets heading
         readModules(); // gets encoders
         setSetpointFromMeasuredModules(); // cheesy stuff
@@ -201,18 +202,18 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("Vy", _Io.desiredChassisSpeeds.vyMetersPerSecond);
         SmartDashboard.putNumber("rotation", _Io.desiredChassisSpeeds.omegaRadiansPerSecond);
         SmartDashboard.putNumber("heading degrees", getHeading().getDegrees());
-        SmartDashboard.putNumber("NW_DESIRED_HEADING", _Io.measuredPositions[NORTH_WEST_IDX].angle.getDegrees());
-        SmartDashboard.putNumber("NE_DESIRED_HEADING", _Io.measuredPositions[NORTH_EAST_IDX].angle.getDegrees());
-        SmartDashboard.putNumber("SW_DESIRED_HEADING", _Io.measuredPositions[SOUTH_WEST_IDX].angle.getDegrees());
-        SmartDashboard.putNumber("SE_DESIRED_HEADING", _Io.measuredPositions[SOUTH_EAST_IDX].angle.getDegrees());
-        SmartDashboard.putNumber("NW_ACTAUL_HEADING", _modules[NORTH_WEST_IDX].getSwervePosition().angle.getDegrees());
-        SmartDashboard.putNumber("NE_ACTAUL_HEADING", _modules[NORTH_EAST_IDX].getSwervePosition().angle.getDegrees());
-        SmartDashboard.putNumber("SW_ACTAUL_HEADING", _modules[SOUTH_WEST_IDX].getSwervePosition().angle.getDegrees());
-        SmartDashboard.putNumber("SE_ACTAUL_HEADING", _modules[SOUTH_EAST_IDX].getSwervePosition().angle.getDegrees());
-        SmartDashboard.putNumber("NW_ACTAUL_VELOCITY", _modules[NORTH_WEST_IDX].getDriveVelocity());
-        SmartDashboard.putNumber("NE_ACTAUL_VELOCITY", _modules[NORTH_EAST_IDX].getDriveVelocity());
-        SmartDashboard.putNumber("SW_ACTAUL_VELOCITY", _modules[SOUTH_WEST_IDX].getDriveVelocity());
-        SmartDashboard.putNumber("SE_ACTAUL_VELOCITY", _modules[SOUTH_EAST_IDX].getDriveVelocity());
+        // SmartDashboard.putNumber("NW_DESIRED_HEADING", _Io.measuredPositions[NORTH_WEST_IDX].angle.getDegrees());
+        // SmartDashboard.putNumber("NE_DESIRED_HEADING", _Io.measuredPositions[NORTH_EAST_IDX].angle.getDegrees());
+        // SmartDashboard.putNumber("SW_DESIRED_HEADING", _Io.measuredPositions[SOUTH_WEST_IDX].angle.getDegrees());
+        // SmartDashboard.putNumber("SE_DESIRED_HEADING", _Io.measuredPositions[SOUTH_EAST_IDX].angle.getDegrees());
+        // SmartDashboard.putNumber("NW_ACTAUL_HEADING", _modules[NORTH_WEST_IDX].getSwervePosition().angle.getDegrees());
+        // SmartDashboard.putNumber("NE_ACTAUL_HEADING", _modules[NORTH_EAST_IDX].getSwervePosition().angle.getDegrees());
+        // SmartDashboard.putNumber("SW_ACTAUL_HEADING", _modules[SOUTH_WEST_IDX].getSwervePosition().angle.getDegrees());
+        // SmartDashboard.putNumber("SE_ACTAUL_HEADING", _modules[SOUTH_EAST_IDX].getSwervePosition().angle.getDegrees());
+        // SmartDashboard.putNumber("NW_ACTAUL_VELOCITY", _modules[NORTH_WEST_IDX].getDriveVelocity());
+        // SmartDashboard.putNumber("NE_ACTAUL_VELOCITY", _modules[NORTH_EAST_IDX].getDriveVelocity());
+        // SmartDashboard.putNumber("SW_ACTAUL_VELOCITY", _modules[SOUTH_WEST_IDX].getDriveVelocity());
+        // SmartDashboard.putNumber("SE_ACTAUL_VELOCITY", _modules[SOUTH_EAST_IDX].getDriveVelocity());
     }
 
     public void ZeroIMU() {
