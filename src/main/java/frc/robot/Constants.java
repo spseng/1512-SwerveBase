@@ -30,9 +30,9 @@ public class Constants {
         public static final double BUMP_DEGREES = 7.0;
 
         // Driver Settings
-        public static final double DRIVE_SPEED = 1.9;
+        public static final double DRIVE_SPEED = 4.8;
         public static final double MAX_ANG_VEL = 5.0;
-        public static final double MAX_DRIVE_SPEED_MPS = 4.0;
+        public static final double MAX_DRIVE_SPEED_MPS = 6;
         public static final double TURN_SPEED = 0.24; // Radians per update
         public static final double TRANSLATION_DEADBAND = 0.05;
         public static final double ROTATION_DEADBAND = 0.05;
@@ -45,7 +45,7 @@ public class Constants {
 
         // Swerve Module Constants
         public static final double MIN_TURNING_SPEED = 0.05; // Radians per second
-        public static final double MAX_TURING_SPEED = 0.8; // Radians per second
+        public static final double MAX_TURING_SPEED = 3.5; // Radians per second
 
         public static final boolean IS_INVERTED = true;
 
@@ -82,7 +82,7 @@ public class Constants {
         // Steering PID
         public static final double DRIVE_KP = 0.2;
         public static final double DRIVE_KI = 0.0;
-        public static final double DRIVE_KD = 0.05;
+        public static final double DRIVE_KD = 0.07;
         public static final double DRIVE_FF = 0.0 / FREE_SPEED_RPS;
         // Turning PID
         public static final double STEER_KP = 1.8;
