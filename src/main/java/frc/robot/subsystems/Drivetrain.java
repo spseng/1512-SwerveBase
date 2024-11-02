@@ -9,6 +9,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.SPI;
@@ -40,6 +42,8 @@ public class Drivetrain extends SubsystemBase {
 
     private SystemIO _Io;
 
+    StructArrayPublisher<SwerveModuleState> publisher = NetworkTableInstance.getDefault().getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
+
     public Drivetrain() {
         _Io = new SystemIO();
         _gyro = new AHRS(SPI.Port.kMXP); // I think that this is right
@@ -48,6 +52,8 @@ public class Drivetrain extends SubsystemBase {
         readIMU(); // method to update gyro
 
         _modules = new SwerveModule[4];
+
+        StructArrayPublisher<SwerveModuleState> publisher = NetworkTableInstance.getDefault().getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
 
         _modules[NORTH_WEST_IDX] = new SwerveModule(RobotMap.CAN.FL_STEER_CAN, RobotMap.CAN.FL_DRIVE_CAN, Constants.Drivetrain.NORTH_WEST_CONFIG); // TODO CHANGUS
         _modules[NORTH_EAST_IDX] = new SwerveModule(RobotMap.CAN.FR_STEER_CAN, RobotMap.CAN.FR_DRIVE_CAN, Constants.Drivetrain.NORTH_EAST_CONFIG); // TODO CHANGUS
@@ -90,8 +96,6 @@ public class Drivetrain extends SubsystemBase {
         updateShuffleBoard(); // log
         updateDesiredStates(); //
         setModuleStates(_Io.setpoint.moduleStates); // sets modules new desired states
-
-
     }
 
     public SwerveSetpoint getSetpoint() {
@@ -124,6 +128,7 @@ public class Drivetrain extends SubsystemBase {
         for (int module = 0; module < _modules.length; module++) {
             _modules[module].setModuleState(states[module]);
         }
+        this.publisher.set(states);
     }
 
     public void setVelocity(ChassisSpeeds chassisSpeeds) { // this method is main way of interfaceing
