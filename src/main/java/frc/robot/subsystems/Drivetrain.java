@@ -42,7 +42,8 @@ public class Drivetrain extends SubsystemBase {
 
     private SystemIO _Io;
 
-    StructArrayPublisher<SwerveModuleState> publisher = NetworkTableInstance.getDefault().getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
+    StructArrayPublisher<SwerveModuleState> desiredSwerveStatePublisher = NetworkTableInstance.getDefault().getStructArrayTopic("DesiredSwerveStates", SwerveModuleState.struct).publish();
+    StructArrayPublisher<SwerveModuleState> measuredSwerveStatePublisher = NetworkTableInstance.getDefault().getStructArrayTopic("MeasuredSwerveStates", SwerveModuleState.struct).publish();
 
     public Drivetrain() {
         _Io = new SystemIO();
@@ -53,7 +54,8 @@ public class Drivetrain extends SubsystemBase {
 
         _modules = new SwerveModule[4];
 
-        StructArrayPublisher<SwerveModuleState> publisher = NetworkTableInstance.getDefault().getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
+        StructArrayPublisher<SwerveModuleState> desiredSwerveStatePublisher = NetworkTableInstance.getDefault().getStructArrayTopic("DesiredSwerveStates", SwerveModuleState.struct).publish();
+        StructArrayPublisher<SwerveModuleState> measuredSwerveStatePublisher = NetworkTableInstance.getDefault().getStructArrayTopic("MeasuredSwerveStates", SwerveModuleState.struct).publish();
 
         _modules[NORTH_WEST_IDX] = new SwerveModule(RobotMap.CAN.FL_STEER_CAN, RobotMap.CAN.FL_DRIVE_CAN, Constants.Drivetrain.NORTH_WEST_CONFIG); // TODO CHANGUS
         _modules[NORTH_EAST_IDX] = new SwerveModule(RobotMap.CAN.FR_STEER_CAN, RobotMap.CAN.FR_DRIVE_CAN, Constants.Drivetrain.NORTH_EAST_CONFIG); // TODO CHANGUS
@@ -128,7 +130,7 @@ public class Drivetrain extends SubsystemBase {
         for (int module = 0; module < _modules.length; module++) {
             _modules[module].setModuleState(states[module]);
         }
-        this.publisher.set(states);
+        this.desiredSwerveStatePublisher.set(states);
     }
 
     public void setVelocity(ChassisSpeeds chassisSpeeds) { // this method is main way of interfaceing
@@ -195,6 +197,7 @@ public class Drivetrain extends SubsystemBase {
             SmartDashboard.putNumber("Module " + module + " State Velocity", _Io.measuredStates[module].speedMetersPerSecond);
             SmartDashboard.putNumber("Module " + module + " State Angle", _Io.measuredStates[module].angle.getDegrees());
         }
+        this.measuredSwerveStatePublisher.set(_Io.measuredStates);
     }
 
     public double getModuleAngle(int module) {
