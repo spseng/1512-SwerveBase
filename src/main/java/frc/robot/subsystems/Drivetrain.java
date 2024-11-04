@@ -191,11 +191,19 @@ public class Drivetrain extends SubsystemBase {
         for (int module = 0; module < _modules.length; module++) {
             _Io.measuredPositions[module] = _modules[module].getSwervePosition();
             _Io.measuredStates[module] = _modules[module].getSwerveModuleState();
+
+            // Multiply the angle by -1 for the SwerveModuleState
+            double adjustedAngleRadians = -(_Io.measuredStates[module].angle.getRadians() + (Math.PI / 2));
+            _Io.measuredStates[module].angle = new Rotation2d(adjustedAngleRadians);
             // Log encoder values for debugging
             SmartDashboard.putNumber("Module " + module + " Position", _Io.measuredPositions[module].distanceMeters);
             SmartDashboard.putNumber("Module " + module + " Angle", _Io.measuredPositions[module].angle.getDegrees());
             SmartDashboard.putNumber("Module " + module + " State Velocity", _Io.measuredStates[module].speedMetersPerSecond);
             SmartDashboard.putNumber("Module " + module + " State Angle", _Io.measuredStates[module].angle.getDegrees());
+        }
+        SwerveModuleState[] sendModuleStates = new SwerveModuleState[4];
+        for(int i = 0;i < 4;i++){
+            sendModuleStates[i] = _modules[i].getSwerveModuleState();
         }
         this.measuredSwerveStatePublisher.set(_Io.measuredStates);
     }
@@ -209,6 +217,7 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("Vy", _Io.desiredChassisSpeeds.vyMetersPerSecond);
         SmartDashboard.putNumber("desired rotation", _Io.desiredChassisSpeeds.omegaRadiansPerSecond);
         SmartDashboard.putNumber("heading degrees", getHeading().getDegrees());
+        SmartDashboard.putNumber("heading radians", getHeading().getRadians());
         SmartDashboard.putNumber("NW_DESIRED_HEADING", _Io.measuredPositions[NORTH_WEST_IDX].angle.getDegrees());
         SmartDashboard.putNumber("NE_DESIRED_HEADING", _Io.measuredPositions[NORTH_EAST_IDX].angle.getDegrees());
         SmartDashboard.putNumber("SW_DESIRED_HEADING", _Io.measuredPositions[SOUTH_WEST_IDX].angle.getDegrees());
