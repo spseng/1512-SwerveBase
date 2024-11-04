@@ -1,0 +1,151 @@
+package frc.robot.subsystems;
+
+import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+// import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.networktables.DoublePublisher;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import frc.robot.Constants;
+
+
+public final class SwerveMotor {
+
+    // Instance Variables
+    private final PIDController pidController = new PIDController(Constants.Drivetrain.STEER_KP, Constants.Drivetrain.STEER_KI, Constants.Drivetrain.STEER_KD);
+    private final double offset;
+    private double dynamicOffset = 0;
+    private final CANSparkMax steerMotor;
+    private final CANSparkMax driveMotor;
+    private final AbsoluteEncoder steerAbsoluteEncoder;
+
+    private double prevAngle = 0;
+    private double directionFactor = 1;
+
+    private double latestDriveSpeed = 0;
+    // private boolean directionInverted = false;
+
+    private final DoublePublisher steeringReal;
+    private final DoublePublisher steeringGoal;
+
+
+    public SwerveMotor(int steerPort, int drivePort, double offset) {
+        this.offset = offset;
+        this.steerMotor = new CANSparkMax(steerPort, com.revrobotics.CANSparkLowLevel.MotorType.kBrushless);
+        this.driveMotor = new CANSparkMax(drivePort, com.revrobotics.CANSparkLowLevel.MotorType.kBrushless);
+
+        this.steerAbsoluteEncoder = this.steerMotor.getAbsoluteEncoder(com.revrobotics.SparkAbsoluteEncoder.Type.kDutyCycle);
+    
+        this.steeringReal = NetworkTableInstance.getDefault().getDoubleTopic("/steeringReal" + steerPort).publish();
+        this.steeringGoal = NetworkTableInstance.getDefault().getDoubleTopic("/steeringGoal" + steerPort).publish();
+    }
+
+    public void calibrate() {
+        this.steerMotor.getEncoder().setPosition(0);
+        this.driveMotor.getEncoder().setPosition(0);
+        // latestDriveSpeed = 0;
+        // prevAngle = 0;
+
+        this.dynamicOffset = getAbsoluteSteeringPosition();
+    }
+
+    public void zeroPosition() {
+        steerMotor.set(pidController.calculate(getSteeringPosition(), this.getOffset()));
+    }
+
+    public void stopSteering() {
+        steerMotor.set(0);
+    }
+
+    public void steer(double goalRotation){
+        double goalAngle = prevAngle + closestAngle(prevAngle, goalRotation + this.getOffset());
+        steerMotor.set(pidController.calculate(prevAngle, goalAngle));
+
+        steeringGoal.set(goalAngle);
+        steeringReal.set(prevAngle);
+
+        prevAngle = getSteeringPosition();
+    }
+
+    public void drive(double speed) {
+        // driveMotor.setInverted(inverted);
+        driveMotor.set(speed * directionFactor);
+
+        latestDriveSpeed = speed * directionFactor;
+    }
+    public void setModuleState(SwerveModuleState state){
+        drive(state.speedMetersPerSecond * Constants.Drivetrain.DRIVE_SPEED);
+        steer(state.angle.getRadians() / (2 * Math.PI) * Constants.Drivetrain.FULL_ROTATION);
+    }
+
+    
+    // Helper functions
+
+    // This function is used to calculate the angle the wheel should be set to
+    // based on the previous angle to determine which direction to turn
+
+    // If the wheel is turning more than 90 degrees, then the wheel should spin in the opposite direction
+    // and the drive wheel should spin in the opposite direction
+
+    // https://compendium.readthedocs.io/en/latest/tasks/drivetrains/swerve.html
+    private double closestAngle(double previous, double goal)
+    {
+        // get direction
+        double dir = nearestRotation(goal) - nearestRotation(previous);
+        
+        // If rotation is greater than 180 degrees, then rotate swerve in the other way
+        if (Math.abs(dir) >   Constants.Drivetrain.FULL_ROTATION/2)
+        {
+            dir = -(Math.signum(dir) * Constants.Drivetrain.FULL_ROTATION) + dir;
+        }
+
+        // If rotation is greater than 90 degrees, then spin drive wheel in opposite direction
+        // if (Math.abs(dir) > FULL_ROTATION/4)
+        // {
+        //     dir = Math.signum(dir) * (FULL_ROTATION/2 - Math.abs(dir));
+        //     if (!directionInverted) {
+        //         directionInverted = true;
+        //         directionFactor *= -1;
+        //     }
+        // }else {
+        //     directionInverted = false;
+        // }
+
+        return dir;
+    }
+
+    // For some reason the built-in modulo function didn't work...
+    private static double nearestRotation(double angle)
+    {
+        return angle - Constants.Drivetrain.FULL_ROTATION * Math.floor(angle / Constants.Drivetrain.FULL_ROTATION);
+    }
+
+
+    // Getters and Setters
+    public double getOffset() {
+        return nearestRotation(offset + dynamicOffset);
+    }
+    public double getSteeringPosition() {
+        return steerMotor.getEncoder().getPosition() / Constants.Drivetrain.RELATIVE_ENCODER_CONVERSION * Constants.Drivetrain.FULL_ROTATION;
+    }
+    public double getAbsoluteSteeringPosition() {
+        return steerAbsoluteEncoder.getPosition() / Constants.Drivetrain.ABS_ENCODER_CONVERSION * Constants.Drivetrain.FULL_ROTATION;
+    }
+
+     public SwerveModulePosition getSwervePosition(){
+         return new SwerveModulePosition(
+            driveMotor.getEncoder().getPosition(), new Rotation2d((getSteeringPosition() + getOffset())/Constants.Drivetrain.FULL_ROTATION * Math.PI * 2));
+     }
+
+    public SwerveModuleState getSwerveModuleState(){
+        return new SwerveModuleState(latestDriveSpeed, new Rotation2d((prevAngle - getOffset())/Constants.Drivetrain.FULL_ROTATION * Math.PI * 2));
+    }
+}

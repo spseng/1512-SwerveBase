@@ -29,4 +29,3 @@ public class SetAmpAngle extends Command{
     }
     
 }
-

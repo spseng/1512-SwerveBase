@@ -21,4 +21,3 @@ public class IdleIntake extends Command {
     }
     
 }
-

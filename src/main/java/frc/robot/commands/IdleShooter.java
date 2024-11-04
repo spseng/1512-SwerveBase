@@ -20,4 +20,3 @@ public class IdleShooter extends Command {
     }
     
 }
-

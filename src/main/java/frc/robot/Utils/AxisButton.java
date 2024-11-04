@@ -4,9 +4,7 @@ package frc.robot.Utils;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/**
- * Created by Ben Bernard on 3/2/2017.
- */
+/** Created by Ben Bernard on 3/2/2017. */
 public class AxisButton {
     private final GenericHID m_joystick;
     private final int m_axisNumber;
