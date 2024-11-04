@@ -6,9 +6,15 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Utils.AxisButton;
 import frc.robot.Utils.Gamepad;
 import frc.robot.Utils.Helpers;
+import frc.robot.commands.SimpleIntake;
 import frc.robot.commands.Drive.ResetIMU;
 import frc.robot.commands.Drive.Snap;
+import frc.robot.commands.TopLevel.ShootWoofer;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
 
 public class OI {
@@ -48,16 +54,18 @@ public class OI {
         _driverRightTrigger = new Trigger(_driverRightTriggerButton::get);
     }
 
-public void initializeButtons(
-    Drivetrain drivetrain,
-    Shooter shooter,
-    Indexer indexer,
-    Intake intake,
-    Arm arm
-){
+    public void initializeButtons(
+        Drivetrain drivetrain,
+        Shooter shooter,
+        Indexer indexer,
+        Intake intake,
+        Arm arm
+    ){
 
     _driverLeftTrigger.whileTrue(new SimpleIntake(intake, indexer));
     _driverRightTrigger.whileTrue(new ShootWoofer(arm, shooter, indexer));
+
+    }
     //this is where we map commands
     public void initializeButtons(Drivetrain drivetrain) {
 

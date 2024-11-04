@@ -205,6 +205,8 @@ public class Constants {
 
         public static final double SHOOT_SUB_ANGLE = 0.00; //TODO change this
         public static final double MANUAL_ARM_MOVE_SPEED = .45;
+
+        public static final double ARM_CLIMB_ANGLE = 0.0; //I do not know what it is supposed to be since it dissappeard in merging process. we need to figure out....
     }
 
 
