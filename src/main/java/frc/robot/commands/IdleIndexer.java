@@ -20,3 +20,4 @@ public class IdleIndexer extends Command {
     }
     
 }
+
