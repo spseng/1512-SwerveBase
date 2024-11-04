@@ -35,12 +35,12 @@ public class Drivetrain extends SubsystemBase {
     private final KinematicLimits _limits;
     private final SwerveDriveKinematics _kinematics; // physical layout of chassis
     private final AHRS _gyro; // navX might want to swit ch to pigeon 2
-    private SwerveModule[] _modules;
+    private final SwerveModule[] _modules;
     private double _yawoffset;
 
-    private SwerveHeadingController _heading;
+    private final SwerveHeadingController _heading;
 
-    private SystemIO _Io;
+    private final SystemIO _Io;
 
     StructArrayPublisher<SwerveModuleState> desiredSwerveStatePublisher = NetworkTableInstance.getDefault().getStructArrayTopic("DesiredSwerveStates", SwerveModuleState.struct).publish();
     StructArrayPublisher<SwerveModuleState> measuredSwerveStatePublisher = NetworkTableInstance.getDefault().getStructArrayTopic("MeasuredSwerveStates", SwerveModuleState.struct).publish();
@@ -207,7 +207,7 @@ public class Drivetrain extends SubsystemBase {
     public void updateShuffleBoard() {
         SmartDashboard.putNumber("Vx", _Io.desiredChassisSpeeds.vxMetersPerSecond);
         SmartDashboard.putNumber("Vy", _Io.desiredChassisSpeeds.vyMetersPerSecond);
-        SmartDashboard.putNumber("rotation", _Io.desiredChassisSpeeds.omegaRadiansPerSecond);
+        SmartDashboard.putNumber("desired rotation", _Io.desiredChassisSpeeds.omegaRadiansPerSecond);
         SmartDashboard.putNumber("heading degrees", getHeading().getDegrees());
         SmartDashboard.putNumber("NW_DESIRED_HEADING", _Io.measuredPositions[NORTH_WEST_IDX].angle.getDegrees());
         SmartDashboard.putNumber("NE_DESIRED_HEADING", _Io.measuredPositions[NORTH_EAST_IDX].angle.getDegrees());
@@ -236,10 +236,7 @@ public class Drivetrain extends SubsystemBase {
 
     public boolean isRedAlliance() {
         Optional<Alliance> alliance = DriverStation.getAlliance();
-        if (alliance.isPresent()) {
-            return alliance.get() == Alliance.Red;
-        }
-        return false;
+        return alliance.filter(value -> value == Alliance.Red).isPresent();
     }
 
     public static class SystemIO { // this is a wrapper for all inputs and output to drive
