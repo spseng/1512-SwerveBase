@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.Odometry;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -53,6 +54,8 @@ public class Drivetrain extends SubsystemBase {
 
     private final SwerveDriveOdometry _odometry;
 
+    private Pose2d _current_pose;
+
     public Drivetrain() {
         _Io = new SystemIO();
         _gyro = new AHRS(SPI.Port.kMXP); // I think that this is right
@@ -82,6 +85,8 @@ public class Drivetrain extends SubsystemBase {
             _modules[SOUTH_WEST_IDX].getSwervePosition(),
             _modules[SOUTH_EAST_IDX].getSwervePosition()
         }, new Pose2d());
+
+        _current_pose = _odometry.getPoseMeters();
 
         _setpointGenerator = new SwerveSetpointGenerator(
                 _kinematics,
@@ -278,5 +283,12 @@ public class Drivetrain extends SubsystemBase {
         SwerveSetpoint setpoint = new SwerveSetpoint(new ChassisSpeeds(), new SwerveModuleState[4]); // cheesy stuff
     }
 
-
+    public void updateSwerveOdometry() {
+        _current_pose = _odometry.update(getHeading(), new SwerveModulePosition[] {
+            _modules[NORTH_WEST_IDX].getSwervePosition(),
+            _modules[NORTH_EAST_IDX].getSwervePosition(),
+            _modules[SOUTH_WEST_IDX].getSwervePosition(),
+            _modules[SOUTH_EAST_IDX].getSwervePosition()
+        });
+    }
 }
