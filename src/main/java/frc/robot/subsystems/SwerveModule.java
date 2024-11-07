@@ -5,14 +5,10 @@ import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
-
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -34,13 +30,6 @@ public class SwerveModule extends SubsystemBase {
     private final Translation2d _moduleLoaction;
     private SwerveModuleState _desiredModuleState = new SwerveModuleState(0.0, new Rotation2d());
     private double _chassisAngularOffset;
-
-    private final Translation2d _northWestLocation;
-    private final Translation2d _northEastLocation;
-    private final Translation2d _southWestLocation;
-    private final Translation2d _southEastLocation;
-
-    private final SwerveDriveKinematics _kinematics;
 
     public SwerveModule(int steerPort, int drivePort, ModuleConfiguration config) {
         //_chassisAngularOffset = config.encoderOffset;
@@ -94,15 +83,6 @@ public class SwerveModule extends SubsystemBase {
 
         _desiredModuleState.angle = new Rotation2d(_steerAbsoluteEncoder.getPosition());
         _driveEncoder.setPosition(0);
-
-        _northWestLocation = new Translation2d(Constants.Drivetrain.WHEELBASE / 2, Constants.Drivetrain.TRACKWIDTH / 2);
-        _northEastLocation = new Translation2d(Constants.Drivetrain.WHEELBASE / 2, -Constants.Drivetrain.TRACKWIDTH / 2);
-        _southWestLocation = new Translation2d(-Constants.Drivetrain.WHEELBASE / 2, Constants.Drivetrain.TRACKWIDTH / 2);
-        _southEastLocation = new Translation2d(-Constants.Drivetrain.WHEELBASE, -Constants.Drivetrain.TRACKWIDTH / 2);
-
-        _kinematics = new SwerveDriveKinematics(
-            _northWestLocation, _northEastLocation, _southWestLocation, _southEastLocation
-        );
     }
 
 

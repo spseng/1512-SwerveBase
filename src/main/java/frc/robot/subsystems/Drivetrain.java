@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -45,6 +46,13 @@ public class Drivetrain extends SubsystemBase {
     StructArrayPublisher<SwerveModuleState> desiredSwerveStatePublisher = NetworkTableInstance.getDefault().getStructArrayTopic("DesiredSwerveStates", SwerveModuleState.struct).publish();
     StructArrayPublisher<SwerveModuleState> measuredSwerveStatePublisher = NetworkTableInstance.getDefault().getStructArrayTopic("MeasuredSwerveStates", SwerveModuleState.struct).publish();
 
+    private final Translation2d _northWestLocation;
+    private final Translation2d _northEastLocation;
+    private final Translation2d _southWestLocation;
+    private final Translation2d _southEastLocation;
+
+    private final SwerveDriveOdometry _odometry;
+
     public Drivetrain() {
         _Io = new SystemIO();
         _gyro = new AHRS(SPI.Port.kMXP); // I think that this is right
@@ -59,12 +67,22 @@ public class Drivetrain extends SubsystemBase {
         _modules[SOUTH_WEST_IDX] = new SwerveModule(RobotMap.CAN.BL_STEER_CAN, RobotMap.CAN.BL_DRIVE_CAN, Constants.Drivetrain.SOUTH_WEST_CONFIG); // TODO CHANGUS
         _modules[SOUTH_EAST_IDX] = new SwerveModule(RobotMap.CAN.BR_STEER_CAN, RobotMap.CAN.BR_DRIVE_CAN, Constants.Drivetrain.SOUTH_EAST_CONFIG); // TODO CHANGUS
 
-        _kinematics = new SwerveDriveKinematics( //location in where it is on chassis
-                _modules[NORTH_EAST_IDX].getSwerveModuleLocation(),
-                _modules[NORTH_WEST_IDX].getSwerveModuleLocation(),
-                _modules[SOUTH_EAST_IDX].getSwerveModuleLocation(),
-                _modules[SOUTH_WEST_IDX].getSwerveModuleLocation()
+        _northWestLocation = new Translation2d(Constants.Drivetrain.WHEELBASE / 2, Constants.Drivetrain.TRACKWIDTH / 2);
+        _northEastLocation = new Translation2d(Constants.Drivetrain.WHEELBASE / 2, -Constants.Drivetrain.TRACKWIDTH / 2);
+        _southWestLocation = new Translation2d(-Constants.Drivetrain.WHEELBASE / 2, Constants.Drivetrain.TRACKWIDTH / 2);
+        _southEastLocation = new Translation2d(-Constants.Drivetrain.WHEELBASE, -Constants.Drivetrain.TRACKWIDTH / 2);
+
+        _kinematics = new SwerveDriveKinematics(
+            _northWestLocation, _northEastLocation, _southWestLocation, _southEastLocation
         );
+
+        _odometry = new SwerveDriveOdometry(_kinematics, getHeading(), new SwerveModulePosition[] {
+            _modules[NORTH_WEST_IDX].getSwervePosition(),
+            _modules[NORTH_EAST_IDX].getSwervePosition(),
+            _modules[SOUTH_WEST_IDX].getSwervePosition(),
+            _modules[SOUTH_EAST_IDX].getSwervePosition()
+        }, new Pose2d());
+
         _setpointGenerator = new SwerveSetpointGenerator(
                 _kinematics,
                 new Translation2d[]{
