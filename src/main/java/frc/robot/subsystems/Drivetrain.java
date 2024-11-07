@@ -46,6 +46,7 @@ public class Drivetrain extends SubsystemBase {
 
     StructArrayPublisher<SwerveModuleState> desiredSwerveStatePublisher = NetworkTableInstance.getDefault().getStructArrayTopic("DesiredSwerveStates", SwerveModuleState.struct).publish();
     StructArrayPublisher<SwerveModuleState> measuredSwerveStatePublisher = NetworkTableInstance.getDefault().getStructArrayTopic("MeasuredSwerveStates", SwerveModuleState.struct).publish();
+    StructArrayPublisher<Pose2d> currentPosePublisher = NetworkTableInstance.getDefault().getStructArrayTopic("CurrentPose", Pose2d.struct).publish();
 
     private final Translation2d _northWestLocation;
     private final Translation2d _northEastLocation;
@@ -118,6 +119,7 @@ public class Drivetrain extends SubsystemBase {
         updateShuffleBoard(); // log
         updateDesiredStates(); //
         setModuleStates(_Io.setpoint.moduleStates); // sets modules new desired states
+        updateSwerveOdometry();
     }
 
     public SwerveSetpoint getSetpoint() {
@@ -290,5 +292,6 @@ public class Drivetrain extends SubsystemBase {
             _modules[SOUTH_WEST_IDX].getSwervePosition(),
             _modules[SOUTH_EAST_IDX].getSwervePosition()
         });
+        currentPosePublisher.set(new Pose2d[]{_current_pose});
     }
 }
