@@ -76,9 +76,11 @@ public class Drivetrain extends SubsystemBase {
         _southWestLocation = new Translation2d(-Constants.Drivetrain.WHEELBASE / 2, Constants.Drivetrain.TRACKWIDTH / 2);
         _southEastLocation = new Translation2d(-Constants.Drivetrain.WHEELBASE, -Constants.Drivetrain.TRACKWIDTH / 2);
 
-        _kinematics = new SwerveDriveKinematics(
-            _northWestLocation, _northEastLocation, _southWestLocation, _southEastLocation
-        );
+        _kinematics = new SwerveDriveKinematics( //location in where it is on chassis
+                _modules[NORTH_EAST_IDX].getSwerveModuleLocation(),
+                _modules[NORTH_WEST_IDX].getSwerveModuleLocation(),
+                _modules[SOUTH_EAST_IDX].getSwerveModuleLocation(),
+                _modules[SOUTH_WEST_IDX].getSwerveModuleLocation());
 
         _odometry = new SwerveDriveOdometry(_kinematics, getHeading(), new SwerveModulePosition[] {
             _modules[NORTH_WEST_IDX].getSwervePosition(),
