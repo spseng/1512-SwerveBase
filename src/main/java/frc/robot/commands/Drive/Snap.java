@@ -25,7 +25,7 @@ public class Snap extends Command  {
    
     @Override
     public void execute() {
-       _drivetrain.setHeadinRotation2D(new Rotation2d(_oi.getSnapHeading()));
+       _drivetrain.setHeadingRotation2D(new Rotation2d(_oi.getSnapHeading()));
     }
 
     

@@ -99,7 +99,7 @@ public class Drivetrain extends SubsystemBase {
                         _modules[SOUTH_EAST_IDX].getSwerveModuleLocation(),
                         _modules[SOUTH_WEST_IDX].getSwerveModuleLocation()
 
-                }); // chessy stuff
+                }); // cheesy stuff
         _heading = new SwerveHeadingController(0.2);     // not sure if we want to use this
         _limits = Constants.Drivetrain.DRIVE_KINEMATIC_LIMITS;
         ZeroIMU(); // resets heading
@@ -207,7 +207,7 @@ public class Drivetrain extends SubsystemBase {
         _heading.goToHeading(getHeading());
     }
 
-    public void setHeadinRotation2D(Rotation2d heading) {
+    public void setHeadingRotation2D(Rotation2d heading) {
         _heading.goToHeading(heading);
     }
 
