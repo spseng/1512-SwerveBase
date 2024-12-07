@@ -6,7 +6,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.Odometry;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -48,10 +47,6 @@ public class Drivetrain extends SubsystemBase {
     StructArrayPublisher<SwerveModuleState> measuredSwerveStatePublisher = NetworkTableInstance.getDefault().getStructArrayTopic("MeasuredSwerveStates", SwerveModuleState.struct).publish();
     StructArrayPublisher<Pose2d> currentPosePublisher = NetworkTableInstance.getDefault().getStructArrayTopic("CurrentPose", Pose2d.struct).publish();
 
-    private final Translation2d _northWestLocation;
-    private final Translation2d _northEastLocation;
-    private final Translation2d _southWestLocation;
-    private final Translation2d _southEastLocation;
 
     private final SwerveDriveOdometry _odometry;
 
@@ -71,16 +66,12 @@ public class Drivetrain extends SubsystemBase {
         _modules[SOUTH_WEST_IDX] = new SwerveModule(RobotMap.CAN.BL_STEER_CAN, RobotMap.CAN.BL_DRIVE_CAN, Constants.Drivetrain.SOUTH_WEST_CONFIG); // TODO CHANGUS
         _modules[SOUTH_EAST_IDX] = new SwerveModule(RobotMap.CAN.BR_STEER_CAN, RobotMap.CAN.BR_DRIVE_CAN, Constants.Drivetrain.SOUTH_EAST_CONFIG); // TODO CHANGUS
 
-        _northWestLocation = new Translation2d(Constants.Drivetrain.WHEELBASE / 2, Constants.Drivetrain.TRACKWIDTH / 2);
-        _northEastLocation = new Translation2d(Constants.Drivetrain.WHEELBASE / 2, -Constants.Drivetrain.TRACKWIDTH / 2);
-        _southWestLocation = new Translation2d(-Constants.Drivetrain.WHEELBASE / 2, Constants.Drivetrain.TRACKWIDTH / 2);
-        _southEastLocation = new Translation2d(-Constants.Drivetrain.WHEELBASE, -Constants.Drivetrain.TRACKWIDTH / 2);
 
         _kinematics = new SwerveDriveKinematics( //location in where it is on chassis
-                _modules[NORTH_EAST_IDX].getSwerveModuleLocation(),
                 _modules[NORTH_WEST_IDX].getSwerveModuleLocation(),
-                _modules[SOUTH_EAST_IDX].getSwerveModuleLocation(),
-                _modules[SOUTH_WEST_IDX].getSwerveModuleLocation());
+                _modules[NORTH_EAST_IDX].getSwerveModuleLocation(),
+                _modules[SOUTH_WEST_IDX].getSwerveModuleLocation(),
+                _modules[SOUTH_EAST_IDX].getSwerveModuleLocation());
 
         _odometry = new SwerveDriveOdometry(_kinematics, getHeading(), new SwerveModulePosition[] {
             _modules[NORTH_WEST_IDX].getSwervePosition(),
@@ -94,10 +85,10 @@ public class Drivetrain extends SubsystemBase {
         _setpointGenerator = new SwerveSetpointGenerator(
                 _kinematics,
                 new Translation2d[]{
-                        _modules[NORTH_EAST_IDX].getSwerveModuleLocation(),
                         _modules[NORTH_WEST_IDX].getSwerveModuleLocation(),
-                        _modules[SOUTH_EAST_IDX].getSwerveModuleLocation(),
-                        _modules[SOUTH_WEST_IDX].getSwerveModuleLocation()
+                        _modules[NORTH_EAST_IDX].getSwerveModuleLocation(),
+                        _modules[SOUTH_WEST_IDX].getSwerveModuleLocation(),
+                        _modules[SOUTH_EAST_IDX].getSwerveModuleLocation()
 
                 }); // cheesy stuff
         _heading = new SwerveHeadingController(0.2);     // not sure if we want to use this
