@@ -276,6 +276,11 @@ public class Drivetrain extends SubsystemBase {
         Rotation2d heading = new Rotation2d(0.0);
 
         SwerveSetpoint setpoint = new SwerveSetpoint(new ChassisSpeeds(), new SwerveModuleState[4]); // cheesy stuff
+        //Desired Chassis speeds
+        //heading
+        //setpoint
+        //positions
+        //states
     }
 
     public void updateSwerveOdometry() {
