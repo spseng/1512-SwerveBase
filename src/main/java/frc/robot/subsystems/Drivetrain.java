@@ -68,10 +68,10 @@ public class Drivetrain extends SubsystemBase {
 
 
         _kinematics = new SwerveDriveKinematics( //location in where it is on chassis
-                _modules[NORTH_WEST_IDX].getSwerveModuleLocation(),
                 _modules[NORTH_EAST_IDX].getSwerveModuleLocation(),
-                _modules[SOUTH_WEST_IDX].getSwerveModuleLocation(),
-                _modules[SOUTH_EAST_IDX].getSwerveModuleLocation());
+                _modules[NORTH_WEST_IDX].getSwerveModuleLocation(),
+                _modules[SOUTH_EAST_IDX].getSwerveModuleLocation(),
+                _modules[SOUTH_WEST_IDX].getSwerveModuleLocation());
 
         _odometry = new SwerveDriveOdometry(_kinematics, getHeading(), new SwerveModulePosition[] {
             _modules[NORTH_WEST_IDX].getSwervePosition(),
@@ -85,10 +85,10 @@ public class Drivetrain extends SubsystemBase {
         _setpointGenerator = new SwerveSetpointGenerator(
                 _kinematics,
                 new Translation2d[]{
-                        _modules[NORTH_WEST_IDX].getSwerveModuleLocation(),
                         _modules[NORTH_EAST_IDX].getSwerveModuleLocation(),
-                        _modules[SOUTH_WEST_IDX].getSwerveModuleLocation(),
-                        _modules[SOUTH_EAST_IDX].getSwerveModuleLocation()
+                        _modules[NORTH_WEST_IDX].getSwerveModuleLocation(),
+                        _modules[SOUTH_EAST_IDX].getSwerveModuleLocation(),
+                        _modules[SOUTH_WEST_IDX].getSwerveModuleLocation()
 
                 }); // cheesy stuff
         _heading = new SwerveHeadingController(0.2);     // not sure if we want to use this
