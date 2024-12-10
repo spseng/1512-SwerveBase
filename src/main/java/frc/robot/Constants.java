@@ -29,8 +29,7 @@ public class Constants {
 
         public static final double BUMP_DEGREES = 7.0;
 
-        // Driver Settings
-        public static final double SPEED_COE = 0.7;
+        public static final double SPEED_COE = 0.6;
         public static final double DRIVE_SPEED = 4.8 * SPEED_COE;
         public static final double MAX_ANG_VEL = 5.0;
         public static final double MAX_DRIVE_SPEED_MPS = 6 * SPEED_COE;
