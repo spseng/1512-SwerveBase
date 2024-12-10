@@ -1,10 +1,8 @@
 package frc.robot.subsystems;
-import javax.swing.text.StyleContext.SmallAttributeSet;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.ColorSensorV3.MainControl;
-import com.revrobotics.jni.CANSWDLJNI;
+
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;

@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -44,6 +45,12 @@ public class Drivetrain extends SubsystemBase {
 
     StructArrayPublisher<SwerveModuleState> desiredSwerveStatePublisher = NetworkTableInstance.getDefault().getStructArrayTopic("DesiredSwerveStates", SwerveModuleState.struct).publish();
     StructArrayPublisher<SwerveModuleState> measuredSwerveStatePublisher = NetworkTableInstance.getDefault().getStructArrayTopic("MeasuredSwerveStates", SwerveModuleState.struct).publish();
+    StructArrayPublisher<Pose2d> currentPosePublisher = NetworkTableInstance.getDefault().getStructArrayTopic("CurrentPose", Pose2d.struct).publish();
+
+
+    private final SwerveDriveOdometry _odometry;
+
+    private Pose2d _current_pose;
 
     public Drivetrain() {
         _Io = new SystemIO();
@@ -59,12 +66,22 @@ public class Drivetrain extends SubsystemBase {
         _modules[SOUTH_WEST_IDX] = new SwerveModule(RobotMap.CAN.BL_STEER_CAN, RobotMap.CAN.BL_DRIVE_CAN, Constants.Drivetrain.SOUTH_WEST_CONFIG); // TODO CHANGUS
         _modules[SOUTH_EAST_IDX] = new SwerveModule(RobotMap.CAN.BR_STEER_CAN, RobotMap.CAN.BR_DRIVE_CAN, Constants.Drivetrain.SOUTH_EAST_CONFIG); // TODO CHANGUS
 
+
         _kinematics = new SwerveDriveKinematics( //location in where it is on chassis
                 _modules[NORTH_EAST_IDX].getSwerveModuleLocation(),
                 _modules[NORTH_WEST_IDX].getSwerveModuleLocation(),
                 _modules[SOUTH_EAST_IDX].getSwerveModuleLocation(),
-                _modules[SOUTH_WEST_IDX].getSwerveModuleLocation()
-        );
+                _modules[SOUTH_WEST_IDX].getSwerveModuleLocation());
+
+        _odometry = new SwerveDriveOdometry(_kinematics, getHeading(), new SwerveModulePosition[] {
+            _modules[NORTH_WEST_IDX].getSwervePosition(),
+            _modules[NORTH_EAST_IDX].getSwervePosition(),
+            _modules[SOUTH_WEST_IDX].getSwervePosition(),
+            _modules[SOUTH_EAST_IDX].getSwervePosition()
+        }, new Pose2d());
+
+        _current_pose = _odometry.getPoseMeters();
+
         _setpointGenerator = new SwerveSetpointGenerator(
                 _kinematics,
                 new Translation2d[]{
@@ -73,7 +90,7 @@ public class Drivetrain extends SubsystemBase {
                         _modules[SOUTH_EAST_IDX].getSwerveModuleLocation(),
                         _modules[SOUTH_WEST_IDX].getSwerveModuleLocation()
 
-                }); // chessy stuff
+                }); // cheesy stuff
         _heading = new SwerveHeadingController(0.2);     // not sure if we want to use this
         _limits = Constants.Drivetrain.DRIVE_KINEMATIC_LIMITS;
         ZeroIMU(); // resets heading
@@ -95,6 +112,7 @@ public class Drivetrain extends SubsystemBase {
         updateShuffleBoard(); // log
         updateDesiredStates(); //
         setModuleStates(_Io.setpoint.moduleStates); // sets modules new desired states
+        updateSwerveOdometry();
     }
 
     public SwerveSetpoint getSetpoint() {
@@ -180,7 +198,7 @@ public class Drivetrain extends SubsystemBase {
         _heading.goToHeading(getHeading());
     }
 
-    public void setHeadinRotation2D(Rotation2d heading) {
+    public void setHeadingRotation2D(Rotation2d heading) {
         _heading.goToHeading(heading);
     }
 
@@ -258,7 +276,20 @@ public class Drivetrain extends SubsystemBase {
         Rotation2d heading = new Rotation2d(0.0);
 
         SwerveSetpoint setpoint = new SwerveSetpoint(new ChassisSpeeds(), new SwerveModuleState[4]); // cheesy stuff
+        //Desired Chassis speeds
+        //heading
+        //setpoint
+        //positions
+        //states
     }
 
-
+    public void updateSwerveOdometry() {
+        _current_pose = _odometry.update(getHeading(), new SwerveModulePosition[] {
+            _modules[NORTH_WEST_IDX].getSwervePosition(),
+            _modules[NORTH_EAST_IDX].getSwervePosition(),
+            _modules[SOUTH_WEST_IDX].getSwervePosition(),
+            _modules[SOUTH_EAST_IDX].getSwervePosition()
+        });
+        currentPosePublisher.set(new Pose2d[]{_current_pose});
+    }
 }

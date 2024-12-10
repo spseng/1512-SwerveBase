@@ -31,7 +31,6 @@ public class SwerveModule extends SubsystemBase {
     private SwerveModuleState _desiredModuleState = new SwerveModuleState(0.0, new Rotation2d());
     private double _chassisAngularOffset;
 
-
     public SwerveModule(int steerPort, int drivePort, ModuleConfiguration config) {
         //_chassisAngularOffset = config.encoderOffset;
         _steerMotor = new CANSparkMax(steerPort, com.revrobotics.CANSparkLowLevel.MotorType.kBrushless);
