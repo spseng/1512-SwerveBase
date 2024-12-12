@@ -142,9 +142,5 @@ public class SwerveModule extends SubsystemBase {
         public boolean encoderInverted = false;
 
         public String canBus = "CANivore";
-
-        public void setEncoderOffset(double offset) {
-            this.encoderOffset = offset;
-        }
     }
 }
