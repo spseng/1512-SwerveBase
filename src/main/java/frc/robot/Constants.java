@@ -19,11 +19,11 @@ public class Constants {
 
     public static class Drivetrain {
         // Steering Offsets
-        public static final double BR_STEER_OFFSET = 0.26;
-        public static final double FR_STEER_OFFSET = 1;
+        //public static final double BR_STEER_OFFSET = 0.26;
+        //public static final double FR_STEER_OFFSET = 1;
         public static final double ABS_ENCODER_CONVERSION = 360; // CAN SPARK Default
-        public static final double FL_STEER_OFFSET = 1.08;
-        public static final double BL_STEER_OFFSET = 1.25;
+        //public static final double FL_STEER_OFFSET = 1.08;
+        //public static final double BL_STEER_OFFSET = 1.25;
         public static final double RELATIVE_ENCODER_CONVERSION = 46.5; //93/2 I think default
         public static final double FULL_ROTATION = 1; // 2
 
@@ -64,10 +64,10 @@ public class Constants {
         public static final double SWERVE_NS_POS = WHEELBASE / 2;
         public static final double SWERVE_WE_POS = TRACKWIDTH / 2;
 
-        public static final ModuleConfiguration SOUTH_EAST_CONFIG = new ModuleConfiguration();
-        public static final ModuleConfiguration NORTH_EAST_CONFIG = new ModuleConfiguration();
-        public static final ModuleConfiguration NORTH_WEST_CONFIG = new ModuleConfiguration();
-        public static final ModuleConfiguration SOUTH_WEST_CONFIG = new ModuleConfiguration();
+        public static ModuleConfiguration SOUTH_EAST_CONFIG = new ModuleConfiguration();
+        public static ModuleConfiguration NORTH_EAST_CONFIG = new ModuleConfiguration();
+        public static ModuleConfiguration NORTH_WEST_CONFIG = new ModuleConfiguration();
+        public static ModuleConfiguration SOUTH_WEST_CONFIG = new ModuleConfiguration();
         public static final double DRIVING_REDUCTION = (45.0 * 22) / (PINION_TEETH * 15);
         public static final double DRIVE_POSITION_FACTOR = ((WHEEL_DIAMETER * Math.PI)
                 / DRIVING_REDUCTION); // meters
@@ -111,7 +111,7 @@ public class Constants {
             SOUTH_EAST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, -SWERVE_WE_POS); // -,-
 
             SOUTH_EAST_CONFIG.encoderInverted = false;
-            //SOUTH_EAST_CONFIG.encoderOffset = 0.0;
+            SOUTH_EAST_CONFIG.encoderOffset = Math.PI*(1.0/2.0);
         }
 
         static {
@@ -120,7 +120,7 @@ public class Constants {
             NORTH_EAST_CONFIG.position = new Translation2d(SWERVE_NS_POS, -SWERVE_WE_POS); // +,-
 
             NORTH_EAST_CONFIG.encoderInverted = false;
-            //NORTH_EAST_CONFIG.encoderOffset = 0.0;
+            NORTH_EAST_CONFIG.encoderOffset = Math.PI*(4.0/2.0);
 
         }
 
@@ -130,7 +130,7 @@ public class Constants {
             NORTH_WEST_CONFIG.position = new Translation2d(SWERVE_NS_POS, SWERVE_WE_POS); // +,+
 
             NORTH_WEST_CONFIG.encoderInverted = false;
-            //NORTH_WEST_CONFIG.encoderOffset = 0.0;
+            NORTH_WEST_CONFIG.encoderOffset = Math.PI*(3.0/2.0);
         }
 
         static {
@@ -139,7 +139,7 @@ public class Constants {
             SOUTH_WEST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, SWERVE_WE_POS); // -,+
 
             SOUTH_WEST_CONFIG.encoderInverted = false;
-            //SOUTH_WEST_CONFIG.encoderOffset = 0.0;
+            SOUTH_WEST_CONFIG.encoderOffset = Math.PI*(2.0/2.0);
         }
 
         static {
