@@ -57,7 +57,7 @@ public class Drive extends Command {
         SmartDashboard.putNumber("vx", vx);
         SmartDashboard.putNumber("vy", vy);
         SmartDashboard.putNumber("rot", rot);
-        SmartDashboard.putNumber("DESIRED_VELOCITY", Math.hypot(vx, vy)/2);
+        SmartDashboard.putNumber("DESIRED_VELOCITY", Math.hypot(vx, vy));
 
 
         Rotation2d rotation = _drivetrain.isRedAlliance() ? _drivetrain.getHeading().plus(new Rotation2d(Math.PI)) : _drivetrain.getHeading();

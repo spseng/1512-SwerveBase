@@ -18,18 +18,13 @@ public class Constants {
     public static final double UPDATE_PERIOD = 0.02;
 
     public static class Drivetrain {
-        // Steering Offsets
-        //public static final double BR_STEER_OFFSET = 0.26;
-        //public static final double FR_STEER_OFFSET = 1;
         public static final double ABS_ENCODER_CONVERSION = 360; // CAN SPARK Default
-        //public static final double FL_STEER_OFFSET = 1.08;
-        //public static final double BL_STEER_OFFSET = 1.25;
         public static final double RELATIVE_ENCODER_CONVERSION = 46.5; //93/2 I think default
         public static final double FULL_ROTATION = 1; // 2
 
         public static final double BUMP_DEGREES = 7.0;
 
-        public static final double SPEED_COE = 0.6;
+        public static final double SPEED_COE = 0.8;
         public static final double DRIVE_SPEED = 4.8 * SPEED_COE;
         public static final double MAX_ANG_VEL = 5.0;
         public static final double MAX_DRIVE_SPEED_MPS = 6 * SPEED_COE;

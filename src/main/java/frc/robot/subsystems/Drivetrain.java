@@ -51,6 +51,7 @@ public class Drivetrain extends SubsystemBase {
     private final SwerveDriveOdometry _odometry;
 
     private Pose2d _current_pose;
+    private Pose2d _previous_pose;
 
     public Drivetrain() {
         _Io = new SystemIO();
@@ -81,6 +82,7 @@ public class Drivetrain extends SubsystemBase {
         }, new Pose2d());
 
         _current_pose = _odometry.getPoseMeters();
+        _previous_pose = _current_pose;
 
         _setpointGenerator = new SwerveSetpointGenerator(
                 _kinematics,
@@ -241,6 +243,7 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("NE_ACTAUL_VELOCITY", _modules[NORTH_EAST_IDX].getDriveVelocity());
         SmartDashboard.putNumber("SW_ACTAUL_VELOCITY", _modules[SOUTH_WEST_IDX].getDriveVelocity());
         SmartDashboard.putNumber("SE_ACTAUL_VELOCITY", _modules[SOUTH_EAST_IDX].getDriveVelocity());
+        SmartDashboard.putNumber("ACTUAL_VELOCITY", getMeasuredVelocity());
     }
 
     public void ZeroIMU() {
@@ -291,5 +294,18 @@ public class Drivetrain extends SubsystemBase {
             _modules[SOUTH_EAST_IDX].getSwervePosition()
         });
         currentPosePublisher.set(new Pose2d[]{_current_pose});
+        _previous_pose = _current_pose;
+    }
+
+    public double getMeasuredVelocityX() {
+        return (_current_pose.getTranslation().getX() - _previous_pose.getTranslation().getX()) / Constants.UPDATE_PERIOD;
+    }
+
+    public double getMeasuredVelocityY() {
+        return (_current_pose.getTranslation().getY() - _previous_pose.getTranslation().getY()) / Constants.UPDATE_PERIOD;
+    }
+
+    public double getMeasuredVelocity() {
+        return Math.sqrt(Math.pow(getMeasuredVelocityX(), 2) + Math.pow(getMeasuredVelocityY(), 2));
     }
 }
