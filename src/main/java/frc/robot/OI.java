@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -74,10 +75,10 @@ public class OI {
         //_driverGamepad.getAButton().onTrue(new ShootAmp(indexer, shooter));
         //_driverGamepad.getYButton().onTrue(new ClimbUp(arm));
         _driverGamepad.getBButton().onTrue(new ResetIMU(drivetrain));
-        _povButtonDown.onTrue(new Snap(drivetrain, this));
-        _povButtonLeft.onTrue(new Snap(drivetrain, this));
-        _povButtonUp.onTrue(new Snap(drivetrain, this));
-        _povButtonRight.onTrue(new Snap(drivetrain, this));
+        _povButtonDown.onTrue(new Snap(drivetrain, new Rotation2d(180)));
+        _povButtonLeft.onTrue(new Snap(drivetrain, new Rotation2d(90)));
+        _povButtonUp.onTrue(new Snap(drivetrain, new Rotation2d(0)));
+        _povButtonRight.onTrue(new Snap(drivetrain, new Rotation2d(270)));
 
     }
 

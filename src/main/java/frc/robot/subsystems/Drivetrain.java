@@ -246,6 +246,9 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("ACTUAL_VELOCITY_X", getMeasuredVelocityX());
         SmartDashboard.putNumber("ACTUAL_VELOCITY_Y", getMeasuredVelocityY());
         SmartDashboard.putNumber("ACTUAL_VELOCITY", getMeasuredVelocity());
+        SmartDashboard.putNumber("IMU_VELOCITY", getIMUVolocity());
+        SmartDashboard.putNumber("AVRAGE_VELOCITY", getAverageVelocity());
+
     }
 
     public void ZeroIMU() {
@@ -309,5 +312,12 @@ public class Drivetrain extends SubsystemBase {
 
     public double getMeasuredVelocity() {
         return Math.sqrt(Math.pow(getMeasuredVelocityX(), 2) + Math.pow(getMeasuredVelocityY(), 2));
+    }
+    public double getIMUVolocity(){
+        return Math.sqrt(Math.pow(_gyro.getVelocityX(), 2) + Math.pow(_gyro.getVelocityY(), 2));
+         
+    }
+    public double getAverageVelocity(){
+        return (getIMUVolocity() + getMeasuredVelocity()) / 2;
     }
 }

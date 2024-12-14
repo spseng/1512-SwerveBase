@@ -1,5 +1,6 @@
 package frc.robot.commands.TopLevel;
 
+import static frc.robot.Constants.Arm.ARM_INTAKE_ANGLE;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
