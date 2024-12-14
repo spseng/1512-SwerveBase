@@ -243,6 +243,8 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("NE_ACTAUL_VELOCITY", _modules[NORTH_EAST_IDX].getDriveVelocity());
         SmartDashboard.putNumber("SW_ACTAUL_VELOCITY", _modules[SOUTH_WEST_IDX].getDriveVelocity());
         SmartDashboard.putNumber("SE_ACTAUL_VELOCITY", _modules[SOUTH_EAST_IDX].getDriveVelocity());
+        SmartDashboard.putNumber("ACTUAL_VELOCITY_X", getMeasuredVelocityX());
+        SmartDashboard.putNumber("ACTUAL_VELOCITY_Y", getMeasuredVelocityY());
         SmartDashboard.putNumber("ACTUAL_VELOCITY", getMeasuredVelocity());
     }
 
@@ -287,6 +289,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void updateSwerveOdometry() {
+        _previous_pose = _current_pose;
         _current_pose = _odometry.update(getHeading(), new SwerveModulePosition[] {
             _modules[NORTH_WEST_IDX].getSwervePosition(),
             _modules[NORTH_EAST_IDX].getSwervePosition(),
@@ -294,7 +297,6 @@ public class Drivetrain extends SubsystemBase {
             _modules[SOUTH_EAST_IDX].getSwervePosition()
         });
         currentPosePublisher.set(new Pose2d[]{_current_pose});
-        _previous_pose = _current_pose;
     }
 
     public double getMeasuredVelocityX() {
