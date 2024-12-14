@@ -33,7 +33,7 @@ public class Drivetrain extends SubsystemBase {
     private static final int SOUTH_EAST_IDX = 2;
     private static final int SOUTH_WEST_IDX = 3;
     private final SwerveSetpointGenerator _setpointGenerator;
-    private final KinematicLimits _limits;
+    private KinematicLimits _limits;
     private final SwerveDriveKinematics _kinematics; // physical layout of chassis
     private final AHRS _gyro; // navX might want to swit ch to pigeon 2
     private final SwerveModule[] _modules;
@@ -189,6 +189,12 @@ public class Drivetrain extends SubsystemBase {
         _heading.goToHeading(
                 Rotation2d.fromDegrees(heading.getDegrees() + Constants.Drivetrain.BUMP_DEGREES));
     }
+    public void setKinematicLimits(KinematicLimits limits) {
+        if (limits != _limits) {
+            _limits = limits;
+        }
+    }
+
 
     public void decrementHeadingControllerAngle() {
         Rotation2d heading = getHeading();

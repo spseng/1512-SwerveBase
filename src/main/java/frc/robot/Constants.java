@@ -18,18 +18,6 @@ public class Constants {
     public static final double UPDATE_PERIOD = 0.02;
 
     public static class Drivetrain {
-        public static final double ABS_ENCODER_CONVERSION = 360; // CAN SPARK Default
-        public static final double RELATIVE_ENCODER_CONVERSION = 46.5; //93/2 I think default
-        public static final double FULL_ROTATION = 1; // 2
-
-        public static final double BUMP_DEGREES = 7.0;
-
-        public static final double SPEED_MOD = 1.0;
-        public static final double MAX_ANG_VEL = 10.0 * SPEED_MOD;
-        public static final double MAX_DRIVE_SPEED_MPS = 5.59 * SPEED_MOD;
-        public static final double TRANSLATION_DEADBAND = 0.05;
-        public static final double ROTATION_DEADBAND = 0.05;
-
         public static final double WHEEL_DIAMETER = 0.0762;
 
 
@@ -44,19 +32,11 @@ public class Constants {
 
         public static final int PINION_TEETH = 13;
 
-        public static final double MOTOR_MAX_OUTPUT = 1;
-        public static final double MOTOR_MIN_OUTPUT = -1;
+        public static final double ABS_ENCODER_CONVERSION = 360; // CAN SPARK Default
+        public static final double RELATIVE_ENCODER_CONVERSION = 46.5; //93/2 I think default
+        public static final double FULL_ROTATION = 1; // 2
 
-        public static final double HEADING_TOLERANCE = Units.degreesToRadians(1.5); // rad
-        public static final double FREE_SPEED_RPS = 5676 / 60;
-
-        // Robot Physical Constants
-        public static final double WHEELBASE = 0.6985; // Meters, distance between front and back
-        public static final double TRACKWIDTH = 0.6223; // Meters, distance between left and right
-
-        public static final double SWERVE_NS_POS = WHEELBASE / 2;
-        public static final double SWERVE_WE_POS = TRACKWIDTH / 2;
-
+        public static final double BUMP_DEGREES = 7.0;
         public static ModuleConfiguration SOUTH_EAST_CONFIG = new ModuleConfiguration();
         public static ModuleConfiguration NORTH_EAST_CONFIG = new ModuleConfiguration();
         public static ModuleConfiguration NORTH_WEST_CONFIG = new ModuleConfiguration();
@@ -72,6 +52,29 @@ public class Constants {
         public static final double POSITION_WRAPPING_MAX_INPUT = STEER_POSITION_FACTOR; // radians
         public static final IdleMode DRIVE_IDLE_MODE = IdleMode.kBrake;
         public static final IdleMode STEER_IDLE_MODE = IdleMode.kBrake;
+
+        public static final double SPEED_MOD = 1.0;
+        public static final double MAX_ANG_VEL = 10.0 * SPEED_MOD;
+        //public static final double MAX_DRIVE_SPEED_MPS = (Units.rotationsPerMinuteToRadiansPerSecond(6784) / DRIVING_REDUCTION * (WHEEL_DIAMETER / 2));
+        public static final double MAX_DRIVE_SPEED_MPS = 10;
+        public static final double TRANSLATION_DEADBAND = 0.05;
+        public static final double ROTATION_DEADBAND = 0.05;
+
+        
+        public static final double MOTOR_MAX_OUTPUT = 1;
+        public static final double MOTOR_MIN_OUTPUT = -1;
+
+        public static final double HEADING_TOLERANCE = Units.degreesToRadians(1.5); // rad
+        public static final double FREE_SPEED_RPS = 5676 / 60;
+
+        // Robot Physical Constants
+        public static final double WHEELBASE = 0.6985; // Meters, distance between front and back
+        public static final double TRACKWIDTH = 0.6223; // Meters, distance between left and right
+
+        public static final double SWERVE_NS_POS = WHEELBASE / 2;
+        public static final double SWERVE_WE_POS = TRACKWIDTH / 2;
+
+        
         // Steering PID
         public static final double DRIVE_KP = 0.2;
         public static final double DRIVE_KI = 0.0;
@@ -89,6 +92,7 @@ public class Constants {
         // Autonomous Constants
         public static final double AUTONOMOUS_POSITION_MAX_ERROR = 0.04; // Meters
         public static final KinematicLimits DRIVE_KINEMATIC_LIMITS = new KinematicLimits();
+        public static final KinematicLimits SLOW_MODE_KINEMATIC_LIMITS = new KinematicLimits();
         public static final long DISABLE_TIME = 500;
         public static final double HEADING_kI = 0;
         public static final double HEADING_kP = 8.0;
@@ -139,6 +143,11 @@ public class Constants {
             DRIVE_KINEMATIC_LIMITS.maxDriveAcceleration = Double.MAX_VALUE;
             DRIVE_KINEMATIC_LIMITS.maxDriveVelocity = MAX_DRIVE_SPEED_MPS;
             DRIVE_KINEMATIC_LIMITS.maxSteeringVelocity = Double.MAX_VALUE;
+        }
+        static {
+            SLOW_MODE_KINEMATIC_LIMITS.maxDriveAcceleration = Double.MAX_VALUE;
+            SLOW_MODE_KINEMATIC_LIMITS.maxDriveVelocity = 5.0;
+            SLOW_MODE_KINEMATIC_LIMITS.maxSteeringVelocity = 10.0;
         }
 
     }

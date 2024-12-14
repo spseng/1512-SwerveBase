@@ -9,6 +9,7 @@ import frc.robot.Utils.Gamepad;
 import frc.robot.Utils.Helpers;
 import frc.robot.commands.SimpleIntake;
 import frc.robot.commands.Drive.ResetIMU;
+import frc.robot.commands.Drive.SlowMode;
 import frc.robot.commands.Drive.Snap;
 import frc.robot.commands.TopLevel.ShootWoofer;
 import frc.robot.subsystems.Arm;
@@ -21,6 +22,7 @@ import frc.robot.subsystems.Shooter;
 public class OI {
 
     protected Gamepad _driverGamepad;
+    protected Gamepad _operatorGamepad;
 
 
     protected AxisButton _driverLeftTriggerButton;
@@ -40,6 +42,7 @@ public class OI {
     public OI() {
 
         _driverGamepad = new Gamepad(0);
+        _operatorGamepad = new Gamepad(1);
 
 
         _povButtonLeft = new Trigger(() -> _driverGamepad.getPOV() == 270);
@@ -75,10 +78,11 @@ public class OI {
         //_driverGamepad.getAButton().onTrue(new ShootAmp(indexer, shooter));
         //_driverGamepad.getYButton().onTrue(new ClimbUp(arm));
         _driverGamepad.getBButton().onTrue(new ResetIMU(drivetrain));
-        _povButtonDown.onTrue(new Snap(drivetrain, new Rotation2d(180)));
-        _povButtonLeft.onTrue(new Snap(drivetrain, new Rotation2d(90)));
-        _povButtonUp.onTrue(new Snap(drivetrain, new Rotation2d(0)));
-        _povButtonRight.onTrue(new Snap(drivetrain, new Rotation2d(270)));
+        _operatorGamepad.getAButton().onTrue(new Snap(drivetrain, new Rotation2d(Math.PI)));
+        _operatorGamepad.getXButton().onTrue(new Snap(drivetrain, new Rotation2d(90)));
+        _operatorGamepad.getYButton().onTrue(new Snap(drivetrain, new Rotation2d(0)));
+        _operatorGamepad.getBButton().onTrue(new Snap(drivetrain, new Rotation2d(270)));
+        _driverGamepad.getLeftBumper().whileTrue(new SlowMode(drivetrain, Constants.Drivetrain.DRIVE_KINEMATIC_LIMITS));
 
     }
 
