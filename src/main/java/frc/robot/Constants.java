@@ -16,6 +16,7 @@ import frc.robot.subsystems.SwerveModule.ModuleConfiguration;
 public class Constants {
     public static final double EPSILON = 1e-9;
     public static final double UPDATE_PERIOD = 0.02;
+    //public static final RobotConfig
 
     public static class Drivetrain {
         public static final double WHEEL_DIAMETER = 0.0762;

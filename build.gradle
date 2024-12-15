@@ -33,6 +33,7 @@ deploy {
                 frcStaticFileDeploy(getArtifactTypeClass('FileTreeArtifact')) {
                     files = project.fileTree('src/main/deploy')
                     directory = '/home/lvuser/deploy'
+                    deleteOldFiles = true
                 }
             }
         }
@@ -100,4 +101,5 @@ wpi.java.configureTestTasks(test)
 // Configure string concat to always inline compile
 tasks.withType(JavaCompile) {
     options.compilerArgs.add '-XDstringConcat=inline'
+    options.encoding = 'UTF-8'
 }
