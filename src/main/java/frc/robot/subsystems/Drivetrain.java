@@ -53,6 +53,8 @@ public class Drivetrain extends SubsystemBase {
     private Pose2d _current_pose;
     private Pose2d _previous_pose;
 
+    private currentPoseSupplier _currentPoseSupplier = new currentPoseSupplier();
+
     public Drivetrain() {
         _Io = new SystemIO();
         _gyro = new AHRS(SPI.Port.kMXP); // I think that this is right
@@ -297,6 +299,16 @@ public class Drivetrain extends SubsystemBase {
         //states
     }
 
+    public static class currentPoseSupplier {
+        private Pose2d currentPose = new Pose2d();
+        public Pose2d get() {
+            return currentPose;
+        }
+        public void set(Pose2d pose) {
+            currentPose = pose;
+        }
+    }
+
     public void updateSwerveOdometry() {
         _previous_pose = _current_pose;
         _current_pose = _odometry.update(getHeading(), new SwerveModulePosition[] {
@@ -305,6 +317,7 @@ public class Drivetrain extends SubsystemBase {
             _modules[SOUTH_WEST_IDX].getSwervePosition(),
             _modules[SOUTH_EAST_IDX].getSwervePosition()
         });
+        _currentPoseSupplier.set(_current_pose);
         currentPosePublisher.set(new Pose2d[]{_current_pose});
     }
 
