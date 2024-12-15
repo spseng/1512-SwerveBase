@@ -55,6 +55,7 @@ public class Drivetrain extends SubsystemBase {
     private Pose2d _previous_pose;
 
     private PoseSupplier _currentPoseSupplier = new PoseSupplier();
+    private ChassisSpeedsSupplier _currentChassisSpeedsSupplier = new ChassisSpeedsSupplier();
 
     public Drivetrain() {
         _Io = new SystemIO();
@@ -300,7 +301,7 @@ public class Drivetrain extends SubsystemBase {
         //states
     }
 
-    public class PoseSupplier implements Supplier<Pose2d> {
+    public static class PoseSupplier implements Supplier<Pose2d> {
         private Pose2d currentPose;
 
         @Override
@@ -313,6 +314,19 @@ public class Drivetrain extends SubsystemBase {
         }
     }
 
+    public static class ChassisSpeedsSupplier implements Supplier<ChassisSpeeds> {
+        private ChassisSpeeds currentChassisSpeeds;
+
+        @Override
+        public ChassisSpeeds get() {
+            return currentChassisSpeeds;
+        }
+
+        public void updateChassisSpeeds(ChassisSpeeds newChassisSpeeds) {
+            this.currentChassisSpeeds = newChassisSpeeds;
+        }
+    }
+
     public void updateSwerveOdometry() {
         _previous_pose = _current_pose;
         _current_pose = _odometry.update(getHeading(), new SwerveModulePosition[] {
@@ -322,6 +336,7 @@ public class Drivetrain extends SubsystemBase {
             _modules[SOUTH_EAST_IDX].getSwervePosition()
         });
         _currentPoseSupplier.updatePose(_current_pose);
+        _currentChassisSpeedsSupplier.updateChassisSpeeds(getMeasuredChassisSpeeds());
         currentPosePublisher.set(new Pose2d[]{_current_pose});
     }
 
