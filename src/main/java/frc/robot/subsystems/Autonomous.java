@@ -56,8 +56,10 @@ public class Autonomous {
                 assert _preloadedPaths != null;
                 _preloadedPaths.put(pathName, path);
                 System.out.println("Successfully loaded path: " + pathName);
+                SmartDashboard.putString(pathName,"YAY");
             } catch (Exception e) {
                 System.err.println("Failed to load path: " + pathName);
+                SmartDashboard.putString(pathName,"NOOO because " + e.getMessage());
                 e.printStackTrace();
             }
         }
