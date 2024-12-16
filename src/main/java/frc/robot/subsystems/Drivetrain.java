@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.config.RobotConfig;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -257,7 +258,7 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("ACTUAL_VELOCITY_X", getMeasuredVelocityX());
         SmartDashboard.putNumber("ACTUAL_VELOCITY_Y", getMeasuredVelocityY());
         SmartDashboard.putNumber("ACTUAL_VELOCITY", getMeasuredVelocity());
-        SmartDashboard.putNumber("IMU_VELOCITY", getIMUVolocity());
+        SmartDashboard.putNumber("IMU_VELOCITY", getIMUVelocity());
         SmartDashboard.putNumber("AVRAGE_VELOCITY", getAverageVelocity());
 
     }
@@ -352,12 +353,12 @@ public class Drivetrain extends SubsystemBase {
     public double getMeasuredVelocity() {
         return Math.sqrt(Math.pow(getMeasuredVelocityX(), 2) + Math.pow(getMeasuredVelocityY(), 2));
     }
-    public double getIMUVolocity(){
+    public double getIMUVelocity(){
         return Math.sqrt(Math.pow(_gyro.getVelocityX(), 2) + Math.pow(_gyro.getVelocityY(), 2));
          
     }
     public double getAverageVelocity(){
-        return (getIMUVolocity() + getMeasuredVelocity()) / 2;
+        return (getIMUVelocity() + getMeasuredVelocity()) / 2;
     }
 
     //Autonomous↓↓
