@@ -15,7 +15,7 @@ public class Autonomous {
     private final SendableChooser<PathPlannerPath> _autoChooser;
     private final Map<String, PathPlannerPath> _preloadedPaths;
 
-    Autonomous(Drivetrain drivetrain) {
+    public Autonomous(Drivetrain drivetrain) {
         _drivetrain = drivetrain;
         _autoChooser = new SendableChooser<>();
         _preloadedPaths = new HashMap<>();

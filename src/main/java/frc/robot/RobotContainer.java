@@ -64,6 +64,7 @@ public class RobotContainer {
     public void init() {
         _drivetrain = new Drivetrain();
         _oi = new OI();
+        _autonomous = new Autonomous(_drivetrain);
         _drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
         _oi.initializeButtons(_drivetrain);
     }
