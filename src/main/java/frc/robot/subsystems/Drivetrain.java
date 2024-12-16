@@ -2,7 +2,12 @@ package frc.robot.subsystems;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.controllers.PathFollowingController;
+import com.pathplanner.lib.trajectory.PathPlannerTrajectoryState;
+import com.pathplanner.lib.util.DriveFeedforwards;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -26,7 +31,10 @@ import frc.robot.Utils.SwerveSetpoint;
 import frc.robot.Utils.SwerveSetpointGenerator;
 import frc.robot.Utils.SwerveSetpointGenerator.KinematicLimits;
 
+import java.nio.file.Path;
 import java.util.Optional;
+import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class Drivetrain extends SubsystemBase {
@@ -80,11 +88,11 @@ public class Drivetrain extends SubsystemBase {
                 _modules[SOUTH_EAST_IDX].getSwerveModuleLocation(),
                 _modules[SOUTH_WEST_IDX].getSwerveModuleLocation());
 
-        _odometry = new SwerveDriveOdometry(_kinematics, getHeading(), new SwerveModulePosition[] {
-            _modules[NORTH_WEST_IDX].getSwervePosition(),
-            _modules[NORTH_EAST_IDX].getSwervePosition(),
-            _modules[SOUTH_WEST_IDX].getSwervePosition(),
-            _modules[SOUTH_EAST_IDX].getSwervePosition()
+        _odometry = new SwerveDriveOdometry(_kinematics, getHeading(), new SwerveModulePosition[]{
+                _modules[NORTH_WEST_IDX].getSwervePosition(),
+                _modules[NORTH_EAST_IDX].getSwervePosition(),
+                _modules[SOUTH_WEST_IDX].getSwervePosition(),
+                _modules[SOUTH_EAST_IDX].getSwervePosition()
         }, new Pose2d());
 
         _current_pose = _odometry.getPoseMeters();
@@ -104,6 +112,40 @@ public class Drivetrain extends SubsystemBase {
         ZeroIMU(); // resets heading
         readModules(); // gets encoders
         setSetpointFromMeasuredModules(); // cheesy stuff
+
+        RobotConfig robotConfig = null;
+        try {
+            robotConfig = RobotConfig.fromGUISettings();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        PathFollowingController controller = new PathFollowingController() {
+            @Override
+            public ChassisSpeeds calculateRobotRelativeSpeeds(Pose2d currentPose, PathPlannerTrajectoryState targetState) {
+                return null;
+            }
+
+            @Override
+            public void reset(Pose2d currentPose, ChassisSpeeds currentSpeeds) {
+
+            }
+
+            @Override
+            public boolean isHolonomic() {
+                return false;
+            }
+        };
+
+        AutoBuilder.configure(
+                currentPoseSupplier(),
+                resetCurrentPoseConsumer(),
+                currentChassisSpeedsSupplier(),
+                (ChassisSpeeds speeds) -> setVelocity(speeds),
+                controller,
+                robotConfig,
+                isRedAllianceSupplier(),
+                this
+        );
     }
 
     public void setRawChassisSpeeds(ChassisSpeeds speeds) {
@@ -195,6 +237,7 @@ public class Drivetrain extends SubsystemBase {
         _heading.goToHeading(
                 Rotation2d.fromDegrees(heading.getDegrees() + Constants.Drivetrain.BUMP_DEGREES));
     }
+
     public void setKinematicLimits(KinematicLimits limits) {
         if (limits != _limits) {
             _limits = limits;
@@ -331,11 +374,11 @@ public class Drivetrain extends SubsystemBase {
 
     public void updateSwerveOdometry() {
         _previous_pose = _current_pose;
-        _current_pose = _odometry.update(getHeading(), new SwerveModulePosition[] {
-            _modules[NORTH_WEST_IDX].getSwervePosition(),
-            _modules[NORTH_EAST_IDX].getSwervePosition(),
-            _modules[SOUTH_WEST_IDX].getSwervePosition(),
-            _modules[SOUTH_EAST_IDX].getSwervePosition()
+        _current_pose = _odometry.update(getHeading(), new SwerveModulePosition[]{
+                _modules[NORTH_WEST_IDX].getSwervePosition(),
+                _modules[NORTH_EAST_IDX].getSwervePosition(),
+                _modules[SOUTH_WEST_IDX].getSwervePosition(),
+                _modules[SOUTH_EAST_IDX].getSwervePosition()
         });
         _currentPoseSupplier.updatePose(_current_pose);
         _currentChassisSpeedsSupplier.updateChassisSpeeds(getMeasuredChassisSpeeds());
@@ -353,13 +396,38 @@ public class Drivetrain extends SubsystemBase {
     public double getMeasuredVelocity() {
         return Math.sqrt(Math.pow(getMeasuredVelocityX(), 2) + Math.pow(getMeasuredVelocityY(), 2));
     }
-    public double getIMUVelocity(){
+
+    public double getIMUVelocity() {
         return Math.sqrt(Math.pow(_gyro.getVelocityX(), 2) + Math.pow(_gyro.getVelocityY(), 2));
-         
+
     }
-    public double getAverageVelocity(){
+
+    public double getAverageVelocity() {
         return (getIMUVelocity() + getMeasuredVelocity()) / 2;
     }
 
-    //Autonomous↓↓
+    public Pose2d getCurrentPose() {
+        return _current_pose;
+    }
+
+    public Supplier<Pose2d> currentPoseSupplier() {
+        return () -> _current_pose;
+    }
+
+    public Supplier<ChassisSpeeds> currentChassisSpeedsSupplier() {
+        return () -> _kinematics.toChassisSpeeds(_Io.measuredStates);
+    }
+
+    public Consumer<Pose2d> resetCurrentPoseConsumer() {
+        return pose -> {
+            _current_pose = pose;  // Assuming you want to reset _current_pose to the passed pose
+        };
+    }
+
+    public BooleanSupplier isRedAllianceSupplier() {
+        return () -> {
+            Optional<Alliance> alliance = DriverStation.getAlliance();
+            return alliance.filter(value -> value == Alliance.Red).isPresent();
+        };
+    }
 }
