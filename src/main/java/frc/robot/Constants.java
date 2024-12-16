@@ -212,6 +212,8 @@ public class Constants {
         public static final double ARM_CLIMB_ANGLE = 0.0; //I do not know what it is supposed to be since it dissappeard in merging process. we need to figure out....
     }
 
+    public static final boolean IS_COMPETITION = true;
+
 
     // PID Constants
 

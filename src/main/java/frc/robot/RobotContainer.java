@@ -39,7 +39,11 @@ public class RobotContainer {
     public RobotContainer() {
         // Configure the trigger bindings
 
-        autoChooser = AutoBuilder.buildAutoChooser();
+        autoChooser = AutoBuilder.buildAutoChooserWithOptionsModifier(
+                (stream) -> Constants.IS_COMPETITION
+                        ? stream.filter(auto -> auto.getName().startsWith("comp"))
+                        : stream
+        );
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
