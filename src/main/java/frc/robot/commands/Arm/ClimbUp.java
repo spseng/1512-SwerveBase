@@ -25,7 +25,7 @@ public class ClimbUp extends Command{
     @Override
     public boolean isFinished() {
         // TODO Auto-generated method stub
-        return (Constants.Arm.ARM_MAX_ANGLE - Constants.Arm.TOLLERENCE < _arm.getAngle() || Constants.Arm.ARM_MAX_ANGLE + Constants.Arm.TOLLERENCE > _arm.getAngle());
+        return (Constants.Arm.ARM_MAX_ANGLE - Constants.Arm.TOLERANCE < _arm.getAngle() || Constants.Arm.ARM_MAX_ANGLE + Constants.Arm.TOLERANCE > _arm.getAngle());
     }
     
 }

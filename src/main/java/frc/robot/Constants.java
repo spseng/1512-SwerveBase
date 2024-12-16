@@ -205,7 +205,7 @@ public class Constants {
         public static final double SHOOTING_ANGLE_KP = 7.0;
         public static final double SHOOTING_ANGLE_KI = 0.000;
         public static final double SHOOTING_ANGLE_KD = 0.5;
-        public static final double TOLLERENCE = 0.05;
+        public static final double TOLERANCE = 0.05;
 
         public static final double SHOOT_SUB_ANGLE = 0.00; //TODO change this
         public static final double MANUAL_ARM_MOVE_SPEED = .45;
