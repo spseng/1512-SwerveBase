@@ -216,9 +216,7 @@ public class Constants {
     public static class Autonomous {
         public static final boolean IS_COMPETITION = true;
         public static final String[] CHOREO_PATHS = {
-                "ExampleChoreoPath1",
-                "ExampleChoreoPath2",
-                "ExampleChoreoPath3"
+                "Example_Path"
         };
     }
 
