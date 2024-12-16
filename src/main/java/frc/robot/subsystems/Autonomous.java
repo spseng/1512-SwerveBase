@@ -23,6 +23,8 @@ public class Autonomous {
         RobotConfig robotConfig;
         try {
             robotConfig = RobotConfig.fromGUISettings();
+            System.out.println("=================");
+            System.out.println(robotConfig);
         } catch (Exception e) {
             e.printStackTrace();
             robotConfig = null;
@@ -50,7 +52,7 @@ public class Autonomous {
     private void preloadTrajectories() {
         for (String pathName : Constants.Autonomous.CHOREO_PATHS) {
             try {
-                PathPlannerPath path = PathPlannerPath.fromChoreoTrajectory(pathName);
+                PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
                 assert _preloadedPaths != null;
                 _preloadedPaths.put(pathName, path);
                 System.out.println("Successfully loaded path: " + pathName);
