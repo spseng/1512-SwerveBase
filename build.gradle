@@ -33,7 +33,7 @@ deploy {
                 frcStaticFileDeploy(getArtifactTypeClass('FileTreeArtifact')) {
                     files = project.fileTree('src/main/deploy')
                     directory = '/home/lvuser/deploy'
-                    deleteOldFiles = true
+                    //deleteOldFiles = true
                 }
             }
         }
@@ -68,7 +68,7 @@ dependencies {
     nativeRelease wpi.java.vendor.jniRelease(wpi.platforms.desktop)
     simulationRelease wpi.sim.enableRelease()
 
-    implementation 'com.pathplanner.lib:PathplannerLib-java:2024.2.8'
+    implementation 'com.pathplanner.lib:PathplannerLib-java:2025.0.0-beta-5'
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
