@@ -61,7 +61,7 @@ public class Constants {
         public static final double TRANSLATION_DEADBAND = 0.05;
         public static final double ROTATION_DEADBAND = 0.05;
 
-        
+
         public static final double MOTOR_MAX_OUTPUT = 1;
         public static final double MOTOR_MIN_OUTPUT = -1;
 
@@ -75,7 +75,7 @@ public class Constants {
         public static final double SWERVE_NS_POS = WHEELBASE / 2;
         public static final double SWERVE_WE_POS = TRACKWIDTH / 2;
 
-        
+
         // Steering PID
         public static final double DRIVE_KP = 0.2;
         public static final double DRIVE_KI = 0.0;
@@ -109,7 +109,7 @@ public class Constants {
             SOUTH_EAST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, -SWERVE_WE_POS); // -,-
 
             SOUTH_EAST_CONFIG.encoderInverted = false;
-            SOUTH_EAST_CONFIG.encoderOffset = Math.PI*(1.0/2.0);
+            SOUTH_EAST_CONFIG.encoderOffset = Math.PI * (1.0 / 2.0);
         }
 
         static {
@@ -118,7 +118,7 @@ public class Constants {
             NORTH_EAST_CONFIG.position = new Translation2d(SWERVE_NS_POS, -SWERVE_WE_POS); // +,-
 
             NORTH_EAST_CONFIG.encoderInverted = false;
-            NORTH_EAST_CONFIG.encoderOffset = Math.PI*(4.0/2.0);
+            NORTH_EAST_CONFIG.encoderOffset = Math.PI * (4.0 / 2.0);
 
         }
 
@@ -128,7 +128,7 @@ public class Constants {
             NORTH_WEST_CONFIG.position = new Translation2d(SWERVE_NS_POS, SWERVE_WE_POS); // +,+
 
             NORTH_WEST_CONFIG.encoderInverted = false;
-            NORTH_WEST_CONFIG.encoderOffset = Math.PI*(3.0/2.0);
+            NORTH_WEST_CONFIG.encoderOffset = Math.PI * (3.0 / 2.0);
         }
 
         static {
@@ -137,7 +137,7 @@ public class Constants {
             SOUTH_WEST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, SWERVE_WE_POS); // -,+
 
             SOUTH_WEST_CONFIG.encoderInverted = false;
-            SOUTH_WEST_CONFIG.encoderOffset = Math.PI*(2.0/2.0);
+            SOUTH_WEST_CONFIG.encoderOffset = Math.PI * (2.0 / 2.0);
         }
 
         static {
@@ -145,6 +145,7 @@ public class Constants {
             DRIVE_KINEMATIC_LIMITS.maxDriveVelocity = MAX_DRIVE_SPEED_MPS;
             DRIVE_KINEMATIC_LIMITS.maxSteeringVelocity = Double.MAX_VALUE;
         }
+
         static {
             SLOW_MODE_KINEMATIC_LIMITS.maxDriveAcceleration = Double.MAX_VALUE;
             SLOW_MODE_KINEMATIC_LIMITS.maxDriveVelocity = 3.0;
@@ -212,10 +213,14 @@ public class Constants {
         public static final double ARM_CLIMB_ANGLE = 0.0; //I do not know what it is supposed to be since it dissappeard in merging process. we need to figure out....
     }
 
-    public static final boolean IS_COMPETITION = true;
-
+    public static class Autonomous {
+        public static final boolean IS_COMPETITION = true;
+        public static final String[] CHOREO_PATHS = {
+                "ExampleChoreoPath1",
+                "ExampleChoreoPath2",
+                "ExampleChoreoPath3"
+        };
+    }
 
     // PID Constants
-
-
 }

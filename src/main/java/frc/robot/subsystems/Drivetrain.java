@@ -132,7 +132,7 @@ public class Drivetrain extends SubsystemBase {
 
             @Override
             public boolean isHolonomic() {
-                return false;
+                return true;
             }
         };
 

@@ -4,7 +4,7 @@
 
 package frc.robot;
 
-
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -13,6 +13,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Drive.Drive;
 import frc.robot.subsystems.Drivetrain;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -30,7 +33,8 @@ public class RobotContainer {
     // Replace with CommandPS4Controller or CommandJoystick if needed
     //add controler in OI
 
-    private final SendableChooser<Command> autoChooser;
+    private final SendableChooser<Command> _autoChooser;
+    private final Map<String, PathPlannerPath> _preloadedPaths;
 
 
     /**
@@ -38,14 +42,10 @@ public class RobotContainer {
      */
     public RobotContainer() {
         // Configure the trigger bindings
-
-        autoChooser = AutoBuilder.buildAutoChooserWithOptionsModifier(
-                (stream) -> Constants.IS_COMPETITION
-                        ? stream.filter(auto -> auto.getName().startsWith("comp"))
-                        : stream
-        );
-
-        SmartDashboard.putData("Auto Chooser", autoChooser);
+        _autoChooser = new SendableChooser<>();
+        _preloadedPaths = new HashMap<>();
+        populateChoreoAutoChooser();
+        SmartDashboard.putData("Auto Chooser", _autoChooser);
 
         configureBindings();
     }
@@ -62,25 +62,47 @@ public class RobotContainer {
     private void configureBindings() {
         // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
-
         // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
         // cancelling on release.
 
     }
 
     public void init() {
-
         _drivetrain = new Drivetrain();
-
         _oi = new OI();
-
-
         _drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
-
-
         _oi.initializeButtons(_drivetrain);
+    }
 
+    private void populateChoreoAutoChooser() {
+        for (Map.Entry<String, PathPlannerPath> entry : _preloadedPaths.entrySet()) {
+            String pathName = entry.getKey();
+            PathPlannerPath path = entry.getValue();
+            Command autoCommand = _drivetrain.createAutonomousCommand(path);
+            _autoChooser.addOption(pathName, autoCommand);
+        }
 
+        if (!_preloadedPaths.isEmpty()) {
+            String defaultPathName = _preloadedPaths.keySet().iterator().next();
+            _autoChooser.setDefaultOption("Default: " + defaultPathName,
+                    _drivetrain.createAutonomousCommand(_preloadedPaths.get(defaultPathName)));
+        } else {
+            System.out.println("No Choreo paths preloaded!");
+        }
+    }
+
+    private void preloadTrajectories() {
+        for (String pathName : Constants.Autonomous.CHOREO_PATHS) {
+            try {
+                PathPlannerPath path = PathPlannerPath.fromChoreoTrajectory(pathName);
+                assert _preloadedPaths != null;
+                _preloadedPaths.put(pathName, path);
+                System.out.println("Successfully loaded path: " + pathName);
+            } catch (Exception e) {
+                System.err.println("Failed to load path: " + pathName);
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -90,6 +112,6 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An example command will be run in autonomous
-        return autoChooser.getSelected();
+        return _autoChooser.getSelected();
     }
 }
