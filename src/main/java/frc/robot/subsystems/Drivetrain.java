@@ -136,6 +136,7 @@ public class Drivetrain extends SubsystemBase {
             }
         };
 
+        assert robotConfig != null;
         AutoBuilder.configure(
                 currentPoseSupplier(),
                 resetCurrentPoseConsumer(),
