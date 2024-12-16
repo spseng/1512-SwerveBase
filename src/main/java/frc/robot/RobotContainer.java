@@ -80,6 +80,7 @@ public class RobotContainer {
             return AutoBuilder.followPath(_autonomous.getSelectedPath());
         }catch (Exception e) {
             DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
+            SmartDashboard.putString("Auto Error", e.getMessage());
             return Commands.none();
         }
     }

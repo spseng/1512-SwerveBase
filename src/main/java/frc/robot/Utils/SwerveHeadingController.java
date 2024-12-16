@@ -45,7 +45,7 @@ public class SwerveHeadingController {
     /**
      * Temporarily disable the heading controller. It will be reenabled after a small amount of time.
      *
-     * @see Constants.Drivetrain.DISABLE_TIME
+     * //@see Constants.Drivetrain.DISABLE_TIME
      */
     public void temporaryDisable() {
         _disableTime = System.currentTimeMillis() + Constants.Drivetrain.DISABLE_TIME;
@@ -55,7 +55,7 @@ public class SwerveHeadingController {
     /**
      * Sets the target heading of the heading controller and enables it.
      *
-     * @param targetHeading the heading to hold.
+     * //@param targetHeading the heading to hold.
      */
     public void goToHeading(Rotation2d heading) {
         _targetHeading = heading;
@@ -74,8 +74,8 @@ public class SwerveHeadingController {
      * Get the output of the PID controller given a certain input.
      *
      * @param heading       The current heading of the drivetrain. This could be a gyro value or a vision value or some combination of both.
-     * @param measuredSpeed measured speed of the robot [vx, vy, omega]
-     * @param maxSpeed      The max speed of the robot
+     * //@param measuredSpeed measured speed of the robot [vx, vy, omega]
+     * //@param maxSpeed      The max speed of the robot
      * @return The "power" that the heading controller outputs.
      */
     public double getRotationCorrection(Rotation2d heading) {

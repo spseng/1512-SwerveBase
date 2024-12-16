@@ -50,7 +50,7 @@ public class Autonomous {
     }
 
     private void preloadTrajectories() {
-        for (String pathName : Constants.Autonomous.CHOREO_PATHS) {
+        for (String pathName : Constants.Autonomous.PATH_PLANNER_PATHS) {
             try {
                 PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
                 assert _preloadedPaths != null;

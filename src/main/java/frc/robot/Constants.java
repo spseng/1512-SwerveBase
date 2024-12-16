@@ -215,7 +215,7 @@ public class Constants {
 
     public static class Autonomous {
         public static final boolean IS_COMPETITION = false;
-        public static final String[] CHOREO_PATHS = {
+        public static final String[] PATH_PLANNER_PATHS = {
                 "Hello_Path",
                 "Hello_Path2",
                 "Hello_Path3"
