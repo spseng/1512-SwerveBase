@@ -70,13 +70,15 @@ public class Autonomous {
             String pathName = entry.getKey();
             PathPlannerPath path = entry.getValue();
             _autoChooser.addOption(pathName, path);
+            SmartDashboard.putString("scanning: " + pathName, "going well");
         }
 
         if (!_preloadedPaths.isEmpty()) {
             String defaultPathName = _preloadedPaths.keySet().iterator().next();
             _autoChooser.setDefaultOption("Default: " + defaultPathName, _preloadedPaths.get(defaultPathName));
         } else {
-            System.out.println("No Choreo paths preloaded!");
+            System.out.println("No PathPlanner paths preloaded!");
+            SmartDashboard.putString("No PathPlanner paths preloaded!", "NOOO");
         }
     }
 
