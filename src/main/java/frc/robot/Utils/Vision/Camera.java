@@ -33,9 +33,7 @@ public class Camera {
 
     }
 
-    public PhotonPipelineResult getLatestResult() {
-        return _photonCamera.getLatestResult();
-    }
+    //public PhotonPipelineResult getLatestResult() { return _photonCamera.getLatestResult(); }
 
     public boolean isTargetinSight() {
         return this.isTargetinSight();
