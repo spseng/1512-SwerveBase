@@ -25,7 +25,7 @@ public class SetIntakeAngle extends Command{
     @Override
     public boolean isFinished() {
         // TODO Auto-generated method stub
-        return (Constants.Arm.ARM_INTAKE_ANGLE - Constants.Arm.TOLLERENCE < _arm.getAngle() || Constants.Arm.ARM_INTAKE_ANGLE + Constants.Arm.TOLLERENCE > _arm.getAngle() || _arm.isLowestAngle());
+        return (Constants.Arm.ARM_INTAKE_ANGLE - Constants.Arm.TOLERANCE < _arm.getAngle() || Constants.Arm.ARM_INTAKE_ANGLE + Constants.Arm.TOLERANCE > _arm.getAngle() || _arm.isLowestAngle());
     }
     
 }

@@ -25,7 +25,7 @@ public class SetSubwooferAngle extends Command{
     @Override
     public boolean isFinished() {
         // TODO Auto-generated method stub
-        return (Constants.Arm.SHOOT_SUB_ANGLE - Constants.Arm.TOLLERENCE < _arm.getAngle() || Constants.Arm.SHOOT_SUB_ANGLE + Constants.Arm.TOLLERENCE > _arm.getAngle());
+        return (Constants.Arm.SHOOT_SUB_ANGLE - Constants.Arm.TOLERANCE < _arm.getAngle() || Constants.Arm.SHOOT_SUB_ANGLE + Constants.Arm.TOLERANCE > _arm.getAngle());
     }
     
 }

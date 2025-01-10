@@ -25,7 +25,7 @@ public class SetAmpAngle extends Command{
     @Override
     public boolean isFinished() {
         // TODO Auto-generated method stub
-        return (Constants.Arm.AMP_SCORING_ANGLE - Constants.Arm.TOLLERENCE < _arm.getAngle() || Constants.Arm.AMP_SCORING_ANGLE + Constants.Arm.TOLLERENCE > _arm.getAngle());
+        return (Constants.Arm.AMP_SCORING_ANGLE - Constants.Arm.TOLERANCE < _arm.getAngle() || Constants.Arm.AMP_SCORING_ANGLE + Constants.Arm.TOLERANCE > _arm.getAngle());
     }
     
 }

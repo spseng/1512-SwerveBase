@@ -6,7 +6,7 @@
 package frc.robot;
 
 
-import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Utils.SwerveSetpointGenerator.KinematicLimits;
@@ -16,22 +16,9 @@ import frc.robot.subsystems.SwerveModule.ModuleConfiguration;
 public class Constants {
     public static final double EPSILON = 1e-9;
     public static final double UPDATE_PERIOD = 0.02;
+    //public static final RobotConfig
 
     public static class Drivetrain {
-        public static final double ABS_ENCODER_CONVERSION = 360; // CAN SPARK Default
-        public static final double RELATIVE_ENCODER_CONVERSION = 46.5; //93/2 I think default
-        public static final double FULL_ROTATION = 1; // 2
-
-        public static final double BUMP_DEGREES = 7.0;
-
-        public static final double SPEED_COE = 3.0;
-        public static final double DRIVE_SPEED = 4.8 * SPEED_COE;
-        public static final double MAX_ANG_VEL = 5.0;
-        public static final double MAX_DRIVE_SPEED_MPS = 6 * SPEED_COE;
-        public static final double TURN_SPEED = 0.24; // Radians per update
-        public static final double TRANSLATION_DEADBAND = 0.05;
-        public static final double ROTATION_DEADBAND = 0.05;
-
         public static final double WHEEL_DIAMETER = 0.0762;
 
 
@@ -44,21 +31,13 @@ public class Constants {
 
         public static final boolean IS_INVERTED = true;
 
-        public static final int PINION_TEETH = 14;
+        public static final int PINION_TEETH = 13;
 
-        public static final double MOTOR_MAX_OUTPUT = 1;
-        public static final double MOTOR_MIN_OUTPUT = -1;
+        public static final double ABS_ENCODER_CONVERSION = 360; // CAN SPARK Default
+        public static final double RELATIVE_ENCODER_CONVERSION = 46.5; //93/2 I think default
+        public static final double FULL_ROTATION = 1; // 2
 
-        public static final double HEADING_TOLERANCE = Units.degreesToRadians(1.5); // rad
-        public static final double FREE_SPEED_RPS = 5676 / 60;
-
-        // Robot Physical Constants
-        public static final double WHEELBASE = 0.6985; // Meters, distance between front and back
-        public static final double TRACKWIDTH = 0.6223; // Meters, distance between left and right
-
-        public static final double SWERVE_NS_POS = WHEELBASE / 2;
-        public static final double SWERVE_WE_POS = TRACKWIDTH / 2;
-
+        public static final double BUMP_DEGREES = 7.0;
         public static ModuleConfiguration SOUTH_EAST_CONFIG = new ModuleConfiguration();
         public static ModuleConfiguration NORTH_EAST_CONFIG = new ModuleConfiguration();
         public static ModuleConfiguration NORTH_WEST_CONFIG = new ModuleConfiguration();
@@ -74,6 +53,29 @@ public class Constants {
         public static final double POSITION_WRAPPING_MAX_INPUT = STEER_POSITION_FACTOR; // radians
         public static final IdleMode DRIVE_IDLE_MODE = IdleMode.kBrake;
         public static final IdleMode STEER_IDLE_MODE = IdleMode.kBrake;
+
+        public static final double SPEED_MOD = 1.0;
+        public static final double MAX_ANG_VEL = 10.0 * SPEED_MOD;
+        //public static final double MAX_DRIVE_SPEED_MPS = (Units.rotationsPerMinuteToRadiansPerSecond(6784) / DRIVING_REDUCTION * (WHEEL_DIAMETER / 2));
+        public static final double MAX_DRIVE_SPEED_MPS = 10.0;
+        public static final double TRANSLATION_DEADBAND = 0.05;
+        public static final double ROTATION_DEADBAND = 0.05;
+
+
+        public static final double MOTOR_MAX_OUTPUT = 1;
+        public static final double MOTOR_MIN_OUTPUT = -1;
+
+        public static final double HEADING_TOLERANCE = Units.degreesToRadians(1.5); // rad
+        public static final double FREE_SPEED_RPS = 5676 / 60;
+
+        // Robot Physical Constants
+        public static final double WHEELBASE = 0.6985; // Meters, distance between front and back
+        public static final double TRACKWIDTH = 0.6223; // Meters, distance between left and right
+
+        public static final double SWERVE_NS_POS = WHEELBASE / 2;
+        public static final double SWERVE_WE_POS = TRACKWIDTH / 2;
+
+
         // Steering PID
         public static final double DRIVE_KP = 0.2;
         public static final double DRIVE_KI = 0.0;
@@ -91,6 +93,7 @@ public class Constants {
         // Autonomous Constants
         public static final double AUTONOMOUS_POSITION_MAX_ERROR = 0.04; // Meters
         public static final KinematicLimits DRIVE_KINEMATIC_LIMITS = new KinematicLimits();
+        public static final KinematicLimits SLOW_MODE_KINEMATIC_LIMITS = new KinematicLimits();
         public static final long DISABLE_TIME = 500;
         public static final double HEADING_kI = 0;
         public static final double HEADING_kP = 8.0;
@@ -106,7 +109,7 @@ public class Constants {
             SOUTH_EAST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, -SWERVE_WE_POS); // -,-
 
             SOUTH_EAST_CONFIG.encoderInverted = false;
-            SOUTH_EAST_CONFIG.encoderOffset = Math.PI*(1.0/2.0);
+            SOUTH_EAST_CONFIG.encoderOffset = Math.PI * (1.0 / 2.0);
         }
 
         static {
@@ -115,7 +118,7 @@ public class Constants {
             NORTH_EAST_CONFIG.position = new Translation2d(SWERVE_NS_POS, -SWERVE_WE_POS); // +,-
 
             NORTH_EAST_CONFIG.encoderInverted = false;
-            NORTH_EAST_CONFIG.encoderOffset = Math.PI*(4.0/2.0);
+            NORTH_EAST_CONFIG.encoderOffset = Math.PI * (4.0 / 2.0);
 
         }
 
@@ -125,7 +128,7 @@ public class Constants {
             NORTH_WEST_CONFIG.position = new Translation2d(SWERVE_NS_POS, SWERVE_WE_POS); // +,+
 
             NORTH_WEST_CONFIG.encoderInverted = false;
-            NORTH_WEST_CONFIG.encoderOffset = Math.PI*(3.0/2.0);
+            NORTH_WEST_CONFIG.encoderOffset = Math.PI * (3.0 / 2.0);
         }
 
         static {
@@ -134,13 +137,19 @@ public class Constants {
             SOUTH_WEST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, SWERVE_WE_POS); // -,+
 
             SOUTH_WEST_CONFIG.encoderInverted = false;
-            SOUTH_WEST_CONFIG.encoderOffset = Math.PI*(2.0/2.0);
+            SOUTH_WEST_CONFIG.encoderOffset = Math.PI * (2.0 / 2.0);
         }
 
         static {
             DRIVE_KINEMATIC_LIMITS.maxDriveAcceleration = Double.MAX_VALUE;
             DRIVE_KINEMATIC_LIMITS.maxDriveVelocity = MAX_DRIVE_SPEED_MPS;
             DRIVE_KINEMATIC_LIMITS.maxSteeringVelocity = Double.MAX_VALUE;
+        }
+
+        static {
+            SLOW_MODE_KINEMATIC_LIMITS.maxDriveAcceleration = Double.MAX_VALUE;
+            SLOW_MODE_KINEMATIC_LIMITS.maxDriveVelocity = 3.0;
+            SLOW_MODE_KINEMATIC_LIMITS.maxSteeringVelocity = 8.0;
         }
 
     }
@@ -196,7 +205,7 @@ public class Constants {
         public static final double SHOOTING_ANGLE_KP = 7.0;
         public static final double SHOOTING_ANGLE_KI = 0.000;
         public static final double SHOOTING_ANGLE_KD = 0.5;
-        public static final double TOLLERENCE = 0.05;
+        public static final double TOLERANCE = 0.05;
 
         public static final double SHOOT_SUB_ANGLE = 0.00; //TODO change this
         public static final double MANUAL_ARM_MOVE_SPEED = .45;
@@ -204,8 +213,14 @@ public class Constants {
         public static final double ARM_CLIMB_ANGLE = 0.0; //I do not know what it is supposed to be since it dissappeard in merging process. we need to figure out....
     }
 
+    public static class Autonomous {
+        public static final boolean IS_COMPETITION = false;
+        public static final String[] PATH_PLANNER_PATHS = {
+                "Hello_Path",
+                "Hello_Path2",
+                "Hello_Path3"
+        };
+    }
 
     // PID Constants
-
-
 }

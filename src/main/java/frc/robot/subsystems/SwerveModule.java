@@ -2,9 +2,10 @@ package frc.robot.subsystems;
 
 
 import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController;
+import com.revrobotics.spark.SparkClosedLoopController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -18,11 +19,14 @@ public class SwerveModule extends SubsystemBase {
     // Instance Variables
 
 
-    private final CANSparkMax _steerMotor;
-    private final CANSparkMax _driveMotor;
+    private final SparkMax _steerMotor;
+    private final SparkMax _driveMotor;
 
-    private final SparkPIDController _steeringController;
-    private final SparkPIDController _driveController;
+    private final SparkMaxConfig _steerMotorConfig;
+    private final SparkMaxConfig _driveMotorConfig;
+
+    private final SparkClosedLoopController _steeringController;
+    private final SparkClosedLoopController _driveController;
 
     private final AbsoluteEncoder _steerAbsoluteEncoder;
 
@@ -33,18 +37,21 @@ public class SwerveModule extends SubsystemBase {
 
     public SwerveModule(int steerPort, int drivePort, ModuleConfiguration config) {
         _chassisAngularOffset = config.encoderOffset;
-        _steerMotor = new CANSparkMax(steerPort, com.revrobotics.CANSparkLowLevel.MotorType.kBrushless);
-        _driveMotor = new CANSparkMax(drivePort, com.revrobotics.CANSparkLowLevel.MotorType.kBrushless);
+        _steerMotor = new SparkMax(steerPort, com.revrobotics.spark.SparkLowLevel.MotorType.kBrushless);
+        _driveMotor = new SparkMax(drivePort, com.revrobotics.spark.SparkLowLevel.MotorType.kBrushless);
         _moduleLoaction = config.position;
+
+        _steerMotorConfig = new SparkMaxConfig();
+        _driveMotorConfig = new SparkMaxConfig();
 
         _driveMotor.restoreFactoryDefaults();
         _steerMotor.restoreFactoryDefaults();
 
         _driveEncoder = _driveMotor.getEncoder();
-        _steerAbsoluteEncoder = _steerMotor.getAbsoluteEncoder(com.revrobotics.SparkAbsoluteEncoder.Type.kDutyCycle);
+        _steerAbsoluteEncoder = _steerMotor.getAbsoluteEncoder(com.revrobotics.spark.SparkAbsoluteEncoder.Type.kDutyCycle);
 
-        _driveController = _driveMotor.getPIDController();
-        _steeringController = _steerMotor.getPIDController();
+        _driveController = _driveMotor.getClosedLoopController();
+        _steeringController = _steerMotor.getClosedLoopController();
 
         _driveController.setFeedbackDevice(_driveEncoder);
         _steeringController.setFeedbackDevice(_steerAbsoluteEncoder);
@@ -80,6 +87,9 @@ public class SwerveModule extends SubsystemBase {
         _driveMotor.burnFlash();
         _steerMotor.burnFlash();
 
+        _steerMotorConfig
+            .
+
 
         _desiredModuleState.angle = new Rotation2d(_steerAbsoluteEncoder.getPosition());
         _driveEncoder.setPosition(0);
@@ -97,8 +107,8 @@ public class SwerveModule extends SubsystemBase {
 
         SwerveModuleState optimizedState = SwerveModuleState.optimize(correctedState, new Rotation2d(_steerAbsoluteEncoder.getPosition()));
 
-        _driveController.setReference(optimizedState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
-        _steeringController.setReference(optimizedState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
+        _driveController.setReference(optimizedState.speedMetersPerSecond, SparkMax.ControlType.kVelocity);
+        _steeringController.setReference(optimizedState.angle.getRadians(), SparkMax.ControlType.kPosition);
 
         _desiredModuleState = state;
     }

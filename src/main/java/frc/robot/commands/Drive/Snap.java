@@ -9,14 +9,15 @@ import frc.robot.subsystems.Drivetrain;
 public class Snap extends Command  {
 
     private final Drivetrain _drivetrain;
-    private final OI _oi;
+    private final Rotation2d _heading;
     
 
 
-    public Snap(Drivetrain drivetrain, OI oi ){
+    public Snap(Drivetrain drivetrain, Rotation2d heading){
 
         _drivetrain = drivetrain;
-        _oi =oi;
+        _heading = heading;
+        
 
 
 
@@ -25,7 +26,7 @@ public class Snap extends Command  {
    
     @Override
     public void execute() {
-       _drivetrain.setHeadingRotation2D(new Rotation2d(_oi.getSnapHeading()));
+       _drivetrain.setHeadingRotation2D(_heading);
     }
 
     
