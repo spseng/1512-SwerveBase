@@ -87,25 +87,42 @@ public class SwerveModule extends SubsystemBase {
 
         //_driveMotor.burnFlash();
         //_steerMotor.burnFlash();
+        _steerMotorConfig.closedLoop
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+            .positionWrappingEnabled(true)
+            .positionWrappingMinInput(Constants.Drivetrain.POSITION_WRAPPING_MIN_INPUT)
+            .positionWrappingMaxInput(Constants.Drivetrain.POSITION_WRAPPING_MAX_INPUT)
+            .pidf(Constants.Drivetrain.STEER_KP, Constants.Drivetrain.STEER_KI, Constants.Drivetrain.STEER_KD, Constants.Drivetrain.STEER_FF)
+            .outputRange(Constants.Drivetrain.MOTOR_MIN_OUTPUT, Constants.Drivetrain.MOTOR_MAX_OUTPUT);
 
-        _steerMotorConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
-        _driveMotorConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
+        _steerMotorConfig.encoder
+            .positionConversionFactor(Constants.Drivetrain.STEER_POSITION_FACTOR)
+            .velocityConversionFactor(Constants.Drivetrain.STEER_VELOCITY_FACTOR)
+            .inverted(Constants.Drivetrain.IS_INVERTED);
+
+        _driveMotorConfig.closedLoop
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+            .pidf(Constants.Drivetrain.DRIVE_KP, Constants.Drivetrain.DRIVE_KI, Constants.Drivetrain.DRIVE_KD, Constants.Drivetrain.DRIVE_FF)
+            .outputRange(Constants.Drivetrain.MOTOR_MIN_OUTPUT, Constants.Drivetrain.MOTOR_MAX_OUTPUT);
+
+        //_steerMotorConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
+        //_driveMotorConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
         
 
-        _steerMotorConfig.encoder.positionConversionFactor(Constants.Drivetrain.STEER_POSITION_FACTOR);
-        _steerMotorConfig.encoder.velocityConversionFactor(Constants.Drivetrain.STEER_VELOCITY_FACTOR);
+        //_steerMotorConfig.encoder.positionConversionFactor(Constants.Drivetrain.STEER_POSITION_FACTOR);
+        //_steerMotorConfig.encoder.velocityConversionFactor(Constants.Drivetrain.STEER_VELOCITY_FACTOR);
 
-        _steerMotorConfig.encoder.inverted(Constants.Drivetrain.IS_INVERTED);
+        //_steerMotorConfig.encoder.inverted(Constants.Drivetrain.IS_INVERTED);
 
-        _steerMotorConfig.closedLoop.positionWrappingEnabled(true);
-        _steerMotorConfig.closedLoop.positionWrappingMinInput(Constants.Drivetrain.POSITION_WRAPPING_MIN_INPUT);
-        _steerMotorConfig.closedLoop.positionWrappingMaxInput(Constants.Drivetrain.POSITION_WRAPPING_MAX_INPUT);
+        //_steerMotorConfig.closedLoop.positionWrappingEnabled(true);
+        //_steerMotorConfig.closedLoop.positionWrappingMinInput(Constants.Drivetrain.POSITION_WRAPPING_MIN_INPUT);
+        //_steerMotorConfig.closedLoop.positionWrappingMaxInput(Constants.Drivetrain.POSITION_WRAPPING_MAX_INPUT);
 
-        _steerMotorConfig.closedLoop.pidf(Constants.Drivetrain.STEER_KP, Constants.Drivetrain.STEER_KI, Constants.Drivetrain.STEER_KD, Constants.Drivetrain.STEER_FF);
-        _driveMotorConfig.closedLoop.pidf(Constants.Drivetrain.DRIVE_KP, Constants.Drivetrain.DRIVE_KI, Constants.Drivetrain.DRIVE_KD, Constants.Drivetrain.DRIVE_FF);
+        //_steerMotorConfig.closedLoop.pidf(Constants.Drivetrain.STEER_KP, Constants.Drivetrain.STEER_KI, Constants.Drivetrain.STEER_KD, Constants.Drivetrain.STEER_FF);
+        //_driveMotorConfig.closedLoop.pidf(Constants.Drivetrain.DRIVE_KP, Constants.Drivetrain.DRIVE_KI, Constants.Drivetrain.DRIVE_KD, Constants.Drivetrain.DRIVE_FF);
 
-        _steerMotorConfig.closedLoop.outputRange(Constants.Drivetrain.MOTOR_MIN_OUTPUT, Constants.Drivetrain.MOTOR_MAX_OUTPUT);
-        _driveMotorConfig.closedLoop.outputRange(Constants.Drivetrain.MOTOR_MIN_OUTPUT, Constants.Drivetrain.MOTOR_MAX_OUTPUT);
+        //_steerMotorConfig.closedLoop.outputRange(Constants.Drivetrain.MOTOR_MIN_OUTPUT, Constants.Drivetrain.MOTOR_MAX_OUTPUT);
+        //_driveMotorConfig.closedLoop.outputRange(Constants.Drivetrain.MOTOR_MIN_OUTPUT, Constants.Drivetrain.MOTOR_MAX_OUTPUT);
 
         _steerMotorConfig.idleMode(Constants.Drivetrain.STEER_IDLE_MODE);
         _driveMotorConfig.idleMode(Constants.Drivetrain.DRIVE_IDLE_MODE);
