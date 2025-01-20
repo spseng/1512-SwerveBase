@@ -16,7 +16,6 @@ public class Camera {
 
     private final PhotonCamera _photonCamera;
 
-
     public Camera(String camName, double x, double y, double z, double pitch, double yaw, double roll) {
         _camName = camName;
         _camX = x;
@@ -28,16 +27,14 @@ public class Camera {
         _photonCamera = new PhotonCamera(_camName);
     }
 
-    public Transform3d getCameraLoction() {
+    public Transform3d getCameraLocation() {
         return new Transform3d(_camX, _camY, _camZ, new Rotation3d(_camPitch, _camYaw, _camRoll));
-
     }
 
     //public PhotonPipelineResult getLatestResult() { return _photonCamera.getLatestResult(); }
 
     public boolean isTargetinSight() {
-        return this.isTargetinSight();
+        return _photonCamera.getLatestResult().hasTargets();
     }
-
 
 }
