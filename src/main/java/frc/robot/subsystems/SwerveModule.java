@@ -44,17 +44,21 @@ public class SwerveModule extends SubsystemBase {
         _steeringController = _steerMotor.getClosedLoopController();
 
         _steerMotorConfig.closedLoop
-            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+            .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
             .positionWrappingEnabled(true)
             .positionWrappingMinInput(Constants.Drivetrain.POSITION_WRAPPING_MIN_INPUT)
             .positionWrappingMaxInput(Constants.Drivetrain.POSITION_WRAPPING_MAX_INPUT)
             .pidf(Constants.Drivetrain.STEER_KP, Constants.Drivetrain.STEER_KI, Constants.Drivetrain.STEER_KD, Constants.Drivetrain.STEER_FF)
             .outputRange(Constants.Drivetrain.MOTOR_MIN_OUTPUT, Constants.Drivetrain.MOTOR_MAX_OUTPUT);
 
-        _steerMotorConfig.encoder
+        _steerMotorConfig.absoluteEncoder
             .positionConversionFactor(Constants.Drivetrain.STEER_POSITION_FACTOR)
             .velocityConversionFactor(Constants.Drivetrain.STEER_VELOCITY_FACTOR)
             .inverted(Constants.Drivetrain.IS_INVERTED);
+
+        _driveMotorConfig.encoder
+            .positionConversionFactor(Constants.Drivetrain.DRIVE_POSITION_FACTOR)
+            .velocityConversionFactor(Constants.Drivetrain.DRIVE_VELOCITY_FACTOR);
 
         _driveMotorConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
@@ -70,7 +74,7 @@ public class SwerveModule extends SubsystemBase {
         _steerMotor.configure(_steerMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         _driveMotor.configure(_driveMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        _desiredModuleState.angle = new Rotation2d(_steerMotor.getEncoder().getPosition());
+        _desiredModuleState.angle = new Rotation2d(_steerMotor.getAbsoluteEncoder().getPosition());
         _driveMotor.getEncoder().setPosition(0);
     }
 
