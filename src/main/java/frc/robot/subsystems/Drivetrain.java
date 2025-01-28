@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
-//import com.kauailabs.navx.frc.AHRS;
-import com.ctre.phoenix6.hardware.Pigeon2;
+import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.controllers.PathFollowingController;
 import com.pathplanner.lib.trajectory.PathPlannerTrajectoryState;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -41,8 +40,7 @@ public class Drivetrain extends SubsystemBase {
     private final SwerveSetpointGenerator _setpointGenerator;
     private KinematicLimits _limits;
     private final SwerveDriveKinematics _kinematics; // physical layout of chassis
-    private final Pigeon2 _pigeon; // pigeon 2 is the new pigeon
-    //private final AHRS _gyro; // navX might want to switch ch to pigeon 2
+    private final AHRS _gyro; // navX might want to switch ch to pigeon 2
     private final SwerveModule[] _modules;
     private double _yawOffset;
 
@@ -66,11 +64,9 @@ public class Drivetrain extends SubsystemBase {
 
     public Drivetrain() {
         _Io = new SystemIO();
-        //_gyro = new AHRS(SPI.Port.kMXP); // I think that this is right
-        _pigeon = new Pigeon2(RobotMap.CAN.PIGEON_CAN); // pigeon 2 is the new pigeon
+        _gyro = new AHRS(SPI.Port.kMXP); // I think that this is right
 
-        //_yawOffset = _gyro.getYaw(); // zero gyro on init
-        _yawOffset = _pigeon.getRotation3d().getZ(); // zero pigeon on init
+        _yawOffset = _gyro.getYaw(); // zero gyro on init
         readIMU(); // method to update gyro
 
         _modules = new SwerveModule[4];
@@ -289,14 +285,12 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void ZeroIMU() {
-        //_yawOffset = _gyro.getYaw();
-        _yawOffset = _pigeon.getRotation3d().getZ();
+        _yawOffset = _gyro.getYaw();
         readIMU();
     }
 
     public void readIMU() {
-        //double yawDegrees = _gyro.getYaw();//
-        double yawDegrees = _pigeon.getRotation3d().getZ();
+        double yawDegrees = _gyro.getYaw();
         double yawAllianceOffsetDegrees = isRedAlliance() ? 180.0 : 0;
         _Io.heading = Rotation2d.fromDegrees(yawDegrees - _yawOffset + yawAllianceOffsetDegrees);
     }
@@ -382,8 +376,8 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public double getIMUVelocity() {
-        //return Math.sqrt(Math.pow(_gyro.getVelocityX(), 2) + Math.pow(_gyro.getVelocityY(), 2));
-        return Math.sqrt(Math.pow(_pigeon.getVelocityX(), 2) + Math.pow(_pigeon.getVelocityY(), 2));
+        return Math.sqrt(Math.pow(_gyro.getVelocityX(), 2) + Math.pow(_gyro.getVelocityY(), 2));
+
     }
 
     public double getAverageVelocity() {
