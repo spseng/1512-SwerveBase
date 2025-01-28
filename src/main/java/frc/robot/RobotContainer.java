@@ -30,7 +30,7 @@ import java.util.Map;
  */
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
-    private VisionProcessor _visionProcessor;
+    //private VisionProcessor _visionProcessor;
     private Drivetrain _drivetrain;
     private OI _oi;
     private Autonomous _autonomous;
@@ -64,7 +64,7 @@ public class RobotContainer {
     }
 
     public void init() {
-        _visionProcessor = new VisionProcessor();
+        //_visionProcessor = new VisionProcessor();
         _drivetrain = new Drivetrain();
         _oi = new OI();
         _autonomous = new Autonomous(_drivetrain);

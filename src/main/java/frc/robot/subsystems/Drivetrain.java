@@ -40,7 +40,7 @@ public class Drivetrain extends SubsystemBase {
     private final SwerveSetpointGenerator _setpointGenerator;
     private KinematicLimits _limits;
     private final SwerveDriveKinematics _kinematics; // physical layout of chassis
-    private final AHRS _gyro; // navX might want to switch ch to pigeon 2
+    private final AHRS _gyro; // navX might will be changed to pigeon 2.0 soon
     private final SwerveModule[] _modules;
     private double _yawOffset;
 
