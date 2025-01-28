@@ -1,8 +1,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.CANcoder;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -14,7 +14,7 @@ import static frc.robot.Constants.Arm.*;
 
 
 public class Arm extends SubsystemBase {
-    private CANSparkMax _motor;
+    private SparkMax _motor;
     private final CANcoder _encoder;
     
     private final DigitalInput _lowButton;
@@ -30,7 +30,7 @@ public class Arm extends SubsystemBase {
         _highButton = new DigitalInput(RobotMap.DIO.IS_HIGHEST_ANGLE_BUTTON_ID);
         _lowButton= new DigitalInput(RobotMap.DIO.IS_LOWEST_ANGLE_BUTTON_ID);
 
-        _motor = new CANSparkMax(RobotMap.CAN.ANGLE_ALIGNMENT_MOTOR_CAN, MotorType.kBrushed);
+        _motor = new SparkMax(RobotMap.CAN.ANGLE_ALIGNMENT_MOTOR_CAN, MotorType.kBrushed);
 
         _angleController = new PIDController(SHOOTING_ANGLE_KP, SHOOTING_ANGLE_KI, SHOOTING_ANGLE_KD);
 

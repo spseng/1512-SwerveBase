@@ -1,10 +1,11 @@
 package frc.robot.subsystems;
 
-
-import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -17,77 +18,69 @@ public class SwerveModule extends SubsystemBase {
 
     // Instance Variables
 
+    private final SparkMax _steerMotor;
+    private final SparkMax _driveMotor;
 
-    private final CANSparkMax _steerMotor;
-    private final CANSparkMax _driveMotor;
+    private final SparkMaxConfig _steerMotorConfig;
+    private final SparkMaxConfig _driveMotorConfig;
 
-    private final SparkPIDController _steeringController;
-    private final SparkPIDController _driveController;
+    private final SparkClosedLoopController _steeringController;
+    private final SparkClosedLoopController _driveController;
 
-    private final AbsoluteEncoder _steerAbsoluteEncoder;
-
-    private final RelativeEncoder _driveEncoder;
     private final Translation2d _moduleLoaction;
     private SwerveModuleState _desiredModuleState = new SwerveModuleState(0.0, new Rotation2d());
     private double _chassisAngularOffset;
 
     public SwerveModule(int steerPort, int drivePort, ModuleConfiguration config) {
         _chassisAngularOffset = config.encoderOffset;
-        _steerMotor = new CANSparkMax(steerPort, com.revrobotics.CANSparkLowLevel.MotorType.kBrushless);
-        _driveMotor = new CANSparkMax(drivePort, com.revrobotics.CANSparkLowLevel.MotorType.kBrushless);
+        _steerMotor = new SparkMax(steerPort, com.revrobotics.spark.SparkLowLevel.MotorType.kBrushless);
+        _driveMotor = new SparkMax(drivePort, com.revrobotics.spark.SparkLowLevel.MotorType.kBrushless);
         _moduleLoaction = config.position;
 
-        _driveMotor.restoreFactoryDefaults();
-        _steerMotor.restoreFactoryDefaults();
+        _steerMotorConfig = new SparkMaxConfig();
+        _driveMotorConfig = new SparkMaxConfig();
 
-        _driveEncoder = _driveMotor.getEncoder();
-        _steerAbsoluteEncoder = _steerMotor.getAbsoluteEncoder(com.revrobotics.SparkAbsoluteEncoder.Type.kDutyCycle);
+        _driveController = _driveMotor.getClosedLoopController();
+        _steeringController = _steerMotor.getClosedLoopController();
 
-        _driveController = _driveMotor.getPIDController();
-        _steeringController = _steerMotor.getPIDController();
+        _steerMotorConfig.closedLoop
+            .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+            .positionWrappingEnabled(true)
+            .positionWrappingMinInput(Constants.Drivetrain.POSITION_WRAPPING_MIN_INPUT)
+            .positionWrappingMaxInput(Constants.Drivetrain.POSITION_WRAPPING_MAX_INPUT)
+            .pidf(Constants.Drivetrain.STEER_KP, Constants.Drivetrain.STEER_KI, Constants.Drivetrain.STEER_KD, Constants.Drivetrain.STEER_FF)
+            .outputRange(Constants.Drivetrain.MOTOR_MIN_OUTPUT, Constants.Drivetrain.MOTOR_MAX_OUTPUT);
 
-        _driveController.setFeedbackDevice(_driveEncoder);
-        _steeringController.setFeedbackDevice(_steerAbsoluteEncoder);
+        _steerMotorConfig.absoluteEncoder
+            .positionConversionFactor(Constants.Drivetrain.STEER_POSITION_FACTOR)
+            .velocityConversionFactor(Constants.Drivetrain.STEER_VELOCITY_FACTOR)
+            .inverted(Constants.Drivetrain.IS_INVERTED);
 
-        _steerAbsoluteEncoder.setPositionConversionFactor(Constants.Drivetrain.STEER_POSITION_FACTOR); //TODO finish this
-        _steerAbsoluteEncoder.setVelocityConversionFactor(Constants.Drivetrain.STEER_VELOCITY_FACTOR); // TODO this might be the root of problems
+        _driveMotorConfig.encoder
+            .positionConversionFactor(Constants.Drivetrain.DRIVE_POSITION_FACTOR)
+            .velocityConversionFactor(Constants.Drivetrain.DRIVE_VELOCITY_FACTOR);
 
-        _driveEncoder.setPositionConversionFactor(Constants.Drivetrain.DRIVE_POSITION_FACTOR);
-        _driveEncoder.setVelocityConversionFactor(Constants.Drivetrain.DRIVE_VELOCITY_FACTOR);
+        _driveMotorConfig.closedLoop
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+            .pidf(Constants.Drivetrain.DRIVE_KP, Constants.Drivetrain.DRIVE_KI, Constants.Drivetrain.DRIVE_KD, Constants.Drivetrain.DRIVE_FF)
+            .outputRange(Constants.Drivetrain.MOTOR_MIN_OUTPUT, Constants.Drivetrain.MOTOR_MAX_OUTPUT);
 
-        _steerAbsoluteEncoder.setInverted(Constants.Drivetrain.IS_INVERTED);
+        _steerMotorConfig.idleMode(Constants.Drivetrain.STEER_IDLE_MODE);
+        _driveMotorConfig.idleMode(Constants.Drivetrain.DRIVE_IDLE_MODE);
 
-        _steeringController.setPositionPIDWrappingEnabled(true);
-        _steeringController.setPositionPIDWrappingMinInput(Constants.Drivetrain.POSITION_WRAPPING_MIN_INPUT);
-        _steeringController.setPositionPIDWrappingMaxInput(Constants.Drivetrain.POSITION_WRAPPING_MAX_INPUT);
+        _steerMotorConfig.smartCurrentLimit(Constants.Drivetrain.STEER_CURRENT_LIMIT);
+        _driveMotorConfig.smartCurrentLimit(Constants.Drivetrain.DRIVE_CURRENT_LIMIT);
 
-        _steeringController.setP(Constants.Drivetrain.STEER_KP);
-        _steeringController.setI(Constants.Drivetrain.STEER_KI);
-        _steeringController.setD(Constants.Drivetrain.STEER_KD);
-        _steeringController.setFF(Constants.Drivetrain.STEER_FF);
-        _steeringController.setOutputRange(Constants.Drivetrain.MOTOR_MIN_OUTPUT, Constants.Drivetrain.MOTOR_MAX_OUTPUT);
-        _driveController.setP(Constants.Drivetrain.DRIVE_KP);
-        _driveController.setI(Constants.Drivetrain.DRIVE_KI);
-        _driveController.setD(Constants.Drivetrain.DRIVE_KD);
-        _driveController.setFF(Constants.Drivetrain.DRIVE_FF);
-        _driveController.setOutputRange(Constants.Drivetrain.MOTOR_MIN_OUTPUT, Constants.Drivetrain.MOTOR_MAX_OUTPUT);
+        _steerMotor.configure(_steerMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        _driveMotor.configure(_driveMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        _driveMotor.setIdleMode(Constants.Drivetrain.DRIVE_IDLE_MODE);
-        _steerMotor.setIdleMode(Constants.Drivetrain.STEER_IDLE_MODE);
-        _driveMotor.setSmartCurrentLimit(Constants.Drivetrain.DRIVE_CURRENT_LIMIT);
-        _steerMotor.setSmartCurrentLimit(Constants.Drivetrain.STEER_CURRENT_LIMIT);
-
-        _driveMotor.burnFlash();
-        _steerMotor.burnFlash();
-
-
-        _desiredModuleState.angle = new Rotation2d(_steerAbsoluteEncoder.getPosition());
-        _driveEncoder.setPosition(0);
+        _desiredModuleState.angle = new Rotation2d(_steerMotor.getAbsoluteEncoder().getPosition());
+        _driveMotor.getEncoder().setPosition(0);
     }
 
 
     public void zeroPosition() {
-        _driveEncoder.setPosition(0);
+        _driveMotor.getEncoder().setPosition(0);
     }
 
     public void setModuleState(SwerveModuleState state) {
@@ -95,29 +88,28 @@ public class SwerveModule extends SubsystemBase {
         correctedState.speedMetersPerSecond = state.speedMetersPerSecond;
         correctedState.angle = state.angle.plus(Rotation2d.fromRadians(_chassisAngularOffset));
 
-        SwerveModuleState optimizedState = SwerveModuleState.optimize(correctedState, new Rotation2d(_steerAbsoluteEncoder.getPosition()));
+        SwerveModuleState optimizedState = SwerveModuleState.optimize(correctedState, new Rotation2d(_steerMotor.getAbsoluteEncoder().getPosition()));
 
-        _driveController.setReference(optimizedState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
-        _steeringController.setReference(optimizedState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
+        _driveController.setReference(optimizedState.speedMetersPerSecond, SparkMax.ControlType.kVelocity);
+        _steeringController.setReference(optimizedState.angle.getRadians(), SparkMax.ControlType.kPosition);
 
         _desiredModuleState = state;
     }
 
     public SwerveModulePosition getSwervePosition() {
-        return new SwerveModulePosition(
-                _driveEncoder.getPosition(), new Rotation2d((_steerAbsoluteEncoder.getPosition() - _chassisAngularOffset)));
+        return new SwerveModulePosition(_driveMotor.getEncoder().getPosition(), new Rotation2d((_steerMotor.getAbsoluteEncoder().getPosition() - _chassisAngularOffset)));
     }
 
     public double getDriveEncoder() {
-        return _driveEncoder.getPosition();
+        return _driveMotor.getEncoder().getPosition();
     }
 
     public double getDriveVelocity(){
-        return _driveEncoder.getVelocity();
+        return _driveMotor.getEncoder().getVelocity();
     }
 
     public double getSteerEncoderPosition() {
-        return _steerAbsoluteEncoder.getPosition();
+        return _steerMotor.getAbsoluteEncoder().getPosition();
     }
 
     public double getChassisAngularOffset() {
@@ -125,7 +117,7 @@ public class SwerveModule extends SubsystemBase {
     }
 
     public SwerveModuleState getSwerveModuleState() {
-        return new SwerveModuleState(_driveEncoder.getVelocity(), new Rotation2d(_steerAbsoluteEncoder.getPosition() - _chassisAngularOffset));
+        return new SwerveModuleState(_driveMotor.getEncoder().getVelocity(), new Rotation2d(_steerMotor.getAbsoluteEncoder().getPosition() - _chassisAngularOffset));
     }
 
     public Translation2d getSwerveModuleLocation() {
