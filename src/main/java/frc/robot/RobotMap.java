@@ -21,6 +21,7 @@ public class RobotMap {
         public static final int ANGLE_ALIGNMENT_MOTOR_CAN = 2;
         public static final int ANGLE_ALIGNMENT_ENCODER_CAN = 15;
 
+        public static final int PIGEON_CAN = 18;
     }
 
     public static class DIO {
