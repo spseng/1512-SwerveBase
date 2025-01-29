@@ -70,6 +70,7 @@ public class RobotContainer {
         _autonomous = new Autonomous(_drivetrain);
         _drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
         _oi.initializeButtons(_drivetrain);
+        //enabled drivetrain
     }
 
     /**
