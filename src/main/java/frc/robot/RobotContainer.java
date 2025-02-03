@@ -30,8 +30,8 @@ import java.util.Map;
  */
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
-    //private VisionProcessor _visionProcessor;
-    private Drivetrain _drivetrain;
+    private VisionProcessor _visionProcessor;
+    //private Drivetrain _drivetrain;
     private OI _oi;
     private Autonomous _autonomous;
     // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -64,12 +64,12 @@ public class RobotContainer {
     }
 
     public void init() {
-        //_visionProcessor = new VisionProcessor();
-        _drivetrain = new Drivetrain();
+        _visionProcessor = new VisionProcessor();
+        //_drivetrain = new Drivetrain();
         _oi = new OI();
-        _autonomous = new Autonomous(_drivetrain);
-        _drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
-        _oi.initializeButtons(_drivetrain);
+        //_autonomous = new Autonomous(_drivetrain);
+        //_drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
+        //_oi.initializeButtons(_drivetrain);
         //enabled drivetrain
     }
 
