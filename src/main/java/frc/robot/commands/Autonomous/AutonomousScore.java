@@ -21,6 +21,7 @@ public class AutonomousScore extends Command {
         _driveXController = new PIDController(Constants.Autonomous.Score.DRIVE_X_KP, Constants.Autonomous.Score.DRIVE_X_KI, Constants.Autonomous.Score.DRIVE_X_KD);
         _driveYController = new PIDController(Constants.Autonomous.Score.DRIVE_Y_KP, Constants.Autonomous.Score.DRIVE_Y_KI, Constants.Autonomous.Score.DRIVE_Y_KD);
         _rotationController = new PIDController(Constants.Autonomous.Score.ROTATION_KP, Constants.Autonomous.Score.ROTATION_KI, Constants.Autonomous.Score.ROTATION_KD);
+        _rotationController.enableContinuousInput(-180, 180);
         addRequirements(_drivetrain);
     }
 
@@ -35,7 +36,10 @@ public class AutonomousScore extends Command {
     public void execute() {
         double vx = _driveXController.calculate(_visionProcessor.getLargestTagX(), 0);
         double vy = _driveYController.calculate(_visionProcessor.getLargestTagY(), 0);
-        double omega = _rotationController.calculate(_visionProcessor.getLargestTagTheta(), 0);
+        double omega = _rotationController.calculate(_visionProcessor.getLargestTagTheta(), 180);
+        double Coefficient = Constants.Drivetrain.MAX_DRIVE_SPEED_MPS / Math.sqrt(vx * vx + vy * vy);
+        vx *= Coefficient;
+        vy *= Coefficient;
         _drivetrain.setVelocity(new ChassisSpeeds(vx, vy, omega));
     }
 
