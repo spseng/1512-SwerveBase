@@ -163,7 +163,7 @@ public class Constants {
         public static final double SHOOTING_ANGLE_ERROR = 3; // Degrees
 
         // Field Constants
-        public static final double GRAVITY = 9.81; // Meters per second per second
+        public static final double GRAVITY = 9.81; // Meters per second^2
         public static final double GOAL_HEIGHT = 2.44; // Meters
         public static final long AMP_SCORE_TIME = 1500; //ms
         public static final long SHOOT_WOOF_DELAY = 2000; //ms
@@ -236,5 +236,15 @@ public class Constants {
         }
     }
 
-    // PID Constants
+    public static enum CoralLevel {
+        L1,
+        L2,
+        L3,
+        L4
+    }
+
+    public static enum ReefDirection {
+        LEFT,
+        RIGHT
+    }
 }

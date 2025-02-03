@@ -15,7 +15,7 @@ public class AutonomousScore extends Command {
     private final PIDController _driveYController;
     private final PIDController _rotationController;
 
-    public AutonomousScore(Drivetrain drivetrain, VisionProcessor visionProcessor) {
+    public AutonomousScore(Drivetrain drivetrain, VisionProcessor visionProcessor, Constants.ReefDirection direction) {
         _drivetrain = drivetrain;
         _visionProcessor = visionProcessor;
         _driveXController = new PIDController(Constants.Autonomous.Score.DRIVE_X_KP, Constants.Autonomous.Score.DRIVE_X_KI, Constants.Autonomous.Score.DRIVE_X_KD);
