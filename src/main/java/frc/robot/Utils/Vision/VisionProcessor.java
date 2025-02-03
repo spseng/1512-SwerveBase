@@ -17,6 +17,24 @@ public class VisionProcessor extends SubsystemBase {
         _testCam = new Camera("camera2", 0.2, 0.0, 0.5, 0.0, 0.0, 0.0);
     }
 
+    public double getLargestTagX() {
+        double[] pose = _testCam.getLargestTagPose();
+        if (pose == null) return 0.0;
+        return pose[0];
+    }
+
+    public double getLargestTagY() {
+        double[] pose = _testCam.getLargestTagPose();
+        if (pose == null) return 0.0;
+        return pose[1];
+    }
+
+    public double getLargestTagTheta() {
+        double[] pose = _testCam.getLargestTagPose();
+        if (pose == null) return 0.0;
+        return pose[2];
+    }
+
     public void updateDashboard() {
         if (!_testCam.isTargetinSight()) {
             SmartDashboard.putNumber("AprilTags Detected", 0);
