@@ -220,6 +220,20 @@ public class Constants {
                 "Hello_Path2",
                 "Hello_Path3"
         };
+
+        public static class Score {
+            public static final double DRIVE_X_KP = 0.5;
+            public static final double DRIVE_X_KI = 0.0;
+            public static final double DRIVE_X_KD = 0.02;
+
+            public static final double DRIVE_Y_KP = 0.5;
+            public static final double DRIVE_Y_KI = 0.0;
+            public static final double DRIVE_Y_KD = 0.02;
+
+            public static final double ROTATION_KP = 0.5;
+            public static final double ROTATION_KI = 0.0;
+            public static final double ROTATION_KD = 0.02;
+        }
     }
 
     // PID Constants
