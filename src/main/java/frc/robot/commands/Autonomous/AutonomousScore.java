@@ -2,6 +2,7 @@ package frc.robot.commands.Autonomous;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Utils.Vision.VisionProcessor;
@@ -35,11 +36,14 @@ public class AutonomousScore extends Command {
     @Override
     public void execute() {
         double vx = _driveXController.calculate(_visionProcessor.getLargestTagX(), 0);
-        double vy = _driveYController.calculate(_visionProcessor.getLargestTagY(), 0);
+        double vy = _driveYController.calculate(_visionProcessor.getLargestTagY(), Constants.Autonomous.Score.DISTANCE_FACING_Y);
         double omega = _rotationController.calculate(_visionProcessor.getLargestTagTheta(), 180);
         double Coefficient = Constants.Drivetrain.MAX_DRIVE_SPEED_MPS / Math.sqrt(vx * vx + vy * vy);
         vx *= Coefficient;
         vy *= Coefficient;
+        SmartDashboard.putNumber("camera_vx", vx);
+        SmartDashboard.putNumber("camera_vy", vy);
+        SmartDashboard.putNumber("camera_omega", omega);
         _drivetrain.setVelocity(new ChassisSpeeds(vx, vy, omega));
     }
 
@@ -50,6 +54,6 @@ public class AutonomousScore extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        _drivetrain.setVelocity(new ChassisSpeeds()); // Stop when finished
+        //_drivetrain.setVelocity(new ChassisSpeeds()); // Stop when finished
     }
 }
