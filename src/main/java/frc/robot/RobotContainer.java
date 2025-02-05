@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Utils.Vision.VisionProcessor;
+import frc.robot.Utils.AutonomousDrive;
 import frc.robot.commands.Drive.Drive;
-import frc.robot.Utils.Autonomous;
 import frc.robot.subsystems.Drivetrain;
 
 
@@ -28,7 +28,7 @@ public class RobotContainer {
     private VisionProcessor _visionProcessor;
     private Drivetrain _drivetrain;
     private OI _oi;
-    private Autonomous _autonomous;
+    private AutonomousDrive _autonomous;
     // Replace with CommandPS4Controller or CommandJoystick if needed
     //add controller in OI
 
@@ -61,7 +61,7 @@ public class RobotContainer {
         _visionProcessor = new VisionProcessor();
         _drivetrain = new Drivetrain();
         _oi = new OI();
-        _autonomous = new Autonomous(_drivetrain);
+        _autonomous = new AutonomousDrive(_drivetrain);
         _drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
         _oi.initializeButtons(_drivetrain);
     }

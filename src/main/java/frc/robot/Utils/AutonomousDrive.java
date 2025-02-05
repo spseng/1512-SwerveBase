@@ -11,12 +11,12 @@ import frc.robot.subsystems.Drivetrain;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Autonomous {
+public class AutonomousDrive {
     private final Drivetrain _drivetrain;
     private final SendableChooser<PathPlannerPath> _autoChooser;
     private final Map<String, PathPlannerPath> _preloadedPaths;
 
-    public Autonomous(Drivetrain drivetrain) {
+    public AutonomousDrive(Drivetrain drivetrain) {
         _drivetrain = drivetrain;
         _autoChooser = new SendableChooser<>();
         _preloadedPaths = new HashMap<>();
