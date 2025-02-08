@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Utils.Vision.VisionProcessor;
 import frc.robot.Utils.AutonomousDrive;
+import frc.robot.commands.Autonomous.AutonomousScore;
 import frc.robot.commands.Drive.Drive;
 import frc.robot.subsystems.Drivetrain;
 
@@ -62,7 +63,8 @@ public class RobotContainer {
         _drivetrain = new Drivetrain();
         _oi = new OI();
         _autonomous = new AutonomousDrive(_drivetrain);
-        _drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
+        _drivetrain.setDefaultCommand(new AutonomousScore(_drivetrain, _visionProcessor, null));
+        //_drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
         _oi.initializeButtons(_drivetrain);
     }
 

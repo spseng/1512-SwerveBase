@@ -35,15 +35,15 @@ public class AutonomousScore extends Command {
 
     @Override
     public void execute() {
-        double vx = _driveXController.calculate(_visionProcessor.getLargestTagX(), 0);
-        double vy = _driveYController.calculate(_visionProcessor.getLargestTagY(), Constants.Autonomous.Score.DISTANCE_FACING_Y);
+        double vx = _driveXController.calculate(_visionProcessor.getLargestTagX(), Constants.Autonomous.Score.DISTANCE_FACING_Y);
+        double vy = _driveYController.calculate(_visionProcessor.getLargestTagY(), 0);
         double omega = _rotationController.calculate(_visionProcessor.getLargestTagTheta(), 180);
-        double Coefficient = Constants.Drivetrain.MAX_DRIVE_SPEED_MPS / Math.sqrt(vx * vx + vy * vy);
+        double Coefficient = Constants.Drivetrain.MAX_DRIVE_SPEED_MPS / Math.sqrt(vx * vx + vy * vy) * 0.3;
         vx *= Coefficient;
         vy *= Coefficient;
-        SmartDashboard.putNumber("camera_vx", vx);
-        SmartDashboard.putNumber("camera_vy", vy);
-        SmartDashboard.putNumber("camera_omega", omega);
+        SmartDashboard.putNumber("autonomous_vx", vx);
+        SmartDashboard.putNumber("autonomous_vy", vy);
+        SmartDashboard.putNumber("autonomous_omega", omega);
         _drivetrain.setVelocity(new ChassisSpeeds(vx, vy, omega));
     }
 
