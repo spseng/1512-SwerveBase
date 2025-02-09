@@ -234,7 +234,7 @@ public class Constants {
             public static final double ROTATION_KI = 0.0;
             public static final double ROTATION_KD = 0.02;
 
-            public static final double DISTANCE_FACING_Y = 1; // space between front of camera and april tag
+            public static final double DISTANCE_FACING_X = 1; // space between front of camera and april tag in meters
 
         }
     }
