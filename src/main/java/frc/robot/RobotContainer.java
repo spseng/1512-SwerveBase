@@ -26,7 +26,7 @@ import frc.robot.subsystems.Drivetrain;
  */
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
-    private VisionProcessor _visionProcessor;
+    //private VisionProcessor _visionProcessor;
     private Drivetrain _drivetrain;
     private OI _oi;
     private AutonomousDrive _autonomous;
@@ -59,12 +59,12 @@ public class RobotContainer {
     }
 
     public void init() {
-        _visionProcessor = new VisionProcessor();
+        //_visionProcessor = new VisionProcessor();
         _drivetrain = new Drivetrain();
         _oi = new OI();
         _autonomous = new AutonomousDrive(_drivetrain);
-        _drivetrain.setDefaultCommand(new AutonomousScore(_drivetrain, _visionProcessor, null));
-        //_drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
+        //_drivetrain.setDefaultCommand(new AutonomousScore(_drivetrain, _visionProcessor, null));
+        _drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
         _oi.initializeButtons(_drivetrain);
     }
 
