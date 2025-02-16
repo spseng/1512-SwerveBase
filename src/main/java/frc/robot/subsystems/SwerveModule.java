@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkFlex;
@@ -35,8 +36,8 @@ public class SwerveModule extends SubsystemBase {
 
     public SwerveModule(int steerPort, int drivePort, ModuleConfiguration config) {
         _chassisAngularOffset = config.encoderOffset;
-        _steerMotor = new SparkMax(steerPort, com.revrobotics.spark.SparkLowLevel.MotorType.kBrushless);
-        _driveMotor = new SparkFlex(drivePort, com.revrobotics.spark.SparkLowLevel.MotorType.kBrushless);
+        _steerMotor = new SparkMax(steerPort, MotorType.kBrushless);
+        _driveMotor = new SparkFlex(drivePort, MotorType.kBrushless);
         _moduleLoaction = config.position;
 
         _steerMotorConfig = new SparkMaxConfig();

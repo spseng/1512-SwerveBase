@@ -239,6 +239,15 @@ public class Constants {
         }
     }
 
+    public static class Elevator {
+        public static final int MAX_HEIGHT = 37; // in inches
+        public static final int MIN_HEIGHT = 0; // in inches
+
+        public static final double ELEVATOR_KP = 0.1;
+        public static final double ELEVATOR_KI = 0.0;
+        public static final double ELEVATOR_KD = 0.0;
+    }
+
     public static enum CoralLevel {
         L1,
         L2,
