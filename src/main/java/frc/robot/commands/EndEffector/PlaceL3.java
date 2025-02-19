@@ -3,29 +3,35 @@ package frc.robot.commands.EndEffector;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.EndEffector;
 
 public class PlaceL3 extends Command {
 
-    private EndEffector _endEffector;
-    private Arm _arm;
+    private final EndEffector _endEffector;
+    private final Arm _arm;
+    private final Elevator _elevator;
     
-    public PlaceL3(EndEffector endEffector, Arm arm){
+    public PlaceL3(EndEffector endEffector, Arm arm, Elevator elevator){
         _endEffector = endEffector;
         _arm = arm;
+        _elevator = elevator;
 
 
     }
     @Override
     public void initialize() {
-    _arm.setArmPosition(Constants.Arm.L3_ANGLE);    
+    _arm.setArmPosition(Constants.Arm.L3_ANGLE); 
+    _elevator.setTargetHeight(Constants.Elevator.L3_HEIGHT); 
         
     }
     @Override
     public void execute() {
         // TODO Auto-generated method stub
         super.execute();
-        _endEffector.setIntakeSpeed(Constants.In.EJECT_SPEED);
+        if (_elevator.isAtTarget() && _arm.isAtTarget()){_endEffector.setIntakeSpeed(Constants.EndEffector.PLACE_SPEED);
+        }
+
     }
     @Override
     public boolean isFinished() {

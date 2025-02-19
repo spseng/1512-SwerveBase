@@ -182,16 +182,9 @@ public class Constants {
     }
 
 
-    public static class In {
+    public static class EndEffector {
 
-        public static final double LOADING_SPEED = 0.45;
-        public static final double SHOOT_STATIC_SPEED = 1;
-        public static final long SHOOT_DELAY = 500; //ms
-
-        public static final double BACKOUT_SPEED = -0.4;
-        public static final long BACKOUT_TIME = 300; // ms
-
-        public static final double EJECT_SPEED = -1.0;
+        public static final double PLACE_SPEED = -1.0;
 
         public static final double INTAKE_SPEED = 0.80;
     }
@@ -199,19 +192,14 @@ public class Constants {
     public static class Arm {
         public static final double AMP_SCORING_ANGLE = -0.308; // Rads
         public static final double ARM_INTAKE_ANGLE = 0.232; // Rad
-        public static final double ARM_MAX_ANGLE = -0.423; // TODO change this to what it is
-
-        // Shooter Angle Alignment PID
-        public static final double SHOOTING_ANGLE_KP = 7.0;
-        public static final double SHOOTING_ANGLE_KI = 0.000;
-        public static final double SHOOTING_ANGLE_KD = 0.5;
-        public static final double TOLERANCE = 0.05;
-
-        public static final double SHOOT_SUB_ANGLE = 0.00; //TODO change this
-        public static final double MANUAL_ARM_MOVE_SPEED = .45;
-
-        public static final double ARM_CLIMB_ANGLE = 0.0; //I do not know what it is supposed to be since it dissappeard in merging process. we need to figure out....
-    }
+        public static final double ALGAE_POSITION = 0;
+        public static final double L1_ANGLE = 0;
+        public static final double L2_ANGLE = 0;
+        public static final double L3_ANGLE = 0;
+        public static final double L4_ANGLE = 0;
+        public static final double ARM_TOLERENCE = 0;
+        public static final double STOW_POSITION = 0;
+      }
 
     public static class Autonomous {
         public static final boolean IS_COMPETITION = false;
@@ -258,6 +246,12 @@ public class Constants {
         public static final double ELEVATOR_MAX_HEIGHT = 37; // in inches
 
         public static final int ELEVATOR_CURRENT_LIMIT = 40;
+        public static final double INTAKE_HEIGHT = 0;
+        public static final double L1_HEIGHT = 0;
+        public static final double L2_HEIGHT = 0;
+        public static final double L3_HEIGHT = 0;
+        public static final double L4_HEIGHT = 0;
+        public static final double STOW_HEIGHT = 0;
     }
 
     public static enum CoralLevel {

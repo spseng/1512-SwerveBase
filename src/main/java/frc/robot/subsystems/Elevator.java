@@ -1,17 +1,16 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.hardware.CANcoder;
+
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
-import com.revrobotics.spark.SparkMax;
+
 import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
@@ -26,6 +25,10 @@ public class Elevator extends SubsystemBase {
     private final AbsoluteEncoder _elevatorEncoder;
 
     private final PIDController _elevatorPIDController;
+
+    private double _desiredHeight;
+    
+
     public Elevator() {
         _elevatorLeaderMotor = new SparkMax(RobotMap.CAN.ELEVATOR_MOTOR_LEFT, MotorType.kBrushless);
         _elevatorFollowerMotor = new SparkMax(RobotMap.CAN.ELEVATOR_MOTOR_RIGHT, MotorType.kBrushless);
@@ -58,6 +61,9 @@ public class Elevator extends SubsystemBase {
 
     public double getCurrentHeight() {
         return _elevatorEncoder.getPosition() * 10; //TODO implement the equation of the encoder
+    }
+    public boolean isAtTarget(){
+        return ((_desiredHeight - Constants.Elevator.ELEVATOR_TOLERANCE < getCurrentHeight() && _desiredHeight + Constants.Elevator.ELEVATOR_TOLERANCE  > getCurrentHeight()));
     }
 
     public void stop() {

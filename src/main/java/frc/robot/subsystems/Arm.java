@@ -12,6 +12,7 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Arm extends SubsystemBase{
 
@@ -48,6 +49,9 @@ public class Arm extends SubsystemBase{
     }
     public double getSetpoint(){
         return _setpoint;
+    }
+    public boolean isAtTarget(){
+        return ((getSetpoint() - Constants.Arm.ARM_TOLERENCE) < getArmAngle() && (getSetpoint() + Constants.Arm.ARM_TOLERENCE > getArmAngle()));
     }
     @Override
     public void periodic() {
