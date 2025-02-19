@@ -14,7 +14,7 @@ public class Drive extends Command {
 
     private final Drivetrain _drivetrain;
     private final OI _oi;
-    private int segmentationArray[] = new int[360 / 5];
+    private final int[] segmentationArray = new int[360 / 5];
     // creates 72 segments and 5 degrees each
 
 

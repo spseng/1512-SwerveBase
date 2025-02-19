@@ -12,8 +12,10 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Utils.Vision.VisionProcessor;
-import frc.robot.subsystems.Autonomous;
-
+import frc.robot.Utils.AutonomousDrive;
+import frc.robot.commands.Autonomous.AutonomousScore;
+import frc.robot.commands.Drive.Drive;
+import frc.robot.subsystems.Drivetrain;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -23,10 +25,10 @@ import frc.robot.subsystems.Autonomous;
  */
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
-    private VisionProcessor _visionProcessor;
-    //private Drivetrain _drivetrain;
+    //private VisionProcessor _visionProcessor;
+    private Drivetrain _drivetrain;
     private OI _oi;
-    private Autonomous _autonomous;
+    private AutonomousDrive _autonomous;
     // Replace with CommandPS4Controller or CommandJoystick if needed
     //add controller in OI
 
@@ -53,17 +55,16 @@ public class RobotContainer {
 
         // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
         // cancelling on release.
-
     }
 
     public void init() {
-        _visionProcessor = new VisionProcessor();
-        //_drivetrain = new Drivetrain();
+        //_visionProcessor = new VisionProcessor();
+        _drivetrain = new Drivetrain();
         _oi = new OI();
-        //_autonomous = new Autonomous(_drivetrain);
-        //_drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
-        //_oi.initializeButtons(_drivetrain);
-        //enabled drivetrain
+        _autonomous = new AutonomousDrive(_drivetrain);
+        //_drivetrain.setDefaultCommand(new AutonomousScore(_drivetrain, _visionProcessor, null));
+        _drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
+        _oi.initializeButtons(_drivetrain);
     }
 
     /**

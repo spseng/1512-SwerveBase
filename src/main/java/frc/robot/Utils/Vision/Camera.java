@@ -24,8 +24,9 @@ public class Camera {
     }
 
     public PhotonPipelineResult getLatestResult() {
-        var results = _photonCamera.getAllUnreadResults();
-        return results.get(results.size() - 1);
+        //var results = _photonCamera.getAllUnreadResults();
+        //return results.get(results.size() - 1);
+        return _photonCamera.getLatestResult();
     }
 
     public boolean isTargetinSight() {

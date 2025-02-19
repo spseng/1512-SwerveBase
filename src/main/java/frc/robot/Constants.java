@@ -163,7 +163,7 @@ public class Constants {
         public static final double SHOOTING_ANGLE_ERROR = 3; // Degrees
 
         // Field Constants
-        public static final double GRAVITY = 9.81; // Meters per second per second
+        public static final double GRAVITY = 9.81; // Meters per second^2
         public static final double GOAL_HEIGHT = 2.44; // Meters
         public static final long AMP_SCORE_TIME = 1500; //ms
         public static final long SHOOT_WOOF_DELAY = 2000; //ms
@@ -220,7 +220,55 @@ public class Constants {
                 "Hello_Path2",
                 "Hello_Path3"
         };
+
+        public static class Score {
+            public static final double DRIVE_X_KP = 0.5;
+            public static final double DRIVE_X_KI = 0.0;
+            public static final double DRIVE_X_KD = 0.02;
+
+            public static final double DRIVE_Y_KP = 0.5;
+            public static final double DRIVE_Y_KI = 0.0;
+            public static final double DRIVE_Y_KD = 0.02;
+
+            public static final double ROTATION_KP = 0.5;
+            public static final double ROTATION_KI = 0.0;
+            public static final double ROTATION_KD = 0.02;
+
+            public static final double DISTANCE_FACING_X = 1; // space between front of camera and april tag in meters
+
+        }
     }
 
-    // PID Constants
+    public static class Elevator {
+        public static final int MAX_HEIGHT = 37; // in inches
+        public static final int MIN_HEIGHT = 0; // in inches
+
+        public static final double ELEVATOR_POSITION_KP = 0.1;
+        public static final double ELEVATOR_POSITION_KI = 0.0;
+        public static final double ELEVATOR_POSITION_KD = 0.0;
+        public static final double ELEVATOR_TOLERANCE = 0.1;
+
+        public static final double ELEVATOR_MOTOR_KP = 0.1;
+        public static final double ELEVATOR_MOTOR_KI = 0.0;
+        public static final double ELEVATOR_MOTOR_KD = 0.02;
+
+        public static final double ELEVATOR_MOTOR_MIN_OUTPUT = -1;
+        public static final double ELEVATOR_MOTOR_MAX_OUTPUT = 1;
+
+        public static final double ELEVATOR_MAX_HEIGHT = 37; // in inches
+
+        public static final int ELEVATOR_CURRENT_LIMIT = 40;
+    }
+
+    public static enum CoralLevel {
+        L1,
+        L2,
+        L3,
+        L4
+    }
+
+    public static enum ReefDirection {
+        LEFT,
+        RIGHT
+    }
 }

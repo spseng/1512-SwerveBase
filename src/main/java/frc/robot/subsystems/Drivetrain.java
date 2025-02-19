@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import com.kauailabs.navx.frc.AHRS;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.controllers.PathFollowingController;
 import com.pathplanner.lib.trajectory.PathPlannerTrajectoryState;
@@ -38,7 +37,7 @@ public class Drivetrain extends SubsystemBase {
     private static final int NORTH_WEST_IDX = 1;
     private static final int SOUTH_EAST_IDX = 2;
     private static final int SOUTH_WEST_IDX = 3;
-    private final SwerveSetpointGenerator _setpointGenerator;
+    private final SwerveSetpointGenerator _setPointGenerator;
     private KinematicLimits _limits;
     private final SwerveDriveKinematics _kinematics; // physical layout of chassis
     //private final AHRS _gyro; // navX might will be changed to pigeon 2.0 soon
@@ -97,7 +96,7 @@ public class Drivetrain extends SubsystemBase {
         _current_pose = _odometry.getPoseMeters();
         _previous_pose = _current_pose;
 
-        _setpointGenerator = new SwerveSetpointGenerator(
+        _setPointGenerator = new SwerveSetpointGenerator(
                 _kinematics,
                 new Translation2d[]{
                         _modules[NORTH_EAST_IDX].getSwerveModuleLocation(),
@@ -166,7 +165,7 @@ public class Drivetrain extends SubsystemBase {
                 twistVel.dy / Constants.UPDATE_PERIOD,
                 twistVel.dtheta / Constants.UPDATE_PERIOD); // all of this is to conserve heading
 
-        _Io.setpoint = _setpointGenerator.generateSetpoint(
+        _Io.setpoint = _setPointGenerator.generateSetpoint(
                 _limits,
                 _Io.setpoint,
                 updatedChassisSpeeds,

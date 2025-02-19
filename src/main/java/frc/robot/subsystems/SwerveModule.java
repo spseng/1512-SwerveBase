@@ -1,7 +1,10 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -19,10 +22,10 @@ public class SwerveModule extends SubsystemBase {
     // Instance Variables
 
     private final SparkMax _steerMotor;
-    private final SparkMax _driveMotor;
+    private final SparkFlex _driveMotor;
 
     private final SparkMaxConfig _steerMotorConfig;
-    private final SparkMaxConfig _driveMotorConfig;
+    private final SparkFlexConfig _driveMotorConfig;
 
     private final SparkClosedLoopController _steeringController;
     private final SparkClosedLoopController _driveController;
@@ -33,12 +36,12 @@ public class SwerveModule extends SubsystemBase {
 
     public SwerveModule(int steerPort, int drivePort, ModuleConfiguration config) {
         _chassisAngularOffset = config.encoderOffset;
-        _steerMotor = new SparkMax(steerPort, com.revrobotics.spark.SparkLowLevel.MotorType.kBrushless);
-        _driveMotor = new SparkMax(drivePort, com.revrobotics.spark.SparkLowLevel.MotorType.kBrushless);
+        _steerMotor = new SparkMax(steerPort, MotorType.kBrushless);
+        _driveMotor = new SparkFlex(drivePort, MotorType.kBrushless);
         _moduleLoaction = config.position;
 
         _steerMotorConfig = new SparkMaxConfig();
-        _driveMotorConfig = new SparkMaxConfig();
+        _driveMotorConfig = new SparkFlexConfig();
 
         _driveController = _driveMotor.getClosedLoopController();
         _steeringController = _steerMotor.getClosedLoopController();
@@ -90,7 +93,7 @@ public class SwerveModule extends SubsystemBase {
 
         SwerveModuleState optimizedState = SwerveModuleState.optimize(correctedState, new Rotation2d(_steerMotor.getAbsoluteEncoder().getPosition()));
 
-        _driveController.setReference(optimizedState.speedMetersPerSecond, SparkMax.ControlType.kVelocity);
+        _driveController.setReference(optimizedState.speedMetersPerSecond, SparkFlex.ControlType.kVelocity);
         _steeringController.setReference(optimizedState.angle.getRadians(), SparkMax.ControlType.kPosition);
 
         _desiredModuleState = state;
