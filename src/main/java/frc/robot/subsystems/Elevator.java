@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 
@@ -49,6 +51,9 @@ public class Elevator extends SubsystemBase {
             .outputRange(Constants.Elevator.ELEVATOR_MOTOR_MIN_OUTPUT, Constants.Elevator.ELEVATOR_MOTOR_MAX_OUTPUT);
 
         _elevatorLeaderMotorConfig.smartCurrentLimit(Constants.Elevator.ELEVATOR_CURRENT_LIMIT);
+
+        _elevatorLeaderMotor.configure(_elevatorLeaderMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        _elevatorFollowerMotor.configure(_elevatorFollowerMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     public void setTargetHeight(double height) {
