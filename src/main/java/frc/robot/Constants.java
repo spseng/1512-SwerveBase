@@ -199,7 +199,7 @@ public class Constants {
         public static final double L4_ANGLE = 0;
         public static final double ARM_TOLERENCE = 0;
         public static final double STOW_POSITION = 0;
-      }
+    }
 
     public static class Autonomous {
         public static final boolean IS_COMPETITION = false;
@@ -252,6 +252,10 @@ public class Constants {
         public static final double L3_HEIGHT = 0;
         public static final double L4_HEIGHT = 0;
         public static final double STOW_HEIGHT = 0;
+    }
+
+    public static class Climb {
+
     }
 
     public static enum CoralLevel {
