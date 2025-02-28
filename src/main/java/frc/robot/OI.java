@@ -3,6 +3,8 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Utils.AxisButton;
 import frc.robot.Utils.Gamepad;
@@ -93,18 +95,36 @@ public class OI {
     
     //this is where we map commands
     public void initializeButtons(Drivetrain drivetrain) {
+    _driverAButton.onTrue(Commands.none());
+    _driverBButton.onTrue(Commands.none());
+    _driverXButton.onTrue(Commands.none());
+    _driverYButton.onTrue(Commands.none());
+    _driverLeftBumper.onTrue(Commands.none());
+    _driverRightBumper.onTrue(Commands.none());
+    _driverStartButton.onTrue(Commands.none());
+    _driverBackButton.onTrue(Commands.none());
 
-        //this is where we map commands
+    // Driver POV Buttons
+    _driverPOVUp.onTrue(Commands.none());
+    _driverPOVDown.onTrue(Commands.none());
+    _driverPOVLeft.onTrue(Commands.none());
+    _driverPOVRight.onTrue(Commands.none());
 
-        //_driverGamepad.getAButton().onTrue(new ShootAmp(indexer, shooter));
-        //_driverGamepad.getYButton().onTrue(new ClimbUp(arm));
-        _driverGamepad.getBButton().onTrue(new ResetIMU(drivetrain));
-        _operatorGamepad.getAButton().onTrue(new Snap(drivetrain, new Rotation2d(Math.PI)));
-        _operatorGamepad.getXButton().onTrue(new Snap(drivetrain, new Rotation2d(90)));
-        _operatorGamepad.getYButton().onTrue(new Snap(drivetrain, new Rotation2d(0)));
-        _operatorGamepad.getBButton().onTrue(new Snap(drivetrain, new Rotation2d(270)));
-        _driverGamepad.getLeftBumper().whileTrue(new SlowMode(drivetrain, Constants.Drivetrain.DRIVE_KINEMATIC_LIMITS));
+    // Operator Buttons
+    _operatorAButton.onTrue(Commands.none());
+    _operatorBButton.onTrue(Commands.none());
+    _operatorXButton.onTrue(Commands.none());
+    _operatorYButton.onTrue(Commands.none());
+    _operatorLeftBumper.onTrue(Commands.none());
+    _operatorRightBumper.onTrue(Commands.none());
+    _operatorStartButton.onTrue(Commands.none());
+    _operatorBackButton.onTrue(Commands.none());
 
+    // Operator POV Buttons
+    _operatorPOVUp.onTrue(Commands.none());
+    _operatorPOVDown.onTrue(Commands.none());
+    _operatorPOVLeft.onTrue(Commands.none());
+    _operatorPOVRight.onTrue(Commands.none());
     }
 
     public double getDriveY() {
