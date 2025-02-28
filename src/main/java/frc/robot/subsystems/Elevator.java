@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -31,10 +30,9 @@ public class Elevator extends SubsystemBase {
     private double _previousPosition;
     private int _rotationCount;
     
-
     public Elevator() {
-        _elevatorLeaderMotor = new SparkMax(RobotMap.CAN.ELEVATOR_MOTOR_LEFT, MotorType.kBrushless);
-        _elevatorFollowerMotor = new SparkMax(RobotMap.CAN.ELEVATOR_MOTOR_RIGHT, MotorType.kBrushless);
+        _elevatorLeaderMotor = new SparkMax(RobotMap.CAN.ELEVATOR_MOTOR_LEFT_CAN, MotorType.kBrushless);
+        _elevatorFollowerMotor = new SparkMax(RobotMap.CAN.ELEVATOR_MOTOR_RIGHT_CAN, MotorType.kBrushless);
 
         _elevatorLeaderMotorConfig = new SparkMaxConfig();
         _elevatorFollowerMotorConfig = new SparkMaxConfig();
@@ -64,18 +62,8 @@ public class Elevator extends SubsystemBase {
 
     @Override
     public void periodic() {
-        double currentPosition = _elevatorEncoder.getPosition();
-
-        // Detect forward wrap (0.95 → 0.05)
-        if (_previousPosition > 0.9 && currentPosition < 0.1) {
-            _rotationCount++;
-        }
-        // Detect reverse wrap (0.05 → 0.95)
-        else if (_previousPosition < 0.1 && currentPosition > 0.9) {
-            _rotationCount--;
-        }
-
-    _previousPosition = currentPosition;
+        super.periodic();
+        updateEncoderRotation();
         updateMotorPower();
         SmartDashboard.putNumber("Elevator Height", getCurrentHeight());
         SmartDashboard.putNumber("Elevator Desired Height", _desiredHeight);
@@ -83,11 +71,11 @@ public class Elevator extends SubsystemBase {
     }
 
     public double getCurrentHeight() {
-        return _elevatorEncoder.getPosition() * (2.75 * Math.PI); //TODO implement the equation of the encoder
+        return (_rotationCount + _elevatorEncoder.getPosition()) * (2.75 * Math.PI);
     }
     
     public boolean isAtTarget(){
-        return ((_desiredHeight - Constants.Elevator.ELEVATOR_TOLERANCE < getCurrentHeight() && _desiredHeight + Constants.Elevator.ELEVATOR_TOLERANCE  > getCurrentHeight()));
+        return Math.abs(_desiredHeight - getCurrentHeight()) < Constants.Elevator.ELEVATOR_TOLERANCE;
     }
 
     public void stop() {
@@ -95,8 +83,17 @@ public class Elevator extends SubsystemBase {
     }
 
     private void updateMotorPower() {
-        double currentHeight = getCurrentHeight();
-        double output = _elevatorPIDController.calculate(currentHeight, _desiredHeight);
+        double output = _elevatorPIDController.calculate(getCurrentHeight(), _desiredHeight);
         _elevatorLeaderMotor.set(-output);
+    }
+    
+    private void updateEncoderRotation() {
+        double _currentPosition = _elevatorEncoder.getPosition();
+        if (_currentPosition - _previousPosition < -0.5) {
+            _rotationCount++;
+        } else if (_currentPosition - _previousPosition > 0.5) {
+            _rotationCount--;
+        }
+        _previousPosition = _currentPosition;
     }
 }

@@ -2,67 +2,76 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkAbsoluteEncoder;
 
-import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotMap;
 
 public class Arm extends SubsystemBase{
 
-    private final SparkMax _motor;
-    private final SparkAbsoluteEncoder _encoder;
-    private final SparkMaxConfig _config;
+    private final SparkMax _armMotor;
+    private final SparkAbsoluteEncoder _armEncoder;
+    private final PIDController _armPIDController;
+    private final SparkMaxConfig _armMotorConfig;
 
     private double _setpoint;
-
-    private final SparkClosedLoopController _controller;
-
     
     public Arm(){
-        _motor = new SparkMax(0, MotorType.kBrushed); //TODO fillin IDs
-        _encoder = _motor.getAbsoluteEncoder();
-        _controller = _motor.getClosedLoopController();
-        _config = new SparkMaxConfig();
-        _config.closedLoop
-            .pid(0,0,0) //TODO fill in
-            .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-            .positionWrappingEnabled(false)
-            .outputRange(0,0);
+        _armMotor = new SparkMax(RobotMap.CAN.ARM_MOTOR_CAN, MotorType.kBrushed);
 
-        _config.absoluteEncoder
-            .inverted(false); //TODO add conversion factors if needed. 
+        _armEncoder = _armMotor.getAbsoluteEncoder();
 
+        _armPIDController = new PIDController(Constants.Arm.ARM_POSITION_KP, Constants.Arm.ARM_POSITION_KI, Constants.Arm.ARM_POSITION_KD);
 
+        _armMotorConfig = new SparkMaxConfig();
+
+        _armMotorConfig.absoluteEncoder.inverted(Constants.Arm.ARM_ENCODER_INVERTED);
+
+        _armMotor.configure(_armMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        _setpoint = getCurrentAngle();
     }
-    public double getArmAngle(){
-        return _encoder.getPosition(); // Will Need to be Scaled
+
+    public double getCurrentAngle(){
+        return _armEncoder.getPosition(); //TODO Will Need to be Scaled
     }
+
     public void setArmPosition(double position){
-        _setpoint = position;
+        _setpoint = Math.max(Constants.Arm.ARM_MIN_ANGLE, Math.min(Constants.Arm.ARM_MAX_ANGLE, position));;
     }
+
     public double getSetpoint(){
         return _setpoint;
     }
+
     public boolean isAtTarget(){
-        return ((getSetpoint() - Constants.Arm.ARM_TOLERENCE) < getArmAngle() && (getSetpoint() + Constants.Arm.ARM_TOLERENCE > getArmAngle()));
+        return Math.abs(getCurrentAngle() - _setpoint) < Constants.Arm.ARM_TOLERANCE;
     }
+
     @Override
     public void periodic() {
         // TODO Auto-generated method stub
         super.periodic();
-        _controller.setReference(_setpoint, ControlType.kPosition);
+        //_controller.setReference(_setpoint, ControlType.kPosition);
+        updateMotorPower();
         updateSmartDashboard();
-        
     }
+
     public void updateSmartDashboard(){
         SmartDashboard.putNumber("Arm Setpoint", _setpoint);
-        SmartDashboard.putNumber("Arm Position", _encoder.getPosition());
+        SmartDashboard.putNumber("Arm Position", _armEncoder.getPosition());
+    }
+
+    private void updateMotorPower(){
+        double output = _armPIDController.calculate(getCurrentAngle(), _setpoint);
+        _armMotor.set(output);
     }
 }

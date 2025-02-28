@@ -18,4 +18,8 @@ public class Climb extends SubsystemBase{
     public void setClimbSpeed(double speed){
         _motor.set(speed);
     }
+
+    public void stop() {
+        _motor.set(0);
+    }    
 }
