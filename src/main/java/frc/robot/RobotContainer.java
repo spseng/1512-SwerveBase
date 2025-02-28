@@ -13,8 +13,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Utils.Vision.VisionProcessor;
 import frc.robot.Utils.AutonomousDrive;
+import frc.robot.commands.ElevatorTest;
 import frc.robot.commands.Autonomous.AutonomousScore;
 import frc.robot.commands.Drive.Drive;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -29,6 +31,7 @@ public class RobotContainer {
     private Drivetrain _drivetrain;
     private OI _oi;
     private AutonomousDrive _autonomous;
+    private Elevator _elevator;
     // Replace with CommandPS4Controller or CommandJoystick if needed
     //add controller in OI
 
@@ -63,7 +66,11 @@ public class RobotContainer {
         _oi = new OI();
         _autonomous = new AutonomousDrive(_drivetrain);
         //_drivetrain.setDefaultCommand(new AutonomousScore(_drivetrain, _visionProcessor, null));
-        _drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
+        _elevator = new Elevator();
+
+        //_drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
+        _elevator.setDefaultCommand(new ElevatorTest(_oi, _elevator));
+
         _oi.initializeButtons(_drivetrain);
     }
 

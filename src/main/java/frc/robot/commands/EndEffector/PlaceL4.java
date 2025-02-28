@@ -23,7 +23,6 @@ public class PlaceL4 extends Command {
     public void initialize() {
     _arm.setArmPosition(Constants.Arm.L4_ANGLE); 
     _elevator.setTargetHeight(Constants.Elevator.L4_HEIGHT); 
-        
     }
     @Override
     public void execute() {
