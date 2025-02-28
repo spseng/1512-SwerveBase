@@ -190,16 +190,16 @@ public class Constants {
     }
 
     public static class Arm {
-        public static final double ARM_POSITION_KP = 0.1;
+        public static final double ARM_POSITION_KP = 1.0;
         public static final double ARM_POSITION_KI = 0.0;
-        public static final double ARM_POSITION_KD = 0.0;
+        public static final double ARM_POSITION_KD = 0.03;
         public static final double ARM_TOLERANCE = 0.1;
         public static final double ARM_OUTPUT_MIN = -1;
         public static final double ARM_OUTPUT_MAX = 1;
         public static final boolean ARM_ENCODER_INVERTED = false;
 
         public static final double ARM_MIN_ANGLE = 0; // Rads
-        public static final double ARM_MAX_ANGLE = 0.5; // Rads
+        public static final double ARM_MAX_ANGLE = 0.63; // Rads
 
         public static final double AMP_SCORING_ANGLE = -0.308; // Rads
         public static final double ARM_INTAKE_ANGLE = 0.232; // Rad

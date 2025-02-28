@@ -9,25 +9,28 @@ import frc.robot.OI;
 import frc.robot.Utils.Helpers;
 import frc.robot.Utils.Vector2d;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.EndEffector;
 
-public class ElevatorTest extends Command {
+public class ClimbTest extends Command {
 
-    private Elevator _elevator;
+    private Climb _climb;
 
     private final OI _oi;
 
     private final int[] segmentationArray = new int[360 / 5];
 
-    public ElevatorTest(OI oi, Elevator elevator){
+    public ClimbTest(OI oi, Climb climb){
         _oi = oi;
-        _elevator = elevator;
-        addRequirements(_elevator);
+        _climb = climb;
+        addRequirements(_climb);
     }
+
     @Override
     public void initialize() {
     }
+
     @Override
     public void execute() {
         double vx;
@@ -50,10 +53,9 @@ public class ElevatorTest extends Command {
         SmartDashboard.putNumber("vx", vx);
         SmartDashboard.putNumber("vy", vy);
 
-        double target_height = _elevator.getCurrentHeight() + vx;
+        //double target_height = _arm.getCurrentAngle() + vx;
 
-        _elevator.setTargetHeight(_elevator.getCurrentHeight() + vx * 10);
-
+        _climb.setClimbSpeed(vx);
     }
     @Override
     public boolean isFinished() {

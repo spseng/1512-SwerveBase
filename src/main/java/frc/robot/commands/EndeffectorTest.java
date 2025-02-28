@@ -12,22 +12,23 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.EndEffector;
 
-public class ElevatorTest extends Command {
-
-    private Elevator _elevator;
+public class EndeffectorTest extends Command {
+    private EndEffector _endEffector;
 
     private final OI _oi;
 
     private final int[] segmentationArray = new int[360 / 5];
 
-    public ElevatorTest(OI oi, Elevator elevator){
+    public EndeffectorTest(OI oi, EndEffector endEffector){
         _oi = oi;
-        _elevator = elevator;
-        addRequirements(_elevator);
+        _endEffector = endEffector;
+        addRequirements(_endEffector);
     }
+
     @Override
     public void initialize() {
     }
+
     @Override
     public void execute() {
         double vx;
@@ -50,10 +51,9 @@ public class ElevatorTest extends Command {
         SmartDashboard.putNumber("vx", vx);
         SmartDashboard.putNumber("vy", vy);
 
-        double target_height = _elevator.getCurrentHeight() + vx;
+        //double target_height = _arm.getCurrentAngle() + vx;
 
-        _elevator.setTargetHeight(_elevator.getCurrentHeight() + vx * 10);
-
+        _endEffector.setIntakeSpeed(vx);
     }
     @Override
     public boolean isFinished() {
@@ -65,7 +65,4 @@ public class ElevatorTest extends Command {
         // TODO Auto-generated method stub
         super.end(interrupted);
     }
-   
-
-    
 }

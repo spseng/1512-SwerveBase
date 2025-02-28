@@ -9,14 +9,33 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Utils.AxisButton;
 import frc.robot.Utils.Gamepad;
 import frc.robot.Utils.Helpers;
+import frc.robot.commands.Autonomous.AutonomousScoreApproach;
 import frc.robot.commands.Drive.ResetIMU;
 import frc.robot.commands.Drive.SlowMode;
 import frc.robot.commands.Drive.Snap;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.commands.EndEffector.IntakeCoralFunnel;
+import frc.robot.commands.EndEffector.PlaceL1;
+import frc.robot.commands.EndEffector.PlaceL2;
+import frc.robot.commands.EndEffector.PlaceL3;
+import frc.robot.commands.EndEffector.PlaceL4;
+
+import frc.robot.subsystems.*;
+
+import frc.robot.Constants;
+
+import frc.robot.Utils.RobotState;
 
 
 
 public class OI {
+    ///*
+    private final Drivetrain _drivetrain;
+    private final Elevator _elevator;
+    private final Arm _arm;
+    private final Climb _climb;
+    private final EndEffector _endEffector;
+    //*/
+
     private Gamepad _driverGamepad;
     private Gamepad _operatorGamepad;
 
@@ -39,6 +58,13 @@ public class OI {
     private AxisButton _operatorLeftXAxis, _operatorLeftYAxis, _operatorRightXAxis, _operatorRightYAxis;
 
     public OI() {
+        ///*
+        _drivetrain = new Drivetrain();
+        _elevator = new Elevator();
+        _arm = new Arm();
+        _climb = new Climb();
+        _endEffector = new EndEffector();
+        //*/
 
         _driverGamepad = new Gamepad(0);
         _operatorGamepad = new Gamepad(1);
@@ -66,6 +92,27 @@ public class OI {
         _driverLeftYAxis = new AxisButton(_driverGamepad, Gamepad.Axes.LEFT_Y.getNumber(), 0.2);
         _driverRightXAxis = new AxisButton(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber(), 0.2);
         _driverRightYAxis = new AxisButton(_driverGamepad, Gamepad.Axes.RIGHT_Y.getNumber(), 0.2);
+
+        ///*
+        new Trigger(_driverLeftTriggerButton::get).whileTrue(new IntakeCoralFunnel(null, null, null));
+        new Trigger(_driverRightTriggerButton::get).whileTrue(Commands.run(() -> {
+            if (RobotState.getInstance().getScoringReefDirection() == Constants.ReefDirection.LEFT) {
+                switch(RobotState.getInstance().getScoringCoralLevel()) {
+                    case L1: Commands.sequence(new AutonomousScoreApproach(_drivetrain, "LEFT_CAMERA"), new PlaceL1(_endEffector, _arm, _elevator)).schedule(); break;
+                    case L2: Commands.sequence(new AutonomousScoreApproach(_drivetrain, "LEFT_CAMERA"), new PlaceL2(_endEffector, _arm, _elevator)).schedule(); break;
+                    case L3: Commands.sequence(new AutonomousScoreApproach(_drivetrain, "LEFT_CAMERA"), new PlaceL3(_endEffector, _arm, _elevator)).schedule(); break;
+                    case L4: Commands.sequence(new AutonomousScoreApproach(_drivetrain, "LEFT_CAMERA"), new PlaceL4(_endEffector, _arm, _elevator)).schedule(); break;
+                }
+            }else if (RobotState.getInstance().getScoringReefDirection() == Constants.ReefDirection.RIGHT) {
+                switch(RobotState.getInstance().getScoringCoralLevel()) {
+                    case L1: Commands.sequence(new AutonomousScoreApproach(_drivetrain, "RIGHT_CAMERA"), new PlaceL1(_endEffector, _arm, _elevator)).schedule(); break;
+                    case L2: Commands.sequence(new AutonomousScoreApproach(_drivetrain, "RIGHT_CAMERA"), new PlaceL2(_endEffector, _arm, _elevator)).schedule(); break;
+                    case L3: Commands.sequence(new AutonomousScoreApproach(_drivetrain, "RIGHT_CAMERA"), new PlaceL3(_endEffector, _arm, _elevator)).schedule(); break;
+                    case L4: Commands.sequence(new AutonomousScoreApproach(_drivetrain, "RIGHT_CAMERA"), new PlaceL4(_endEffector, _arm, _elevator)).schedule(); break;
+                }
+            }
+        }));
+        //*/
 
         // Operator Buttons
         _operatorAButton = new Trigger(_operatorGamepad.getAButton());
@@ -111,20 +158,20 @@ public class OI {
     _driverPOVRight.onTrue(Commands.none());
 
     // Operator Buttons
-    _operatorAButton.onTrue(Commands.none());
-    _operatorBButton.onTrue(Commands.none());
-    _operatorXButton.onTrue(Commands.none());
-    _operatorYButton.onTrue(Commands.none());
+    _operatorAButton.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L1); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.RIGHT);}));
+    _operatorBButton.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L3); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.RIGHT);}));
+    _operatorXButton.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L2); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.RIGHT);}));
+    _operatorYButton.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L4); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.RIGHT);}));
     _operatorLeftBumper.onTrue(Commands.none());
     _operatorRightBumper.onTrue(Commands.none());
     _operatorStartButton.onTrue(Commands.none());
     _operatorBackButton.onTrue(Commands.none());
 
     // Operator POV Buttons
-    _operatorPOVUp.onTrue(Commands.none());
-    _operatorPOVDown.onTrue(Commands.none());
-    _operatorPOVLeft.onTrue(Commands.none());
-    _operatorPOVRight.onTrue(Commands.none());
+    _operatorPOVUp.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L4); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.LEFT);}));
+    _operatorPOVDown.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L1); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.LEFT);}));
+    _operatorPOVLeft.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L2); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.LEFT);}));
+    _operatorPOVRight.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L3); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.LEFT);}));
     }
 
     public double getDriveY() {

@@ -15,6 +15,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -262,29 +263,30 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void updateShuffleBoard() {
-        SmartDashboard.putNumber("Vx", _Io.desiredChassisSpeeds.vxMetersPerSecond);
-        SmartDashboard.putNumber("Vy", _Io.desiredChassisSpeeds.vyMetersPerSecond);
-        SmartDashboard.putNumber("desired rotation", _Io.desiredChassisSpeeds.omegaRadiansPerSecond);
-        SmartDashboard.putNumber("heading degrees", getHeading().getDegrees());
-        SmartDashboard.putNumber("heading radians", -getHeading().getRadians());
-        SmartDashboard.putNumber("NW_DESIRED_HEADING", _Io.measuredPositions[NORTH_WEST_IDX].angle.getDegrees());
-        SmartDashboard.putNumber("NE_DESIRED_HEADING", _Io.measuredPositions[NORTH_EAST_IDX].angle.getDegrees());
-        SmartDashboard.putNumber("SW_DESIRED_HEADING", _Io.measuredPositions[SOUTH_WEST_IDX].angle.getDegrees());
-        SmartDashboard.putNumber("SE_DESIRED_HEADING", _Io.measuredPositions[SOUTH_EAST_IDX].angle.getDegrees());
-        SmartDashboard.putNumber("NW_ACTUAL_HEADING", _modules[NORTH_WEST_IDX].getSwervePosition().angle.getDegrees());
-        SmartDashboard.putNumber("NE_ACTUAL_HEADING", _modules[NORTH_EAST_IDX].getSwervePosition().angle.getDegrees());
-        SmartDashboard.putNumber("SW_ACTUAL_HEADING", _modules[SOUTH_WEST_IDX].getSwervePosition().angle.getDegrees());
-        SmartDashboard.putNumber("SE_ACTUAL_HEADING", _modules[SOUTH_EAST_IDX].getSwervePosition().angle.getDegrees());
-        SmartDashboard.putNumber("NW_ACTUAL_VELOCITY", _modules[NORTH_WEST_IDX].getDriveVelocity());
-        SmartDashboard.putNumber("NE_ACTUAL_VELOCITY", _modules[NORTH_EAST_IDX].getDriveVelocity());
-        SmartDashboard.putNumber("SW_ACTUAL_VELOCITY", _modules[SOUTH_WEST_IDX].getDriveVelocity());
-        SmartDashboard.putNumber("SE_ACTUAL_VELOCITY", _modules[SOUTH_EAST_IDX].getDriveVelocity());
-        SmartDashboard.putNumber("ACTUAL_VELOCITY_X", getMeasuredVelocityX());
-        SmartDashboard.putNumber("ACTUAL_VELOCITY_Y", getMeasuredVelocityY());
-        SmartDashboard.putNumber("ACTUAL_VELOCITY", getMeasuredVelocity());
+        //SmartDashboard.putNumber("Vx", _Io.desiredChassisSpeeds.vxMetersPerSecond);
+        //SmartDashboard.putNumber("Vy", _Io.desiredChassisSpeeds.vyMetersPerSecond);
+        //SmartDashboard.putNumber("desired rotation", _Io.desiredChassisSpeeds.omegaRadiansPerSecond);
+        //SmartDashboard.putNumber("heading degrees", getHeading().getDegrees());
+        //SmartDashboard.putNumber("heading radians", -getHeading().getRadians());
+        //SmartDashboard.putNumber("NW_DESIRED_HEADING", _Io.measuredPositions[NORTH_WEST_IDX].angle.getDegrees());
+        //SmartDashboard.putNumber("NE_DESIRED_HEADING", _Io.measuredPositions[NORTH_EAST_IDX].angle.getDegrees());
+        //SmartDashboard.putNumber("SW_DESIRED_HEADING", _Io.measuredPositions[SOUTH_WEST_IDX].angle.getDegrees());
+        //SmartDashboard.putNumber("SE_DESIRED_HEADING", _Io.measuredPositions[SOUTH_EAST_IDX].angle.getDegrees());
+        //SmartDashboard.putNumber("NW_ACTUAL_HEADING", _modules[NORTH_WEST_IDX].getSwervePosition().angle.getDegrees());
+        //SmartDashboard.putNumber("NE_ACTUAL_HEADING", _modules[NORTH_EAST_IDX].getSwervePosition().angle.getDegrees());
+        //SmartDashboard.putNumber("SW_ACTUAL_HEADING", _modules[SOUTH_WEST_IDX].getSwervePosition().angle.getDegrees());
+        //SmartDashboard.putNumber("SE_ACTUAL_HEADING", _modules[SOUTH_EAST_IDX].getSwervePosition().angle.getDegrees());
+        //SmartDashboard.putNumber("NW_ACTUAL_VELOCITY", _modules[NORTH_WEST_IDX].getDriveVelocity());
+        //SmartDashboard.putNumber("NE_ACTUAL_VELOCITY", _modules[NORTH_EAST_IDX].getDriveVelocity());
+        //SmartDashboard.putNumber("SW_ACTUAL_VELOCITY", _modules[SOUTH_WEST_IDX].getDriveVelocity());
+        //SmartDashboard.putNumber("SE_ACTUAL_VELOCITY", _modules[SOUTH_EAST_IDX].getDriveVelocity());
+        //SmartDashboard.putNumber("ACTUAL_VELOCITY_X", getMeasuredVelocityX());
+        //SmartDashboard.putNumber("ACTUAL_VELOCITY_Y", getMeasuredVelocityY());
+        //SmartDashboard.putNumber("ACTUAL_VELOCITY", getMeasuredVelocity());
         //SmartDashboard.putNumber("IMU_VELOCITY", getIMUVelocity());
         //SmartDashboard.putNumber("AVERAGE_VELOCITY", getAverageVelocity());
-
+        SmartDashboard.putNumber("Score Level", frc.robot.Utils.RobotState.getInstance().getScoringCoralLevel().ordinal());
+        SmartDashboard.putNumber("Score Direction", frc.robot.Utils.RobotState.getInstance().getScoringReefDirection().ordinal());
     }
 
     public void ZeroIMU() {

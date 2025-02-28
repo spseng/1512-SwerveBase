@@ -7,6 +7,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.SparkLowLevel;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -45,6 +46,7 @@ public class Elevator extends SubsystemBase {
         _elevatorPIDController.setTolerance(Constants.Elevator.ELEVATOR_TOLERANCE);
 
         _elevatorLeaderMotorConfig.smartCurrentLimit(Constants.Elevator.ELEVATOR_CURRENT_LIMIT);
+        _elevatorLeaderMotorConfig.signals.primaryEncoderPositionPeriodMs(5);
 
         _elevatorLeaderMotor.configure(_elevatorLeaderMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         _elevatorFollowerMotor.configure(_elevatorFollowerMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);

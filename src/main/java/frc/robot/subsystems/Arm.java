@@ -25,7 +25,7 @@ public class Arm extends SubsystemBase{
     private double _setpoint;
     
     public Arm(){
-        _armMotor = new SparkMax(RobotMap.CAN.ARM_MOTOR_CAN, MotorType.kBrushed);
+        _armMotor = new SparkMax(RobotMap.CAN.ARM_MOTOR_CAN, MotorType.kBrushless);
 
         _armEncoder = _armMotor.getAbsoluteEncoder();
 

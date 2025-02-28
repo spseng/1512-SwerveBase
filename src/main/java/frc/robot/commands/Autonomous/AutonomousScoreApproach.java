@@ -8,7 +8,7 @@ import frc.robot.Constants;
 import frc.robot.Utils.Vision.VisionProcessor;
 import frc.robot.subsystems.Drivetrain;
 
-public class AutonomousScore extends Command {
+public class AutonomousScoreApproach extends Command {
     private final Drivetrain _drivetrain;
     private final VisionProcessor _visionProcessor;
 
@@ -16,9 +16,9 @@ public class AutonomousScore extends Command {
     private final PIDController _driveYController;
     private final PIDController _rotationController;
 
-    public AutonomousScore(Drivetrain drivetrain, VisionProcessor visionProcessor, Constants.ReefDirection direction) {
+    public AutonomousScoreApproach(Drivetrain drivetrain, String cameraName) {
         _drivetrain = drivetrain;
-        _visionProcessor = visionProcessor;
+        _visionProcessor = new VisionProcessor(cameraName);
         _driveXController = new PIDController(Constants.Autonomous.Score.DRIVE_X_KP, Constants.Autonomous.Score.DRIVE_X_KI, Constants.Autonomous.Score.DRIVE_X_KD);
         _driveYController = new PIDController(Constants.Autonomous.Score.DRIVE_Y_KP, Constants.Autonomous.Score.DRIVE_Y_KI, Constants.Autonomous.Score.DRIVE_Y_KD);
         _rotationController = new PIDController(Constants.Autonomous.Score.ROTATION_KP, Constants.Autonomous.Score.ROTATION_KI, Constants.Autonomous.Score.ROTATION_KD);

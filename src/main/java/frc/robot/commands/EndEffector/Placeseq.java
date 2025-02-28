@@ -7,10 +7,10 @@ public class Placeseq extends SequentialCommandGroup {
     public Placeseq() {
 
 addCommands(
-    new PlaceL4(),
-    new PlaceL3(),
-    new PlaceL2(),
-    new PlaceL1()
+    //new PlaceL4(),
+    //new PlaceL3(),
+    //new PlaceL2(),
+    //new PlaceL1()
     
 );
     }

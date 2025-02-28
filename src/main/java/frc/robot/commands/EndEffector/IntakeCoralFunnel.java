@@ -30,7 +30,6 @@ public class IntakeCoralFunnel extends Command {
         _elevator.setTargetHeight(Constants.Elevator.INTAKE_HEIGHT);
         _arm.setArmPosition(Constants.Arm.ARM_INTAKE_ANGLE);
         _endEffector.setIntakeSpeed(Constants.EndEffector.INTAKE_SPEED);
-
     }
     @Override
     public boolean isFinished() {

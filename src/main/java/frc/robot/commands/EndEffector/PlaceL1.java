@@ -29,9 +29,7 @@ public class PlaceL1 extends Command {
     public void execute() {
         // TODO Auto-generated method stub
         super.execute();
-        if (_elevator.isAtTarget() && _arm.isAtTarget()){_endEffector.setIntakeSpeed(Constants.EndEffector.PLACE_SPEED);
-        }
-
+        if (_elevator.isAtTarget() && _arm.isAtTarget()){_endEffector.setIntakeSpeed(Constants.EndEffector.PLACE_SPEED);}
     }
     @Override
     public boolean isFinished() {
