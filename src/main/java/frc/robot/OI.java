@@ -15,42 +15,79 @@ import frc.robot.subsystems.Drivetrain;
 
 
 public class OI {
+    private Gamepad _driverGamepad;
+    private Gamepad _operatorGamepad;
 
-    protected Gamepad _driverGamepad;
-    protected Gamepad _operatorGamepad;
+    // Driver Buttons
+    private Trigger _driverAButton, _driverBButton, _driverXButton, _driverYButton;
+    private Trigger _driverLeftBumper, _driverRightBumper, _driverStartButton, _driverBackButton;
+    private Trigger _driverPOVUp, _driverPOVDown, _driverPOVLeft, _driverPOVRight;
 
+    // Driver Axis Buttons
+    private AxisButton _driverLeftTriggerButton, _driverRightTriggerButton;
+    private AxisButton _driverLeftXAxis, _driverLeftYAxis, _driverRightXAxis, _driverRightYAxis;
 
-    protected AxisButton _driverLeftTriggerButton;
-    protected AxisButton _driverRightTriggerButton;
+    // Operator Buttons
+    private Trigger _operatorAButton, _operatorBButton, _operatorXButton, _operatorYButton;
+    private Trigger _operatorLeftBumper, _operatorRightBumper, _operatorStartButton, _operatorBackButton;
+    private Trigger _operatorPOVUp, _operatorPOVDown, _operatorPOVLeft, _operatorPOVRight;
 
-    protected Trigger _driverLeftTrigger;
-    protected Trigger _driverRightTrigger;
-    protected Trigger _povButtonLeft;
-    protected Trigger _povButtonRight;
-    protected Trigger _povButtonUp;
-    protected Trigger _povButtonDown;
-    protected Trigger _opPovButtonDown;
-    protected Trigger _opPovButtonRight;
-    protected Trigger _opPovButtonUp;
-    protected Trigger _opPovButtonLeft;
+    // Operator Axis Buttons
+    private AxisButton _operatorLeftTriggerButton, _operatorRightTriggerButton;
+    private AxisButton _operatorLeftXAxis, _operatorLeftYAxis, _operatorRightXAxis, _operatorRightYAxis;
 
     public OI() {
 
         _driverGamepad = new Gamepad(0);
         _operatorGamepad = new Gamepad(1);
 
+        // Driver Buttons
+        _driverAButton = new Trigger(_driverGamepad.getAButton());
+        _driverBButton = new Trigger(_driverGamepad.getBButton());
+        _driverXButton = new Trigger(_driverGamepad.getXButton());
+        _driverYButton = new Trigger(_driverGamepad.getYButton());
+        _driverLeftBumper = new Trigger(_driverGamepad.getLeftBumper());
+        _driverRightBumper = new Trigger(_driverGamepad.getRightBumper());
+        _driverStartButton = new Trigger(_driverGamepad.getStartButton());
+        _driverBackButton = new Trigger(_driverGamepad.getBackButton());
 
-        _povButtonLeft = new Trigger(() -> _driverGamepad.getPOV() == 270);
-        _povButtonRight = new Trigger(() -> _driverGamepad.getPOV() == 90);
-        _povButtonUp = new Trigger(() -> _driverGamepad.getPOV() == 0);
-        _povButtonDown = new Trigger(() -> _driverGamepad.getPOV() == 180);
+        // Driver POV Buttons
+        _driverPOVUp = new Trigger(() -> _driverGamepad.getPOV() == 0);
+        _driverPOVDown = new Trigger(() -> _driverGamepad.getPOV() == 180);
+        _driverPOVLeft = new Trigger(() -> _driverGamepad.getPOV() == 270);
+        _driverPOVRight = new Trigger(() -> _driverGamepad.getPOV() == 90);
 
-
+        // Driver Axis Buttons (Threshold-Based)
         _driverLeftTriggerButton = new AxisButton(_driverGamepad, Gamepad.Axes.LEFT_TRIGGER.getNumber(), 0.05);
-        _driverLeftTrigger = new Trigger(_driverLeftTriggerButton::get);
-
         _driverRightTriggerButton = new AxisButton(_driverGamepad, Gamepad.Axes.RIGHT_TRIGGER.getNumber(), 0.05);
-        _driverRightTrigger = new Trigger(_driverRightTriggerButton::get);
+        _driverLeftXAxis = new AxisButton(_driverGamepad, Gamepad.Axes.LEFT_X.getNumber(), 0.2);
+        _driverLeftYAxis = new AxisButton(_driverGamepad, Gamepad.Axes.LEFT_Y.getNumber(), 0.2);
+        _driverRightXAxis = new AxisButton(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber(), 0.2);
+        _driverRightYAxis = new AxisButton(_driverGamepad, Gamepad.Axes.RIGHT_Y.getNumber(), 0.2);
+
+        // Operator Buttons
+        _operatorAButton = new Trigger(_operatorGamepad.getAButton());
+        _operatorBButton = new Trigger(_operatorGamepad.getBButton());
+        _operatorXButton = new Trigger(_operatorGamepad.getXButton());
+        _operatorYButton = new Trigger(_operatorGamepad.getYButton());
+        _operatorLeftBumper = new Trigger(_operatorGamepad.getLeftBumper());
+        _operatorRightBumper = new Trigger(_operatorGamepad.getRightBumper());
+        _operatorStartButton = new Trigger(_operatorGamepad.getStartButton());
+        _operatorBackButton = new Trigger(_operatorGamepad.getBackButton());
+
+        // Operator POV Buttons
+        _operatorPOVUp = new Trigger(() -> _operatorGamepad.getPOV() == 0);
+        _operatorPOVDown = new Trigger(() -> _operatorGamepad.getPOV() == 180);
+        _operatorPOVLeft = new Trigger(() -> _operatorGamepad.getPOV() == 270);
+        _operatorPOVRight = new Trigger(() -> _operatorGamepad.getPOV() == 90);
+
+        // Operator Axis Buttons (Threshold-Based)
+        _operatorLeftTriggerButton = new AxisButton(_operatorGamepad, Gamepad.Axes.LEFT_TRIGGER.getNumber(), 0.05);
+        _operatorRightTriggerButton = new AxisButton(_operatorGamepad, Gamepad.Axes.RIGHT_TRIGGER.getNumber(), 0.05);
+        _operatorLeftXAxis = new AxisButton(_operatorGamepad, Gamepad.Axes.LEFT_X.getNumber(), 0.2);
+        _operatorLeftYAxis = new AxisButton(_operatorGamepad, Gamepad.Axes.LEFT_Y.getNumber(), 0.2);
+        _operatorRightXAxis = new AxisButton(_operatorGamepad, Gamepad.Axes.RIGHT_X.getNumber(), 0.2);
+        _operatorRightYAxis = new AxisButton(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber(), 0.2);
     }
 
     
@@ -85,7 +122,6 @@ public class OI {
     public double getRotationX() {
         double speed = getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber());
         speed = Helpers.applyDeadband(speed, Constants.Drivetrain.ROTATION_DEADBAND);
-
         return speed;
     }
 
