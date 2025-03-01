@@ -21,11 +21,10 @@ public class Arm extends SubsystemBase {
     private final double _armOffset = 0.073;
     private double _setpoint;
 
-    // 定数（物理パラメータ）
     private static final double MASS = 1.0;
     private static final double LENGTH = 0.5;
     private static final double GRAVITY = 9.8;
-    private static final double K_FF = 0.001;
+    private static final double K_FF = 0.01;
 
     public Arm() {
         _armMotor = new SparkMax(RobotMap.CAN.ARM_MOTOR_CAN, MotorType.kBrushless);
@@ -68,7 +67,7 @@ public class Arm extends SubsystemBase {
         SmartDashboard.putNumber("Arm Setpoint", _setpoint);
         SmartDashboard.putNumber("Arm Position", getCurrentAngle());
         SmartDashboard.putNumber("Arm PID Output", _armPIDController.calculate(getCurrentAngle(), _setpoint));
-        SmartDashboard.putNumber("Arm FF Output", calculateFeedforward());
+        //SmartDashboard.putNumber("Arm FF Output", calculateFeedforward());
     }
 
     private void updateMotorPower() {
@@ -76,10 +75,12 @@ public class Arm extends SubsystemBase {
         double ffOutput = calculateFeedforward();
         double totalOutput = pidOutput + ffOutput;
         totalOutput = Math.max(-1.0, Math.min(1.0, totalOutput));
+        double sinOfAngle = Math.sin(getCurrentAngle() * 2 * Math.PI);
+        SmartDashboard.putNumber("Arm Sin of Angle", sinOfAngle);
         SmartDashboard.putNumber("Arm Total Output", totalOutput);
         SmartDashboard.putNumber("Arm PID Output", pidOutput);
         SmartDashboard.putNumber("Arm FF Output", ffOutput);
-        _armMotor.set(-totalOutput);
+        _armMotor.set(totalOutput);
     }
 
     private double calculateFeedforward() {
