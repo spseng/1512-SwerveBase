@@ -98,6 +98,12 @@ public class OI {
         return speed;
     }
 
+    public double getElevatorX() {
+        double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.LEFT_X.getNumber());
+        speed = Helpers.applyDeadband(speed, Constants.Drivetrain.TRANSLATION_DEADBAND);
+        return speed;
+    }
+
     public double getRotationX() {
         double speed = getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber());
         speed = Helpers.applyDeadband(speed, Constants.Drivetrain.ROTATION_DEADBAND);
