@@ -10,7 +10,7 @@ import frc.robot.subsystems.Drivetrain;
 public class MoveALittleBit extends Command {
     private final Drivetrain _drivetrain;
     private double startTime;
-    private static final double DURATION = 8.0;
+    private static final double DURATION = 3.0;
 
     public MoveALittleBit(Drivetrain drivetrain) {
         _drivetrain = drivetrain;
@@ -20,12 +20,14 @@ public class MoveALittleBit extends Command {
     @Override
     public void initialize() {
         startTime = Timer.getFPGATimestamp();
+        SmartDashboard.putString("MoveALittleBit", "Started");
     }
 
     @Override
     public void execute() {
         Rotation2d rotation = _drivetrain.getHeading();
-        _drivetrain.setVelocity(ChassisSpeeds.fromRobotRelativeSpeeds(3, 0, 0, rotation));
+        _drivetrain.setVelocity(new ChassisSpeeds(1, 0, 0));
+        SmartDashboard.putString("MoveALittleBit", "Executing");
     }
 
     @Override
