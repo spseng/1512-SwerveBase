@@ -88,8 +88,7 @@ public class OI {
 
         return speed;
     }
-
-
+    
     protected double getSpeedFromAxis(Joystick gamepad, int axisNumber) {
         return gamepad.getRawAxis(axisNumber);
     }

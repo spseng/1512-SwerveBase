@@ -74,6 +74,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
+        /*
         try {
             return AutoBuilder.followPath(_autonomous.getSelectedPath());
         }catch (Exception e) {
@@ -81,5 +82,7 @@ public class RobotContainer {
             SmartDashboard.putString("Auto Error", e.getMessage());
             return Commands.none();
         }
+            */
+            return Commands.none();
     }
 }
