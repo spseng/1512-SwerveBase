@@ -1,49 +1,20 @@
 package frc.robot.Utils;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
-import frc.robot.subsystems.Drivetrain;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class AutonomousDrive {
-    private final Drivetrain _drivetrain;
+public class AutonomousConfigure {
     private final SendableChooser<PathPlannerPath> _autoChooser;
     private final Map<String, PathPlannerPath> _preloadedPaths;
 
-    public AutonomousDrive(Drivetrain drivetrain) {
-        _drivetrain = drivetrain;
+    public AutonomousConfigure() {
         _autoChooser = new SendableChooser<>();
         _preloadedPaths = new HashMap<>();
-
-        RobotConfig robotConfig;
-        try {
-            robotConfig = RobotConfig.fromGUISettings();
-            System.out.println("=================");
-            System.out.println(robotConfig);
-        } catch (Exception e) {
-            e.printStackTrace();
-            robotConfig = null;
-        }
-
-        if (robotConfig == null) {
-            throw new RuntimeException("Failed to load robot configuration!");
-        }
-        AutoBuilder.configure(
-                () -> _drivetrain.currentPoseSupplier().get(), // Explicit call
-                pose -> _drivetrain.resetCurrentPoseConsumer().accept(pose), // Explicit call
-                () -> _drivetrain.currentChassisSpeedsSupplier().get(), // Explicit call
-                _drivetrain::setVelocity, // Same as before
-                _drivetrain.getController(), // Assuming this works
-                robotConfig, // Assuming this works
-                () -> _drivetrain.isRedAllianceSupplier().getAsBoolean(), // Explicit call
-                _drivetrain
-        );
 
         preloadTrajectories();
         populateChoreoAutoChooser();

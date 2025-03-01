@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Utils.Vision.VisionProcessor;
-import frc.robot.Utils.AutonomousDrive;
+import frc.robot.Utils.AutonomousConfigure;
 import frc.robot.commands.ElevatorTest;
 import frc.robot.commands.ArmTest;
 import frc.robot.commands.ClimbTest;
@@ -36,7 +36,7 @@ public class RobotContainer {
     //private VisionProcessor _visionProcessor;
     private Drivetrain _drivetrain;
     private OI _oi;
-    private AutonomousDrive _autonomous;
+    private AutonomousConfigure _autonomous;
     private Elevator _elevator;
     private Arm _arm;
     private EndEffector _endEffector;
@@ -73,7 +73,7 @@ public class RobotContainer {
         //_visionProcessor = new VisionProcessor();
         _drivetrain = new Drivetrain();
         _oi = new OI();
-        _autonomous = new AutonomousDrive(_drivetrain);
+        _autonomous = new AutonomousConfigure();
         //_drivetrain.setDefaultCommand(new AutonomousScoreApproach(_drivetrain, "camera2"));
         //_elevator = new Elevator();
         _arm = new Arm();
