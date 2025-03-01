@@ -151,7 +151,6 @@ public class Constants {
             SLOW_MODE_KINEMATIC_LIMITS.maxDriveVelocity = 3.0;
             SLOW_MODE_KINEMATIC_LIMITS.maxSteeringVelocity = 8.0;
         }
-
     }
 
     public static class Shooter {
@@ -190,13 +189,17 @@ public class Constants {
     }
 
     public static class Arm {
-        public static final double ARM_POSITION_KP = 1.0;
+        public static final double ARM_POSITION_KP = 0.5;
         public static final double ARM_POSITION_KI = 0.0;
         public static final double ARM_POSITION_KD = 0.03;
         public static final double ARM_TOLERANCE = 0.1;
         public static final double ARM_OUTPUT_MIN = -1;
         public static final double ARM_OUTPUT_MAX = 1;
         public static final boolean ARM_ENCODER_INVERTED = false;
+
+        public static final double ARM_DEADBAND = 0.05; // in inches
+
+        public static final double AVOID_ELEVATOR_POSITION = 0.5;
 
         public static final double ARM_MIN_ANGLE = 0; // Rads
         public static final double ARM_MAX_ANGLE = 0.63; // Rads
@@ -241,6 +244,8 @@ public class Constants {
     public static class Elevator {
         public static final int MAX_HEIGHT = 37; // in inches
         public static final int MIN_HEIGHT = 0; // in inches
+
+        public static final double ELEVATOR_DEADBAND = 0.05; // in inches
 
         public static final double ELEVATOR_POSITION_KP = 0.1;
         public static final double ELEVATOR_POSITION_KI = 0.0;

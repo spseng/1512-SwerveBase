@@ -1,6 +1,10 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.controllers.PathFollowingController;
 import com.pathplanner.lib.trajectory.PathPlannerTrajectoryState;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -112,22 +116,29 @@ public class Drivetrain extends SubsystemBase {
         readModules(); // gets encoders
         setSetpointFromMeasuredModules(); // cheesy stuff
 
-        PathFollowingController _controller = new PathFollowingController() {
-            @Override
-            public ChassisSpeeds calculateRobotRelativeSpeeds(Pose2d currentPose, PathPlannerTrajectoryState targetState) {
-                return null;
-            }
+        _controller = new PPHolonomicDriveController(
+            new PIDConstants(Constants.Drivetrain.AUTO_KP, Constants.Drivetrain.AUTO_KI, Constants.Drivetrain.AUTO_KD), // Translation PID
+            new PIDConstants(Constants.Drivetrain.HEADING_kP, Constants.Drivetrain.HEADING_kI, Constants.Drivetrain.HEADING_kD), // Rotation PID
+            Constants.UPDATE_PERIOD // Custom control loop period
+        );
 
-            @Override
-            public void reset(Pose2d currentPose, ChassisSpeeds currentSpeeds) {
+        RobotConfig config = null;
+        try {
+            config = RobotConfig.fromGUISettings();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-            }
-
-            @Override
-            public boolean isHolonomic() {
-                return true;
-            }
-        };
+        AutoBuilder.configure(
+            this::getCurrentPose,
+            this::resetCurrentPose,
+            this::getMeasuredChassisSpeeds,
+            (speeds, feedforwards) -> this.setVelocity(speeds),
+            _controller,
+            config,
+            this::isRedAlliance,
+            this
+        );
     }
 
     public void setRawChassisSpeeds(ChassisSpeeds speeds) {
@@ -410,6 +421,10 @@ public class Drivetrain extends SubsystemBase {
         return pose -> {
             _current_pose = pose;  // Assuming you want to reset _current_pose to the passed pose
         };
+    }
+
+    public void resetCurrentPose(Pose2d pose) {
+        _current_pose = pose;  // Reset the current pose
     }
 
     public BooleanSupplier isRedAllianceSupplier() {

@@ -7,7 +7,6 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.SparkLowLevel;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -58,8 +57,7 @@ public class Elevator extends SubsystemBase {
     }
 
     public void setTargetHeight(double height) {
-        double clampedHeight = Math.max(0, Math.min(Constants.Elevator.ELEVATOR_MAX_HEIGHT, height));
-        _desiredHeight = clampedHeight;
+        _desiredHeight = Math.max(0, Math.min(Constants.Elevator.ELEVATOR_MAX_HEIGHT, height));
     }
 
     @Override

@@ -20,9 +20,12 @@ public class ElevatorTest extends Command {
 
     private final int[] segmentationArray = new int[360 / 5];
 
+    private double targetHeight;
+
     public ElevatorTest(OI oi, Elevator elevator){
         _oi = oi;
         _elevator = elevator;
+        targetHeight = _elevator.getCurrentHeight();
         addRequirements(_elevator);
     }
     @Override
@@ -50,10 +53,9 @@ public class ElevatorTest extends Command {
         SmartDashboard.putNumber("vx", vx);
         SmartDashboard.putNumber("vy", vy);
 
-        double target_height = _elevator.getCurrentHeight() + vx;
+        targetHeight += vx;
 
-        _elevator.setTargetHeight(_elevator.getCurrentHeight() + vx * 10);
-
+        _elevator.setTargetHeight(targetHeight);
     }
     @Override
     public boolean isFinished() {

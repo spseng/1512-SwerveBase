@@ -17,7 +17,7 @@ import frc.robot.commands.ElevatorTest;
 import frc.robot.commands.ArmTest;
 import frc.robot.commands.ClimbTest;
 import frc.robot.commands.EndeffectorTest;
-import frc.robot.commands.Autonomous.AutonomousScore;
+import frc.robot.commands.Autonomous.AutonomousScoreApproach;
 import frc.robot.commands.Drive.Drive;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Arm;
@@ -74,14 +74,14 @@ public class RobotContainer {
         _drivetrain = new Drivetrain();
         _oi = new OI();
         _autonomous = new AutonomousDrive(_drivetrain);
-        //_drivetrain.setDefaultCommand(new AutonomousScore(_drivetrain, _visionProcessor, null));
-        _elevator = new Elevator();
+        //_drivetrain.setDefaultCommand(new AutonomousScoreApproach(_drivetrain, "camera2"));
+        //_elevator = new Elevator();
         _arm = new Arm();
         _endEffector = new EndEffector();
         _climb = new Climb();
 
         //_drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
-        _elevator.setDefaultCommand(new ElevatorTest(_oi, _elevator));
+        //_elevator.setDefaultCommand(new ElevatorTest(_oi, _elevator));
         //_arm.setDefaultCommand(new ArmTest(_oi, _arm));
         //_climb.setDefaultCommand(new ClimbTest(_oi, _climb));
         //_endEffector.setDefaultCommand(new EndeffectorTest(_oi, _endEffector));

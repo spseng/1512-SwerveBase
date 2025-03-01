@@ -37,5 +37,5 @@ public class EndEffector extends SubsystemBase{
     public void stop() {
         _topMotor.set(0);
         _bottomMotor.set(0);
-    }    
+    }
 }

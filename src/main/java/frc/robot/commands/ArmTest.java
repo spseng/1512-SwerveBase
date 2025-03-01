@@ -20,9 +20,12 @@ public class ArmTest extends Command {
 
     private final int[] segmentationArray = new int[360 / 5];
 
+    private double targetAngle;
+
     public ArmTest(OI oi, Arm arm){
         _oi = oi;
         _arm = arm;
+        targetAngle = _arm.getCurrentAngle();
         addRequirements(_arm);
     }
 
@@ -51,11 +54,11 @@ public class ArmTest extends Command {
 
         SmartDashboard.putNumber("vx", vx);
         SmartDashboard.putNumber("vy", vy);
-        SmartDashboard.putNumber("arm target height", _arm.getCurrentAngle() + vx * 0.3);
+        SmartDashboard.putNumber("arm target height", targetAngle);
 
-        //double target_height = _arm.getCurrentAngle() + vx;
+        targetAngle += vx * 0.03;
 
-        _arm.setArmPosition(_arm.getCurrentAngle() + vx * 0.3);
+        _arm.setArmPosition(targetAngle);
 
     }
     @Override

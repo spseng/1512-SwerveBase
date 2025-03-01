@@ -15,7 +15,7 @@ public class VisionProcessor extends SubsystemBase {
     private final String _cameraName;
 
     public VisionProcessor(String cameraName) {
-        _testCam = new Camera(cameraName, 0.2, 0.0, 0.5, 0.0, 0.0, 0.0);
+        _testCam = new Camera(cameraName, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
         _cameraName = cameraName;
     }
 

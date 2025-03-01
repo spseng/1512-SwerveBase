@@ -51,9 +51,11 @@ public class EndeffectorTest extends Command {
         SmartDashboard.putNumber("vx", vx);
         SmartDashboard.putNumber("vy", vy);
 
-        //double target_height = _arm.getCurrentAngle() + vx;
-
-        _endEffector.setIntakeSpeed(vx);
+        if(!_endEffector.isCoralInIntake()) {
+            _endEffector.setIntakeSpeed(vx);
+        }else {
+            _endEffector.setIntakeSpeed(0);
+        }
     }
     @Override
     public boolean isFinished() {

@@ -1,29 +1,21 @@
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Utils.AxisButton;
 import frc.robot.Utils.Gamepad;
 import frc.robot.Utils.Helpers;
+import frc.robot.Utils.RobotState;
 import frc.robot.commands.Autonomous.AutonomousScoreApproach;
 import frc.robot.commands.Drive.ResetIMU;
-import frc.robot.commands.Drive.SlowMode;
-import frc.robot.commands.Drive.Snap;
-import frc.robot.commands.EndEffector.IntakeCoralFunnel;
-import frc.robot.commands.EndEffector.PlaceL1;
-import frc.robot.commands.EndEffector.PlaceL2;
-import frc.robot.commands.EndEffector.PlaceL3;
-import frc.robot.commands.EndEffector.PlaceL4;
-
-import frc.robot.subsystems.*;
-
-import frc.robot.Constants;
-
-import frc.robot.Utils.RobotState;
+import frc.robot.commands.EndEffector.*;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.EndEffector;
 
 
 
@@ -93,27 +85,6 @@ public class OI {
         _driverRightXAxis = new AxisButton(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber(), 0.2);
         _driverRightYAxis = new AxisButton(_driverGamepad, Gamepad.Axes.RIGHT_Y.getNumber(), 0.2);
 
-        ///*
-        new Trigger(_driverLeftTriggerButton::get).whileTrue(new IntakeCoralFunnel(null, null, null));
-        new Trigger(_driverRightTriggerButton::get).whileTrue(Commands.run(() -> {
-            if (RobotState.getInstance().getScoringReefDirection() == Constants.ReefDirection.LEFT) {
-                switch(RobotState.getInstance().getScoringCoralLevel()) {
-                    case L1: Commands.sequence(new AutonomousScoreApproach(_drivetrain, "LEFT_CAMERA"), new PlaceL1(_endEffector, _arm, _elevator)).schedule(); break;
-                    case L2: Commands.sequence(new AutonomousScoreApproach(_drivetrain, "LEFT_CAMERA"), new PlaceL2(_endEffector, _arm, _elevator)).schedule(); break;
-                    case L3: Commands.sequence(new AutonomousScoreApproach(_drivetrain, "LEFT_CAMERA"), new PlaceL3(_endEffector, _arm, _elevator)).schedule(); break;
-                    case L4: Commands.sequence(new AutonomousScoreApproach(_drivetrain, "LEFT_CAMERA"), new PlaceL4(_endEffector, _arm, _elevator)).schedule(); break;
-                }
-            }else if (RobotState.getInstance().getScoringReefDirection() == Constants.ReefDirection.RIGHT) {
-                switch(RobotState.getInstance().getScoringCoralLevel()) {
-                    case L1: Commands.sequence(new AutonomousScoreApproach(_drivetrain, "RIGHT_CAMERA"), new PlaceL1(_endEffector, _arm, _elevator)).schedule(); break;
-                    case L2: Commands.sequence(new AutonomousScoreApproach(_drivetrain, "RIGHT_CAMERA"), new PlaceL2(_endEffector, _arm, _elevator)).schedule(); break;
-                    case L3: Commands.sequence(new AutonomousScoreApproach(_drivetrain, "RIGHT_CAMERA"), new PlaceL3(_endEffector, _arm, _elevator)).schedule(); break;
-                    case L4: Commands.sequence(new AutonomousScoreApproach(_drivetrain, "RIGHT_CAMERA"), new PlaceL4(_endEffector, _arm, _elevator)).schedule(); break;
-                }
-            }
-        }));
-        //*/
-
         // Operator Buttons
         _operatorAButton = new Trigger(_operatorGamepad.getAButton());
         _operatorBButton = new Trigger(_operatorGamepad.getBButton());
@@ -142,36 +113,57 @@ public class OI {
     
     //this is where we map commands
     public void initializeButtons(Drivetrain drivetrain) {
-    _driverAButton.onTrue(Commands.none());
-    _driverBButton.onTrue(Commands.none());
-    _driverXButton.onTrue(Commands.none());
-    _driverYButton.onTrue(Commands.none());
-    _driverLeftBumper.onTrue(Commands.none());
-    _driverRightBumper.onTrue(Commands.none());
-    _driverStartButton.onTrue(Commands.none());
-    _driverBackButton.onTrue(Commands.none());
+        _driverAButton.onTrue(Commands.none());
+        _driverBButton.onTrue(new ResetIMU(_drivetrain));
+        _driverXButton.onTrue(Commands.none());
+        _driverYButton.onTrue(Commands.none());
+        _driverLeftBumper.onTrue(Commands.none());
+        _driverRightBumper.onTrue(Commands.none());
+        _driverStartButton.onTrue(Commands.none());
+        _driverBackButton.onTrue(Commands.none());
 
-    // Driver POV Buttons
-    _driverPOVUp.onTrue(Commands.none());
-    _driverPOVDown.onTrue(Commands.none());
-    _driverPOVLeft.onTrue(Commands.none());
-    _driverPOVRight.onTrue(Commands.none());
+        // Driver POV Buttons
+        _driverPOVUp.onTrue(Commands.none());
+        _driverPOVDown.onTrue(Commands.none());
+        _driverPOVLeft.onTrue(Commands.none());
+        _driverPOVRight.onTrue(Commands.none());
 
-    // Operator Buttons
-    _operatorAButton.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L1); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.RIGHT);}));
-    _operatorBButton.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L3); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.RIGHT);}));
-    _operatorXButton.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L2); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.RIGHT);}));
-    _operatorYButton.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L4); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.RIGHT);}));
-    _operatorLeftBumper.onTrue(Commands.none());
-    _operatorRightBumper.onTrue(Commands.none());
-    _operatorStartButton.onTrue(Commands.none());
-    _operatorBackButton.onTrue(Commands.none());
+        // Operator Buttons
+        _operatorAButton.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L1); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.RIGHT);}));
+        _operatorBButton.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L3); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.RIGHT);}));
+        _operatorXButton.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L2); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.RIGHT);}));
+        _operatorYButton.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L4); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.RIGHT);}));
+        _operatorLeftBumper.onTrue(Commands.none());
+        _operatorRightBumper.onTrue(Commands.none());
+        _operatorStartButton.onTrue(Commands.none());
+        _operatorBackButton.onTrue(Commands.none());
 
-    // Operator POV Buttons
-    _operatorPOVUp.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L4); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.LEFT);}));
-    _operatorPOVDown.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L1); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.LEFT);}));
-    _operatorPOVLeft.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L2); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.LEFT);}));
-    _operatorPOVRight.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L3); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.LEFT);}));
+        // Operator POV Buttons
+        _operatorPOVUp.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L4); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.LEFT);}));
+        _operatorPOVDown.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L1); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.LEFT);}));
+        _operatorPOVLeft.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L2); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.LEFT);}));
+        _operatorPOVRight.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L3); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.LEFT);}));
+
+        ///*
+        new Trigger(_driverLeftTriggerButton::get).onTrue(new IntakeCoralFunnel(_endEffector, _arm, _elevator));
+        new Trigger(_driverRightTriggerButton::get).onTrue(Commands.run(() -> {
+            if (RobotState.getInstance().getScoringReefDirection() == Constants.ReefDirection.LEFT) {
+                switch (RobotState.getInstance().getScoringCoralLevel()) {
+                    case L1: Commands.sequence(new ArmAvoidElevator(_arm), new AutonomousScoreApproach(_drivetrain, "LEFT_CAMERA"), new PlaceL1(_endEffector, _arm, _elevator)).schedule(); break;
+                    case L2: Commands.sequence(new ArmAvoidElevator(_arm), new AutonomousScoreApproach(_drivetrain, "LEFT_CAMERA"), new PlaceL2(_endEffector, _arm, _elevator)).schedule(); break;
+                    case L3: Commands.sequence(new ArmAvoidElevator(_arm), new AutonomousScoreApproach(_drivetrain, "LEFT_CAMERA"), new PlaceL3(_endEffector, _arm, _elevator)).schedule(); break;
+                    case L4: Commands.sequence(new ArmAvoidElevator(_arm), new AutonomousScoreApproach(_drivetrain, "LEFT_CAMERA"), new PlaceL4(_endEffector, _arm, _elevator)).schedule(); break;
+                }
+            } else if (RobotState.getInstance().getScoringReefDirection() == Constants.ReefDirection.RIGHT) {
+                switch (RobotState.getInstance().getScoringCoralLevel()) {
+                    case L1: Commands.sequence(new ArmAvoidElevator(_arm), new AutonomousScoreApproach(_drivetrain, "RIGHT_CAMERA"), new PlaceL1(_endEffector, _arm, _elevator)).schedule(); break;
+                    case L2: Commands.sequence(new ArmAvoidElevator(_arm), new AutonomousScoreApproach(_drivetrain, "RIGHT_CAMERA"), new PlaceL2(_endEffector, _arm, _elevator)).schedule(); break;
+                    case L3: Commands.sequence(new ArmAvoidElevator(_arm), new AutonomousScoreApproach(_drivetrain, "RIGHT_CAMERA"), new PlaceL3(_endEffector, _arm, _elevator)).schedule(); break;
+                    case L4: Commands.sequence(new ArmAvoidElevator(_arm), new AutonomousScoreApproach(_drivetrain, "RIGHT_CAMERA"), new PlaceL4(_endEffector, _arm, _elevator)).schedule(); break;
+                }
+            }
+        }));
+        //*/
     }
 
     public double getDriveY() {
@@ -183,6 +175,18 @@ public class OI {
     public double getDriveX() {
         double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_X.getNumber());
         speed = Helpers.applyDeadband(speed, Constants.Drivetrain.TRANSLATION_DEADBAND);
+        return speed;
+    }
+
+    public double getElevatorX() {
+        double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.LEFT_X.getNumber());
+        speed = Helpers.applyDeadband(speed, Constants.Elevator.ELEVATOR_DEADBAND);
+        return speed;
+    }
+
+    public double getArmX() {
+        double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_X.getNumber());
+        speed = Helpers.applyDeadband(speed, Constants.Arm.ARM_DEADBAND);
         return speed;
     }
 

@@ -16,6 +16,9 @@ public class AutonomousScoreApproach extends Command {
     private final PIDController _driveYController;
     private final PIDController _rotationController;
 
+    private static final double PID_MAX_OUTPUT = 1.0;  // Max motor output (e.g., 100% speed)
+    private static final double PID_MIN_OUTPUT = -1.0;
+
     public AutonomousScoreApproach(Drivetrain drivetrain, String cameraName) {
         _drivetrain = drivetrain;
         _visionProcessor = new VisionProcessor(cameraName);
@@ -35,10 +38,11 @@ public class AutonomousScoreApproach extends Command {
 
     @Override
     public void execute() {
-        double vx = _driveXController.calculate(_visionProcessor.getLargestTagX(), Constants.Autonomous.Score.DISTANCE_FACING_X);
-        double vy = _driveYController.calculate(_visionProcessor.getLargestTagY(), 0);
-        double omega = _rotationController.calculate(_visionProcessor.getLargestTagTheta(), 180);
-        double Coefficient = Constants.Drivetrain.MAX_DRIVE_SPEED_MPS / Math.sqrt(vx * vx + vy * vy) * 0.3;
+        double vx = constraintOutput(_driveXController.calculate(_visionProcessor.getLargestTagX(), Constants.Autonomous.Score.DISTANCE_FACING_X));
+        double vy = constraintOutput(_driveYController.calculate(_visionProcessor.getLargestTagY(), 0));
+        double omega = constraintOutput(_rotationController.calculate(_visionProcessor.getLargestTagTheta(), 180));
+        //double Coefficient = Constants.Drivetrain.MAX_DRIVE_SPEED_MPS / Math.sqrt(vx * vx + vy * vy) * 0.3;
+        double Coefficient = 0.5;
         vx *= Coefficient;
         vy *= Coefficient;
         SmartDashboard.putNumber("autonomous_vx", vx);
@@ -55,5 +59,11 @@ public class AutonomousScoreApproach extends Command {
     @Override
     public void end(boolean interrupted) {
         //_drivetrain.setVelocity(new ChassisSpeeds()); // Stop when finished
+    }
+
+    private double constraintOutput(double output) {
+        if (output > PID_MAX_OUTPUT) return PID_MAX_OUTPUT;
+        if (output < PID_MIN_OUTPUT) return PID_MIN_OUTPUT;
+        return output;
     }
 }
