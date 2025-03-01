@@ -25,7 +25,7 @@ public class ArmTest extends Command {
     public ArmTest(OI oi, Arm arm){
         _oi = oi;
         _arm = arm;
-        targetAngle = 0.5;
+        targetAngle = 0.074;
         addRequirements(_arm);
     }
 

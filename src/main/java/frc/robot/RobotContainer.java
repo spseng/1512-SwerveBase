@@ -44,7 +44,7 @@ public class RobotContainer {
     private OI _oi;
     private AutonomousConfigure _autonomous;
     private Elevator _elevator;
-    //private Arm _arm;
+    private Arm _arm;
     private EndEffector _endEffector;
     private Climb _climb;
     // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -78,11 +78,11 @@ public class RobotContainer {
     public void init() {
         //_visionProcessor = new VisionProcessor();
         _drivetrain = new Drivetrain();
-        _oi = new OI();
+        _oi = new OI(_drivetrain);
         //_autonomous = new AutonomousConfigure();
         //_drivetrain.setDefaultCommand(new AutonomousScoreApproach(_drivetrain, "camera2"));
         _elevator = new Elevator();
-        //_arm = new Arm();
+        _arm = new Arm();
         _endEffector = new EndEffector();
         _climb = new Climb();
 
@@ -91,10 +91,10 @@ public class RobotContainer {
         //_endEffector.setDefaultCommand(new PleaseDoNotMoveEndeffector(_endEffector));
         //_climb.setDefaultCommand(new PleaseDoNotMoveClimb(_climb));
 
-        _drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
+        //_drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
         //_elevator.setDefaultCommand(new ElevatorTest(_oi, _elevator));
-        //_arm.setDefaultCommand(new ArmTest(_oi, _arm));
-        _climb.setDefaultCommand(new ClimbTest(_oi, _climb));
+        _arm.setDefaultCommand(new ArmTest(_oi, _arm));
+        //_climb.setDefaultCommand(new ClimbTest(_oi, _climb));
         //_endEffector.setDefaultCommand(new EndeffectorTest(_oi, _endEffector));
 
         _oi.initializeButtons();
@@ -107,6 +107,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         return new MoveALittleBit(_drivetrain);
+        //return Commands.none();
         // An ExampleCommand will run in autonomous
         /*
         try {

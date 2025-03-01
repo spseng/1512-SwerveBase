@@ -28,6 +28,8 @@ public class OI {
     private final EndEffector _endEffector;
     */
 
+    private final Drivetrain _drivetrain;
+
     private Gamepad _driverGamepad;
     private Gamepad _operatorGamepad;
 
@@ -49,7 +51,7 @@ public class OI {
     private AxisButton _operatorLeftTriggerButton, _operatorRightTriggerButton;
     private AxisButton _operatorLeftXAxis, _operatorLeftYAxis, _operatorRightXAxis, _operatorRightYAxis;
 
-    public OI() {
+    public OI(Drivetrain drivetrain) {
         /*
         _drivetrain = new Drivetrain();
         _elevator = new Elevator();
@@ -57,6 +59,7 @@ public class OI {
         _climb = new Climb();
         _endEffector = new EndEffector();
         */
+        _drivetrain = drivetrain;
 
         _driverGamepad = new Gamepad(0);
         _operatorGamepad = new Gamepad(1);
@@ -114,7 +117,7 @@ public class OI {
     //this is where we map commands
     public void initializeButtons() {
         _driverAButton.onTrue(Commands.none());
-        //_driverBButton.onTrue(new ResetIMU(_drivetrain));
+        _driverBButton.onTrue(new ResetIMU(_drivetrain));
         _driverXButton.onTrue(Commands.none());
         _driverYButton.onTrue(Commands.none());
         _driverLeftBumper.onTrue(Commands.none());

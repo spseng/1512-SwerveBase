@@ -201,10 +201,10 @@ public class Constants {
 
         public static final double AVOID_ELEVATOR_POSITION = 0.5;
 
-        public static final double ARM_MIN_ANGLE = 0; // Rads
-        public static final double ARM_MAX_ANGLE = 0.63; // Rads
+        public static final double ARM_MIN_ANGLE = 0; // rotations
+        public static final double ARM_MAX_ANGLE = 0.58; // rotations
 
-        public static final double AMP_SCORING_ANGLE = -0.308; // Rads
+        public static final double AMP_SCORING_ANGLE = 0; // Rads
         public static final double ARM_INTAKE_ANGLE = 0.232; // Rad
         public static final double ALGAE_POSITION = 0;
         public static final double L1_ANGLE = 0;

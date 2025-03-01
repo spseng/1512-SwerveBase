@@ -18,7 +18,7 @@ public class Arm extends SubsystemBase {
     private final PIDController _armPIDController;
     private final SparkMaxConfig _armMotorConfig;
 
-    private final double _armOffset = 0.11;
+    private final double _armOffset = 0.073;
     private double _setpoint;
 
     // 定数（物理パラメータ）
@@ -76,12 +76,12 @@ public class Arm extends SubsystemBase {
         double ffOutput = calculateFeedforward();
         double totalOutput = pidOutput + ffOutput;
         totalOutput = Math.max(-1.0, Math.min(1.0, totalOutput));
-        _armMotor.set(totalOutput);
+        _armMotor.set(-totalOutput);
     }
 
     private double calculateFeedforward() {
         double angle = getCurrentAngle() - _armOffset;
-        double rawTorque = MASS * GRAVITY * LENGTH * Math.sin(angle);
+        double rawTorque = MASS * GRAVITY * LENGTH * Math.sin(angle * 2 * Math.PI);
         return K_FF * rawTorque;
     }
 }
