@@ -25,7 +25,7 @@ public class Arm extends SubsystemBase {
     private static final double MASS = 1.0;
     private static final double LENGTH = 0.5;
     private static final double GRAVITY = 9.8;
-    private static final double K_FF = 0.1;
+    private static final double K_FF = 0.001;
 
     public Arm() {
         _armMotor = new SparkMax(RobotMap.CAN.ARM_MOTOR_CAN, MotorType.kBrushless);
@@ -76,6 +76,9 @@ public class Arm extends SubsystemBase {
         double ffOutput = calculateFeedforward();
         double totalOutput = pidOutput + ffOutput;
         totalOutput = Math.max(-1.0, Math.min(1.0, totalOutput));
+        SmartDashboard.putNumber("Arm Total Output", totalOutput);
+        SmartDashboard.putNumber("Arm PID Output", pidOutput);
+        SmartDashboard.putNumber("Arm FF Output", ffOutput);
         _armMotor.set(-totalOutput);
     }
 

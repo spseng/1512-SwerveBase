@@ -52,7 +52,7 @@ public class ArmTest extends Command {
         vx = vec.x();
         vy = vec.y();
 
-        targetAngle = targetAngle + vx * 0.02;
+        targetAngle = targetAngle + vx * 0.0001;
 
         SmartDashboard.putNumber("arm vx", vx);
         SmartDashboard.putNumber("arm vy", vy);

@@ -76,7 +76,4 @@ public class ClimbTest extends Command {
         // TODO Auto-generated method stub
         super.end(interrupted);
     }
-   
-
-    
 }

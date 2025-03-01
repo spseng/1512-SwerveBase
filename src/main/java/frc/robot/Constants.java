@@ -189,7 +189,7 @@ public class Constants {
     }
 
     public static class Arm {
-        public static final double ARM_POSITION_KP = 0.5;
+        public static final double ARM_POSITION_KP = 2.0;
         public static final double ARM_POSITION_KI = 0.0;
         public static final double ARM_POSITION_KD = 0.03;
         public static final double ARM_TOLERANCE = 0.1;
