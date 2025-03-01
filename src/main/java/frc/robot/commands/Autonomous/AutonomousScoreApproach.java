@@ -53,7 +53,7 @@ public class AutonomousScoreApproach extends Command {
 
     @Override
     public boolean isFinished() {
-        return false; // This command never finishes on its own, it needs to be interrupted
+        return (_driveXController.atSetpoint() && _driveYController.atSetpoint() && _rotationController.atSetpoint()); // This command never finishes on its own, it needs to be interrupted
     }
 
     @Override

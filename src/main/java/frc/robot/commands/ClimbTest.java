@@ -33,6 +33,7 @@ public class ClimbTest extends Command {
 
     @Override
     public void execute() {
+        /*
         double vx;
         double vy;
 
@@ -52,10 +53,18 @@ public class ClimbTest extends Command {
 
         SmartDashboard.putNumber("vx", vx);
         SmartDashboard.putNumber("vy", vy);
+        */
+
+        double v = _oi.getElevatorX();
+        if(v == 0) {
+            v = 0.0;
+        }else {
+            v -= 0.5;
+        }
 
         //double target_height = _arm.getCurrentAngle() + vx;
 
-        _climb.setClimbSpeed(vx);
+        _climb.setClimbSpeed(v);
     }
     @Override
     public boolean isFinished() {

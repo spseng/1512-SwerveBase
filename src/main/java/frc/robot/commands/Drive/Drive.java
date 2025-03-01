@@ -55,10 +55,10 @@ public class Drive extends Command {
         rot = Math.signum(rot) * rot * rot; // square rot without loosing plus or minus
         rot = rot * Constants.Drivetrain.MAX_ANG_VEL;
 
-        SmartDashboard.putNumber("vx", vx);
-        SmartDashboard.putNumber("vy", vy);
-        SmartDashboard.putNumber("rot", rot);
-        SmartDashboard.putNumber("DESIRED_VELOCITY", Math.hypot(vx, vy));
+        //SmartDashboard.putNumber("vx", vx);
+        //SmartDashboard.putNumber("vy", vy);
+        //SmartDashboard.putNumber("rot", rot);
+        //SmartDashboard.putNumber("DESIRED_VELOCITY", Math.hypot(vx, vy));
 
 
         Rotation2d rotation = _drivetrain.isRedAlliance() ? _drivetrain.getHeading().plus(new Rotation2d(Math.PI)) : _drivetrain.getHeading();

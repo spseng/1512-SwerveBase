@@ -25,7 +25,7 @@ public class ElevatorTest extends Command {
     public ElevatorTest(OI oi, Elevator elevator){
         _oi = oi;
         _elevator = elevator;
-        targetHeight = _elevator.getCurrentHeight();
+        targetHeight = 0;
         addRequirements(_elevator);
     }
     @Override

@@ -20,13 +20,13 @@ import frc.robot.subsystems.EndEffector;
 
 
 public class OI {
-    ///*
+    /*
     private final Drivetrain _drivetrain;
     private final Elevator _elevator;
     private final Arm _arm;
     private final Climb _climb;
     private final EndEffector _endEffector;
-    //*/
+    */
 
     private Gamepad _driverGamepad;
     private Gamepad _operatorGamepad;
@@ -50,13 +50,13 @@ public class OI {
     private AxisButton _operatorLeftXAxis, _operatorLeftYAxis, _operatorRightXAxis, _operatorRightYAxis;
 
     public OI() {
-        ///*
+        /*
         _drivetrain = new Drivetrain();
         _elevator = new Elevator();
         _arm = new Arm();
         _climb = new Climb();
         _endEffector = new EndEffector();
-        //*/
+        */
 
         _driverGamepad = new Gamepad(0);
         _operatorGamepad = new Gamepad(1);
@@ -112,9 +112,9 @@ public class OI {
 
     
     //this is where we map commands
-    public void initializeButtons(Drivetrain drivetrain) {
+    public void initializeButtons() {
         _driverAButton.onTrue(Commands.none());
-        _driverBButton.onTrue(new ResetIMU(_drivetrain));
+        //_driverBButton.onTrue(new ResetIMU(_drivetrain));
         _driverXButton.onTrue(Commands.none());
         _driverYButton.onTrue(Commands.none());
         _driverLeftBumper.onTrue(Commands.none());
@@ -144,7 +144,7 @@ public class OI {
         _operatorPOVLeft.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L2); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.LEFT);}));
         _operatorPOVRight.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L3); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.LEFT);}));
 
-        ///*
+        /*
         new Trigger(_driverLeftTriggerButton::get).onTrue(new IntakeCoralFunnel(_endEffector, _arm, _elevator));
         new Trigger(_driverRightTriggerButton::get).onTrue(Commands.run(() -> {
             if (RobotState.getInstance().getScoringReefDirection() == Constants.ReefDirection.LEFT) {
@@ -163,7 +163,7 @@ public class OI {
                 }
             }
         }));
-        //*/
+        */
     }
 
     public double getDriveY() {

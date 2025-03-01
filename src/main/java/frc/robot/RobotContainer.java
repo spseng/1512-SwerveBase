@@ -17,14 +17,20 @@ import frc.robot.commands.ElevatorTest;
 import frc.robot.commands.ArmTest;
 import frc.robot.commands.ClimbTest;
 import frc.robot.commands.EndeffectorTest;
+import frc.robot.commands.PleaseDoNotMoveElevator;
 import frc.robot.commands.Autonomous.AutonomousScoreApproach;
+import frc.robot.commands.Autonomous.MoveALittleBit;
 import frc.robot.commands.Drive.Drive;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.EndEffector;
 import frc.robot.subsystems.Drivetrain;
-
+import frc.robot.commands.PleaseDoNotMoveArm;
+import frc.robot.commands.PleaseDoNotMoveElevator;
+import frc.robot.commands.PleaseDoNotMoveEndeffector;
+import frc.robot.commands.PleaseDoNotMoveClimb;
+import frc.robot.commands.Autonomous.MoveALittleBit;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -38,7 +44,7 @@ public class RobotContainer {
     private OI _oi;
     private AutonomousConfigure _autonomous;
     private Elevator _elevator;
-    private Arm _arm;
+    //private Arm _arm;
     private EndEffector _endEffector;
     private Climb _climb;
     // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -73,20 +79,25 @@ public class RobotContainer {
         //_visionProcessor = new VisionProcessor();
         _drivetrain = new Drivetrain();
         _oi = new OI();
-        _autonomous = new AutonomousConfigure();
+        //_autonomous = new AutonomousConfigure();
         //_drivetrain.setDefaultCommand(new AutonomousScoreApproach(_drivetrain, "camera2"));
-        //_elevator = new Elevator();
-        _arm = new Arm();
+        _elevator = new Elevator();
+        //_arm = new Arm();
         _endEffector = new EndEffector();
         _climb = new Climb();
 
-        //_drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
+        //_elevator.setDefaultCommand(new PleaseDoNotMoveElevator(_elevator));
+        //_arm.setDefaultCommand(new PleaseDoNotMoveArm(_arm));
+        //_endEffector.setDefaultCommand(new PleaseDoNotMoveEndeffector(_endEffector));
+        //_climb.setDefaultCommand(new PleaseDoNotMoveClimb(_climb));
+
+        _drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
         //_elevator.setDefaultCommand(new ElevatorTest(_oi, _elevator));
         //_arm.setDefaultCommand(new ArmTest(_oi, _arm));
-        //_climb.setDefaultCommand(new ClimbTest(_oi, _climb));
+        _climb.setDefaultCommand(new ClimbTest(_oi, _climb));
         //_endEffector.setDefaultCommand(new EndeffectorTest(_oi, _endEffector));
 
-        _oi.initializeButtons(_drivetrain);
+        _oi.initializeButtons();
     }
 
     /**
@@ -95,7 +106,9 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
+        return new MoveALittleBit(_drivetrain);
         // An ExampleCommand will run in autonomous
+        /*
         try {
             return AutoBuilder.followPath(_autonomous.getSelectedPath());
         }catch (Exception e) {
@@ -103,5 +116,6 @@ public class RobotContainer {
             SmartDashboard.putString("Auto Error", e.getMessage());
             return Commands.none();
         }
+            */
     }
 }
