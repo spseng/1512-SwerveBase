@@ -25,7 +25,7 @@ public class MoveALittleBit extends Command {
     @Override
     public void execute() {
         Rotation2d rotation = _drivetrain.getHeading();
-        _drivetrain.setVelocity(ChassisSpeeds.fromRobotRelativeSpeeds(3, 0, 0, rotation));
+        _drivetrain.setVelocity(ChassisSpeeds.fromRobotRelativeSpeeds(-2, 0, 0, rotation));
     }
 
     @Override
@@ -35,6 +35,6 @@ public class MoveALittleBit extends Command {
 
     @Override
     public boolean isFinished() {
-        return Timer.getFPGATimestamp() - startTime >= DURATION;
+        return false;
     }
 }

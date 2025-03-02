@@ -91,7 +91,7 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return new MoveALittleBit(_drivetrain);
+        return new MoveALittleBit(_drivetrain).withTimeout(10);
         // An ExampleCommand will run in autonomous
         /*
         try {
