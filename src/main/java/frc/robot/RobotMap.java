@@ -24,8 +24,6 @@ public class RobotMap {
         public static final int ENDEFFECTOR_MOTOR_TOP_CAN = 20;
         public static final int ENDEFFECTOR_MOTOR_BOTTOM_CAN = 21;
 
-        public static final int CLIMB_MOTOR_CAN = 24;
-
         public static final int PIGEON_CAN = 18;
     }
 

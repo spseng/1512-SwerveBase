@@ -40,7 +40,7 @@ import frc.robot.commands.Autonomous.MoveALittleBit;
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     //private VisionProcessor _visionProcessor;
-    private Drivetrain _drivetrain;
+    //private Drivetrain _drivetrain;
     //private VisionProcessor _visionProcessor;
     private Drivetrain _drivetrain;
     private OI _oi;
@@ -108,7 +108,7 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return new MoveALittleBit(_drivetrain);
+        return new MoveALittleBit(_drivetrain).withTimeout(10);
         //return Commands.none();
         // An ExampleCommand will run in autonomous
         /*
