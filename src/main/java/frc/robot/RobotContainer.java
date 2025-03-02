@@ -41,6 +41,8 @@ public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     //private VisionProcessor _visionProcessor;
     private Drivetrain _drivetrain;
+    //private VisionProcessor _visionProcessor;
+    private Drivetrain _drivetrain;
     private OI _oi;
     private AutonomousConfigure _autonomous;
     private Elevator _elevator;
@@ -110,6 +112,7 @@ public class RobotContainer {
         //return Commands.none();
         // An ExampleCommand will run in autonomous
         /*
+        /*
         try {
             return AutoBuilder.followPath(_autonomous.getSelectedPath());
         }catch (Exception e) {
@@ -117,6 +120,6 @@ public class RobotContainer {
             SmartDashboard.putString("Auto Error", e.getMessage());
             return Commands.none();
         }
-            */
+        */
     }
 }

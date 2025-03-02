@@ -55,9 +55,9 @@ public class Constants {
         public static final IdleMode STEER_IDLE_MODE = IdleMode.kBrake;
 
         public static final double SPEED_MOD = 1.0;
-        public static final double MAX_ANG_VEL = 10.0 * SPEED_MOD;
+        public static final double MAX_ANG_VEL = 19.0 * SPEED_MOD;
         //public static final double MAX_DRIVE_SPEED_MPS = (Units.rotationsPerMinuteToRadiansPerSecond(6784) / DRIVING_REDUCTION * (WHEEL_DIAMETER / 2));
-        public static final double MAX_DRIVE_SPEED_MPS = 10.0;
+        public static final double MAX_DRIVE_SPEED_MPS = 20.0;
         public static final double TRANSLATION_DEADBAND = 0.05;
         public static final double ROTATION_DEADBAND = 0.05;
 

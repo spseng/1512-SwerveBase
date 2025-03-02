@@ -183,6 +183,7 @@ public class OI {
 
     public double getElevatorX() {
         double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.LEFT_X.getNumber());
+
         speed = Helpers.applyDeadband(speed, Constants.Elevator.ELEVATOR_DEADBAND);
         return speed;
     }
@@ -190,6 +191,9 @@ public class OI {
     public double getArmX() {
         double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_X.getNumber());
         speed = Helpers.applyDeadband(speed, Constants.Arm.ARM_DEADBAND);
+
+        speed = Helpers.applyDeadband(speed, Constants.Drivetrain.TRANSLATION_DEADBAND);
+
         return speed;
     }
 
