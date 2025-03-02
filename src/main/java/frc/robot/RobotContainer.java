@@ -15,9 +15,11 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Utils.Vision.VisionProcessor;
 import frc.robot.commands.ClimbTest;
+import frc.robot.commands.EndEffectorTest;
 import frc.robot.commands.Drive.Drive;
 import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.EndEffector;
 import frc.robot.subsystems.Climb;
 import frc.robot.commands.ClimbTest;
 import frc.robot.commands.MoveALittleBit;
@@ -38,6 +40,7 @@ public class RobotContainer {
     private Drivetrain _drivetrain;
     private OI _oi;
     private Climb _climb;
+    private EndEffector _endEffector;
     //private Autonomous _autonomous;
     // Replace with CommandPS4Controller or CommandJoystick if needed
     //add controller in OI
@@ -72,9 +75,11 @@ public class RobotContainer {
         //_visionProcessor = new VisionProcessor();
         _drivetrain = new Drivetrain();
         _oi = new OI();
-        _climb = new Climb();
+        //_climb = new Climb();
+        _endEffector = new EndEffector();
+        _endEffector.setDefaultCommand(new EndEffectorTest(_oi, _endEffector));
         //_autonomous = new Autonomous(_drivetrain);
-        _climb.setDefaultCommand(new ClimbTest(_oi, _climb));
+        //_climb.setDefaultCommand(new ClimbTest(_oi, _climb));
         _drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
         _oi.initializeButtons(_drivetrain);
         //enabled drivetrain

@@ -21,6 +21,12 @@ public class RobotMap {
         public static final int ANGLE_ALIGNMENT_MOTOR_CAN = 2;
         public static final int ANGLE_ALIGNMENT_ENCODER_CAN = 15;
 
+        public static final int ELEVATOR_MOTOR_LEFT_CAN = 23;
+        public static final int ELEVATOR_MOTOR_RIGHT_CAN = 22;
+
+        public static final int ENDEFFECTOR_MOTOR_TOP_CAN = 20;
+        public static final int ENDEFFECTOR_MOTOR_BOTTOM_CAN = 21;
+
         public static final int CLIMB_MOTOR_CAN = 24;
 
         public static final int PIGEON_CAN = 18;
