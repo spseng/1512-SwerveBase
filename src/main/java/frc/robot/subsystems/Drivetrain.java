@@ -70,7 +70,7 @@ public class Drivetrain extends SubsystemBase {
         _pigeon = new Pigeon2(RobotMap.CAN.PIGEON_CAN);
 
         //_yawOffset = _gyro.getYaw(); // zero gyro on init
-        _yawOffset = _pigeon.getYaw().getValueAsDouble();
+        _yawOffset = -_pigeon.getYaw().getValueAsDouble();
         readIMU(); // method to update gyro
 
         _modules = new SwerveModule[4];
@@ -290,13 +290,13 @@ public class Drivetrain extends SubsystemBase {
 
     public void ZeroIMU() {
         //_yawOffset = _gyro.getYaw();
-        _yawOffset = _pigeon.getYaw().getValueAsDouble();
+        _yawOffset = -_pigeon.getYaw().getValueAsDouble();
         readIMU();
     }
 
     public void readIMU() {
         //double yawDegrees = _gyro.getYaw();
-        double yawDegrees = _pigeon.getYaw().getValueAsDouble();
+        double yawDegrees = -_pigeon.getYaw().getValueAsDouble();
         double yawAllianceOffsetDegrees = isRedAlliance() ? 180.0 : 0;
         _Io.heading = Rotation2d.fromDegrees(yawDegrees - _yawOffset + yawAllianceOffsetDegrees);
     }

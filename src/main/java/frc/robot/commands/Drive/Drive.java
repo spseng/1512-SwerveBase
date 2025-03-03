@@ -49,8 +49,13 @@ public class Drive extends Command {
                 // gets x and y in a unit circle based on segmentation array.
                 // basically normalising the x and y.
 
-        vx = vec.x() * Constants.Drivetrain.MAX_DRIVE_SPEED_MPS; // mps
-        vy = vec.y() * Constants.Drivetrain.MAX_DRIVE_SPEED_MPS; // mps
+        if(_oi.isSlowModeOn()) {
+            vx = vec.x() * Constants.Drivetrain.SLOW_DRIVE_SPEED_MPS; // mps
+            vy = vec.y() * Constants.Drivetrain.SLOW_DRIVE_SPEED_MPS; // mps
+        }else {
+            vx = vec.x() * Constants.Drivetrain.MAX_DRIVE_SPEED_MPS; // mps
+            vy = vec.y() * Constants.Drivetrain.MAX_DRIVE_SPEED_MPS; // mps
+        }
 
         rot = Math.signum(rot) * rot * rot; // square rot without loosing plus or minus
         rot = rot * Constants.Drivetrain.MAX_ANG_VEL;

@@ -39,6 +39,9 @@ public class OI {
     protected Trigger _opPovButtonUp;
     protected Trigger _opPovButtonLeft;
 
+    protected Trigger _driverLeftBumper;
+    protected Trigger _driverRightBumper;
+
     public OI() {
 
         _driverGamepad = new Gamepad(0);
@@ -56,6 +59,9 @@ public class OI {
 
         _driverRightTriggerButton = new AxisButton(_driverGamepad, Gamepad.Axes.RIGHT_TRIGGER.getNumber(), 0.05);
         _driverRightTrigger = new Trigger(_driverRightTriggerButton::get);
+
+        _driverLeftBumper = _driverGamepad.getLeftBumper();
+        _driverRightBumper = _driverGamepad.getRightBumper();
     }
 
     public void initializeButtons(
@@ -102,6 +108,16 @@ public class OI {
         double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.LEFT_X.getNumber());
         speed = Helpers.applyDeadband(speed, Constants.Drivetrain.TRANSLATION_DEADBAND);
         return speed;
+    }
+
+    public double getClimbX() {
+        double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_X.getNumber());
+        speed = Helpers.applyDeadband(speed, Constants.Drivetrain.TRANSLATION_DEADBAND);
+        return speed;
+    }
+
+    public boolean isSlowModeOn() {
+       return  _driverLeftBumper.getAsBoolean() || _driverRightBumper.getAsBoolean();
     }
 
     public double getRotationX() {

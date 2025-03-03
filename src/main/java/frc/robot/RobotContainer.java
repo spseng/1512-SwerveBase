@@ -75,11 +75,11 @@ public class RobotContainer {
         //_visionProcessor = new VisionProcessor();
         _drivetrain = new Drivetrain();
         _oi = new OI();
-        //_climb = new Climb();
+        _climb = new Climb();
         _endEffector = new EndEffector();
         _endEffector.setDefaultCommand(new EndEffectorTest(_oi, _endEffector));
         //_autonomous = new Autonomous(_drivetrain);
-        //_climb.setDefaultCommand(new ClimbTest(_oi, _climb));
+        _climb.setDefaultCommand(new ClimbTest(_oi, _climb));
         _drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
         _oi.initializeButtons(_drivetrain);
         //enabled drivetrain
