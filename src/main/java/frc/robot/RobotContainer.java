@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Utils.Vision.VisionProcessor;
 import frc.robot.commands.ClimbTest;
 import frc.robot.commands.Drive.Drive;
-import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Climb;
 import frc.robot.commands.ClimbTest;
@@ -86,7 +85,7 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return new MoveALittleBit(_drivetrain);
+        return new MoveALittleBit(_drivetrain).withTimeout(14);
         // An ExampleCommand will run in autonomous
         /*
         try {
