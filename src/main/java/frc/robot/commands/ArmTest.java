@@ -9,7 +9,7 @@ import frc.robot.OI;
 import frc.robot.Utils.Helpers;
 import frc.robot.Utils.Vector2d;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Elevator;
+//import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.EndEffector;
 
 public class ArmTest extends Command {
@@ -25,7 +25,7 @@ public class ArmTest extends Command {
     public ArmTest(OI oi, Arm arm){
         _oi = oi;
         _arm = arm;
-        targetAngle = 0.074;
+        targetAngle = 0.137;
         addRequirements(_arm);
     }
 
@@ -52,7 +52,13 @@ public class ArmTest extends Command {
         vx = vec.x();
         vy = vec.y();
 
-        targetAngle = targetAngle + vx * 0.0001;
+        targetAngle = targetAngle + vx * 0.03;
+
+        if(targetAngle < 0.1) { 
+            targetAngle = 0.1;
+        }else if (targetAngle > 0.63) {
+            targetAngle = 0.63;
+        }
 
         SmartDashboard.putNumber("arm vx", vx);
         SmartDashboard.putNumber("arm vy", vy);

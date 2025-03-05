@@ -16,21 +16,14 @@ import frc.robot.Utils.AutonomousConfigure;
 import frc.robot.commands.ElevatorTest;
 import frc.robot.commands.ArmTest;
 import frc.robot.commands.ClimbTest;
-import frc.robot.commands.EndeffectorTest;
-import frc.robot.commands.PleaseDoNotMoveElevator;
-import frc.robot.commands.Autonomous.AutonomousScoreApproach;
-import frc.robot.commands.Autonomous.MoveALittleBit;
+//import frc.robot.commands.Autonomous.AutonomousScoreApproach;
+//import frc.robot.commands.Autonomous.MoveALittleBit;
 import frc.robot.commands.Drive.Drive;
-import frc.robot.subsystems.Elevator;
+//import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.EndEffector;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.commands.PleaseDoNotMoveArm;
-import frc.robot.commands.PleaseDoNotMoveElevator;
-import frc.robot.commands.PleaseDoNotMoveEndeffector;
-import frc.robot.commands.PleaseDoNotMoveClimb;
-import frc.robot.commands.Autonomous.MoveALittleBit;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -44,8 +37,8 @@ public class RobotContainer {
     //private VisionProcessor _visionProcessor;
     private Drivetrain _drivetrain;
     private OI _oi;
-    private AutonomousConfigure _autonomous;
-    private Elevator _elevator;
+    //private AutonomousConfigure _autonomous;
+    //private Elevator _elevator;
     private Arm _arm;
     private EndEffector _endEffector;
     private Climb _climb;
@@ -83,7 +76,7 @@ public class RobotContainer {
         _oi = new OI(_drivetrain);
         //_autonomous = new AutonomousConfigure();
         //_drivetrain.setDefaultCommand(new AutonomousScoreApproach(_drivetrain, "camera2"));
-        _elevator = new Elevator();
+        //_elevator = new Elevator();
         _arm = new Arm();
         _endEffector = new EndEffector();
         _climb = new Climb();
@@ -108,8 +101,8 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return new MoveALittleBit(_drivetrain).withTimeout(10);
-        //return Commands.none();
+        //return new MoveALittleBit(_drivetrain).withTimeout(10);
+        return Commands.none();
         // An ExampleCommand will run in autonomous
         /*
         /*

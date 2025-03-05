@@ -189,9 +189,9 @@ public class Constants {
     }
 
     public static class Arm {
-        public static final double ARM_POSITION_KP = 2.0;
-        public static final double ARM_POSITION_KI = 0.0;
-        public static final double ARM_POSITION_KD = 0.03;
+        public static final double ARM_POSITION_KP = 1.5;
+        public static final double ARM_POSITION_KI = 0.005;
+        public static final double ARM_POSITION_KD = 0.1;
         public static final double ARM_TOLERANCE = 0.1;
         public static final double ARM_OUTPUT_MIN = -1;
         public static final double ARM_OUTPUT_MAX = 1;
@@ -201,8 +201,8 @@ public class Constants {
 
         public static final double AVOID_ELEVATOR_POSITION = 0.5;
 
-        public static final double ARM_MIN_ANGLE = 0; // rotations
-        public static final double ARM_MAX_ANGLE = 0.58; // rotations
+        public static final double ARM_MIN_ANGLE = 0.1; // rotations
+        public static final double ARM_MAX_ANGLE = 0.63; // rotations
 
         public static final double AMP_SCORING_ANGLE = 0; // Rads
         public static final double ARM_INTAKE_ANGLE = 0.232; // Rad
