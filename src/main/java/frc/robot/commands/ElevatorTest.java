@@ -33,6 +33,7 @@ public class ElevatorTest extends Command {
     }
     @Override
     public void execute() {
+        /*
         double vx;
         double vy;
 
@@ -49,11 +50,19 @@ public class ElevatorTest extends Command {
 
         vx = vec.x();
         vy = vec.y();
+        */
 
-        SmartDashboard.putNumber("vx", vx);
-        SmartDashboard.putNumber("vy", vy);
+        double v = _oi.getElevatorX();
 
-        targetHeight += vx;
+        SmartDashboard.putNumber("v", v);
+
+        targetHeight += v;
+
+        if(targetHeight <= 0) {
+            targetHeight = 0;
+        }else if (targetHeight >= 37) {
+            targetHeight = 37;
+        }
 
         _elevator.setTargetHeight(targetHeight);
     }

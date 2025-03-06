@@ -35,6 +35,7 @@ public class ArmTest extends Command {
 
     @Override
     public void execute() {
+        /*
         double vx;
         double vy;
 
@@ -51,8 +52,11 @@ public class ArmTest extends Command {
 
         vx = vec.x();
         vy = vec.y();
+        */
 
-        targetAngle = targetAngle + vx * 0.03;
+        double v = _oi.getArmX();
+
+        targetAngle = targetAngle + v * 0.01;
 
         if(targetAngle < 0.1) { 
             targetAngle = 0.1;
@@ -60,8 +64,7 @@ public class ArmTest extends Command {
             targetAngle = 0.63;
         }
 
-        SmartDashboard.putNumber("arm vx", vx);
-        SmartDashboard.putNumber("arm vy", vy);
+        SmartDashboard.putNumber("arm vx", v);
         SmartDashboard.putNumber("arm target height", targetAngle);
 
         _arm.setArmPosition(targetAngle);

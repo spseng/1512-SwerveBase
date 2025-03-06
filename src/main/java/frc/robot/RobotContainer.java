@@ -12,14 +12,14 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Utils.Vision.VisionProcessor;
-import frc.robot.Utils.AutonomousConfigure;
+//import frc.robot.Utils.AutonomousConfigure;
 import frc.robot.commands.ElevatorTest;
 import frc.robot.commands.ArmTest;
 import frc.robot.commands.ClimbTest;
 //import frc.robot.commands.Autonomous.AutonomousScoreApproach;
 //import frc.robot.commands.Autonomous.MoveALittleBit;
 import frc.robot.commands.Drive.Drive;
-//import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.EndEffector;
@@ -38,7 +38,7 @@ public class RobotContainer {
     private Drivetrain _drivetrain;
     private OI _oi;
     //private AutonomousConfigure _autonomous;
-    //private Elevator _elevator;
+    private Elevator _elevator;
     private Arm _arm;
     private EndEffector _endEffector;
     private Climb _climb;
@@ -76,7 +76,7 @@ public class RobotContainer {
         _oi = new OI(_drivetrain);
         //_autonomous = new AutonomousConfigure();
         //_drivetrain.setDefaultCommand(new AutonomousScoreApproach(_drivetrain, "camera2"));
-        //_elevator = new Elevator();
+        _elevator = new Elevator();
         _arm = new Arm();
         _endEffector = new EndEffector();
         _climb = new Climb();
@@ -87,7 +87,7 @@ public class RobotContainer {
         //_climb.setDefaultCommand(new PleaseDoNotMoveClimb(_climb));
 
         //_drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
-        //_elevator.setDefaultCommand(new ElevatorTest(_oi, _elevator));
+        _elevator.setDefaultCommand(new ElevatorTest(_oi, _elevator));
         _arm.setDefaultCommand(new ArmTest(_oi, _arm));
         //_climb.setDefaultCommand(new ClimbTest(_oi, _climb));
         //_endEffector.setDefaultCommand(new EndeffectorTest(_oi, _endEffector));
