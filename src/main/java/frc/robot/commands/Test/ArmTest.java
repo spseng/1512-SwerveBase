@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.Test;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -9,20 +9,24 @@ import frc.robot.OI;
 import frc.robot.Utils.Helpers;
 import frc.robot.Utils.Vector2d;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Elevator;
+//import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.EndEffector;
 
-public class EndeffectorTest extends Command {
-    private EndEffector _endEffector;
+public class ArmTest extends Command {
+
+    private Arm _arm;
 
     private final OI _oi;
 
     private final int[] segmentationArray = new int[360 / 5];
 
-    public EndeffectorTest(OI oi, EndEffector endEffector){
+    private double targetAngle;
+
+    public ArmTest(OI oi, Arm arm){
         _oi = oi;
-        _endEffector = endEffector;
-        addRequirements(_endEffector);
+        _arm = arm;
+        targetAngle = 0.137;
+        addRequirements(_arm);
     }
 
     @Override
@@ -31,6 +35,7 @@ public class EndeffectorTest extends Command {
 
     @Override
     public void execute() {
+        /*
         double vx;
         double vy;
 
@@ -47,15 +52,23 @@ public class EndeffectorTest extends Command {
 
         vx = vec.x();
         vy = vec.y();
+        */
 
-        SmartDashboard.putNumber("vx", vx);
-        SmartDashboard.putNumber("vy", vy);
+        double v = _oi.getArmX();
 
-        if(!_endEffector.isCoralInIntake()) {
-            _endEffector.setIntakeSpeed(vx);
-        }else {
-            _endEffector.setIntakeSpeed(0);
+        targetAngle = targetAngle + v * 0.01;
+
+        if(targetAngle < 0.1) { 
+            targetAngle = 0.1;
+        }else if (targetAngle > 0.63) {
+            targetAngle = 0.63;
         }
+
+        SmartDashboard.putNumber("arm vx", v);
+        SmartDashboard.putNumber("arm target height", targetAngle);
+
+        _arm.setArmPosition(targetAngle);
+
     }
     @Override
     public boolean isFinished() {
@@ -67,4 +80,7 @@ public class EndeffectorTest extends Command {
         // TODO Auto-generated method stub
         super.end(interrupted);
     }
+   
+
+    
 }

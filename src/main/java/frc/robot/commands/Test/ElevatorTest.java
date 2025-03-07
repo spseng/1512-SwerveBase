@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.Test;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -9,30 +9,28 @@ import frc.robot.OI;
 import frc.robot.Utils.Helpers;
 import frc.robot.Utils.Vector2d;
 import frc.robot.subsystems.Arm;
-//import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.EndEffector;
 
-public class ArmTest extends Command {
+public class ElevatorTest extends Command {
 
-    private Arm _arm;
+    private Elevator _elevator;
 
     private final OI _oi;
 
     private final int[] segmentationArray = new int[360 / 5];
 
-    private double targetAngle;
+    private double targetHeight;
 
-    public ArmTest(OI oi, Arm arm){
+    public ElevatorTest(OI oi, Elevator elevator){
         _oi = oi;
-        _arm = arm;
-        targetAngle = 0.137;
-        addRequirements(_arm);
+        _elevator = elevator;
+        targetHeight = 0;
+        addRequirements(_elevator);
     }
-
     @Override
     public void initialize() {
     }
-
     @Override
     public void execute() {
         /*
@@ -54,21 +52,19 @@ public class ArmTest extends Command {
         vy = vec.y();
         */
 
-        double v = _oi.getArmX();
+        double v = _oi.getElevatorX();
 
-        targetAngle = targetAngle + v * 0.01;
+        SmartDashboard.putNumber("v", v);
 
-        if(targetAngle < 0.1) { 
-            targetAngle = 0.1;
-        }else if (targetAngle > 0.63) {
-            targetAngle = 0.63;
+        targetHeight += v;
+
+        if(targetHeight <= 0) {
+            targetHeight = 0;
+        }else if (targetHeight >= 37) {
+            targetHeight = 37;
         }
 
-        SmartDashboard.putNumber("arm vx", v);
-        SmartDashboard.putNumber("arm target height", targetAngle);
-
-        _arm.setArmPosition(targetAngle);
-
+        _elevator.setTargetHeight(targetHeight);
     }
     @Override
     public boolean isFinished() {

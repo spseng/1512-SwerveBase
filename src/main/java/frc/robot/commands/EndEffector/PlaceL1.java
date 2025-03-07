@@ -29,8 +29,8 @@ public class PlaceL1 extends Command {
     public void initialize() {
         _arm.setArmPosition(Constants.Arm.L1_ANGLE); 
         _elevator.setTargetHeight(Constants.Elevator.L1_HEIGHT); 
-        isSpinning = false; // 初期化時に回転フラグをリセット
-        startSpinTime = 0.0; // 開始時間をリセット
+        isSpinning = false;
+        startSpinTime = 0.0;
     }
     @Override
     public void execute() {
@@ -38,11 +38,10 @@ public class PlaceL1 extends Command {
         super.execute();
         if (_elevator.isAtTarget() && _arm.isAtTarget()) {
             if (!isSpinning) {
-                // 回転がまだ始まっていない場合、開始時間を記録
                 startSpinTime = Timer.getFPGATimestamp();
                 isSpinning = true;
             }
-            _endEffector.setIntakeSpeed(Constants.EndEffector.PLACE_SPEED); // 回転開始
+            _endEffector.setIntakeSpeed(Constants.EndEffector.PLACE_SPEED);
         }
     }
     @Override

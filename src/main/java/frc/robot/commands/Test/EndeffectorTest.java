@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.Test;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -12,28 +12,25 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.EndEffector;
 
-public class ElevatorTest extends Command {
-
-    private Elevator _elevator;
+public class EndeffectorTest extends Command {
+    private EndEffector _endEffector;
 
     private final OI _oi;
 
     private final int[] segmentationArray = new int[360 / 5];
 
-    private double targetHeight;
-
-    public ElevatorTest(OI oi, Elevator elevator){
+    public EndeffectorTest(OI oi, EndEffector endEffector){
         _oi = oi;
-        _elevator = elevator;
-        targetHeight = 0;
-        addRequirements(_elevator);
+        _endEffector = endEffector;
+        addRequirements(_endEffector);
     }
+
     @Override
     public void initialize() {
     }
+
     @Override
     public void execute() {
-        /*
         double vx;
         double vy;
 
@@ -50,21 +47,15 @@ public class ElevatorTest extends Command {
 
         vx = vec.x();
         vy = vec.y();
-        */
 
-        double v = _oi.getElevatorX();
+        SmartDashboard.putNumber("vx", vx);
+        SmartDashboard.putNumber("vy", vy);
 
-        SmartDashboard.putNumber("v", v);
-
-        targetHeight += v;
-
-        if(targetHeight <= 0) {
-            targetHeight = 0;
-        }else if (targetHeight >= 37) {
-            targetHeight = 37;
+        if(!_endEffector.isCoralInIntake()) {
+            _endEffector.setIntakeSpeed(vx);
+        }else {
+            _endEffector.setIntakeSpeed(0);
         }
-
-        _elevator.setTargetHeight(targetHeight);
     }
     @Override
     public boolean isFinished() {
@@ -76,7 +67,4 @@ public class ElevatorTest extends Command {
         // TODO Auto-generated method stub
         super.end(interrupted);
     }
-   
-
-    
 }
