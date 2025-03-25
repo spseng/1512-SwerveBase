@@ -56,7 +56,7 @@ public class ElevatorTest extends Command {
 
         SmartDashboard.putNumber("v", v);
 
-        targetHeight += v;
+        targetHeight += 0.1*v;
 
         if(targetHeight <= 0) {
             targetHeight = 0;

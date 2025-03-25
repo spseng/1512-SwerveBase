@@ -264,7 +264,7 @@ public class Constants {
         public static final int ELEVATOR_CURRENT_LIMIT = 40;
         public static final double INTAKE_HEIGHT = 0;
         public static final double L1_HEIGHT = 0;
-        public static final double L2_HEIGHT = 0;
+        public static final double L2_HEIGHT = 7;
         public static final double L3_HEIGHT = 0;
         public static final double L4_HEIGHT = 0;
         public static final double STOW_HEIGHT = 0;

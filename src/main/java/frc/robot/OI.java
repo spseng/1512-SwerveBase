@@ -10,6 +10,8 @@ import frc.robot.Utils.Helpers;
 import frc.robot.Utils.RobotState;
 import frc.robot.commands.Autonomous.AutonomousScoreApproach;
 import frc.robot.commands.Drive.ResetIMU;
+import frc.robot.commands.Elevator.ElevatorIntake;
+import frc.robot.commands.Elevator.ElevatorL2;
 import frc.robot.commands.EndEffector.*;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
@@ -20,15 +22,15 @@ import frc.robot.subsystems.EndEffector;
 
 
 public class OI {
-    /*
+    
     private final Drivetrain _drivetrain;
     private final Elevator _elevator;
     private final Arm _arm;
-    private final Climb _climb;
+   // private final Climb _climb;
     private final EndEffector _endEffector;
-    */
+    
 
-    private final Drivetrain _drivetrain;
+ 
 
     private Gamepad _driverGamepad;
     private Gamepad _operatorGamepad;
@@ -51,15 +53,15 @@ public class OI {
     private AxisButton _operatorLeftTriggerButton, _operatorRightTriggerButton;
     private AxisButton _operatorLeftXAxis, _operatorLeftYAxis, _operatorRightXAxis, _operatorRightYAxis;
 
-    public OI(Drivetrain drivetrain) {
-        /*
-        _drivetrain = new Drivetrain();
-        _elevator = new Elevator();
-        _arm = new Arm();
-        _climb = new Climb();
-        _endEffector = new EndEffector();
-        */
+    public OI(Drivetrain drivetrain, Elevator elevator, Arm arm, EndEffector endEffector) {
+        
         _drivetrain = drivetrain;
+        _elevator = elevator;
+        _arm = new Arm();
+       // _climb = new Climb();
+        _endEffector =endEffector;
+        
+        
 
         _driverGamepad = new Gamepad(0);
         _operatorGamepad = new Gamepad(1);
@@ -116,9 +118,9 @@ public class OI {
     
     //this is where we map commands
     public void initializeButtons() {
-        _driverAButton.onTrue(Commands.none());
+        _driverAButton.onTrue(new ElevatorIntake(_elevator, _arm));
         _driverBButton.onTrue(new ResetIMU(_drivetrain));
-        _driverXButton.onTrue(Commands.none());
+        _driverXButton.onTrue(new ElevatorL2(_elevator, _arm));
         _driverYButton.onTrue(Commands.none());
         _driverLeftBumper.onTrue(Commands.none());
         _driverRightBumper.onTrue(Commands.none());
