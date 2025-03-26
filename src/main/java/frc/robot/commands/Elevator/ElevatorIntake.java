@@ -22,7 +22,7 @@ public class ElevatorIntake extends Command {
     @Override
     public void initialize() {
 
-        //colision = _arm.isColision;
+        colision = _arm.isColision();
 
 
        
@@ -32,10 +32,15 @@ public class ElevatorIntake extends Command {
         // TODO Auto-generated method stub
         super.execute();
         if (colision){
-
+            _arm.setArmPosition(Constants.Arm.ARM_SAFE_ANGLE);
         } else {
             _elevator.setTargetHeight(Constants.Elevator.INTAKE_HEIGHT);
         }
+    }
+    @Override
+    public boolean isFinished() {
+        // TODO Auto-generated method stub
+        return true;
     }
 
 

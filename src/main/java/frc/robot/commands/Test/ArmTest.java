@@ -58,8 +58,8 @@ public class ArmTest extends Command {
 
         targetAngle = targetAngle + v * 0.01;
 
-        if(targetAngle < 0.1) { 
-            targetAngle = 0.1;
+        if(targetAngle < 0.0) { 
+            targetAngle = 0.05;
         }else if (targetAngle > 0.63) {
             targetAngle = 0.63;
         }

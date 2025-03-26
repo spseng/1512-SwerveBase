@@ -4,26 +4,27 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 
-public class ArmAvoidElevator extends Command {
+public class ArmIntake extends Command {
     
     private final Arm _arm;
 
-    public ArmAvoidElevator(Arm arm){
+    public ArmIntake(Arm arm){
         _arm = arm;
     }
     @Override
     public void initialize() {
-        _arm.setArmPosition(Constants.Arm.AVOID_ELEVATOR_POSITION);
+        
     }
 
     @Override
     public void execute() {
+        _arm.setArmPosition(Constants.Arm.ARM_INTAKE_ANGLE);
         
     }
     @Override
     public boolean isFinished() {
         // TODO Auto-generated method stub
-        return _arm.isAtTarget();
+        return true;
     }
     @Override
     public void end(boolean interrupted) {

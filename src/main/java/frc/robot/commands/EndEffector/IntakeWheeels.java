@@ -15,18 +15,18 @@ import frc.robot.Utils.Vector2d;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.EndEffector;
 
-public class Score extends Command{
+public class IntakeWheeels extends Command{
    
     private final EndEffector _endEffector;
 
-    public Score( EndEffector endEffector){
+    public IntakeWheeels( EndEffector endEffector){
         
         _endEffector = endEffector;
     }
     
     @Override
     public void execute() {
-        _endEffector.setIntakeSpeed(1);
+        _endEffector.setIntakeSpeed(-1);
         
     }
 }

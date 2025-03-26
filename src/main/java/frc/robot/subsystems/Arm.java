@@ -89,4 +89,7 @@ public class Arm extends SubsystemBase {
         double angle = getCurrentAngle() - _armOffset;
         return K_FF * Math.sin(angle * 2 * Math.PI);
     }
+    public boolean isColision(){
+        return (getCurrentAngle() < 0.159 );
+    }
 }
