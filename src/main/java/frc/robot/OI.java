@@ -16,6 +16,11 @@ import frc.robot.commands.Elevator.ElevatorL2;
 import frc.robot.commands.Elevator.ElevatorL3;
 import frc.robot.commands.Elevator.ElevatorL4;
 import frc.robot.commands.EndEffector.*;
+import frc.robot.commands.Score.Intake;
+import frc.robot.commands.Score.ScoreL1;
+import frc.robot.commands.Score.ScoreL2;
+import frc.robot.commands.Score.ScoreL3;
+import frc.robot.commands.Score.ScoreL4;
 import frc.robot.commands.EndEffectorIntake;
 import frc.robot.commands.EndEffectorOuttake;
 import frc.robot.subsystems.Arm;
@@ -139,20 +144,29 @@ public class OI {
         _driverPOVRight.onTrue(Commands.none());
 
         // Operator Buttons
+        /*
         _operatorAButton.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L1); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.RIGHT);}));
         _operatorBButton.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L3); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.RIGHT);}));
         _operatorXButton.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L2); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.RIGHT);}));
         _operatorYButton.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L4); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.RIGHT);}));
+        */
+        _operatorAButton.onTrue(new Intake(_elevator, _arm));
+        _operatorBButton.onTrue(new ScoreL3(_elevator, _arm));
+        _operatorXButton.onTrue(new ScoreL2(_elevator, _arm));
+        _operatorYButton.onTrue(new ScoreL4(_elevator, _arm));
+
         _operatorLeftBumper.onTrue(new EndEffectorIntake( _endEffector));
         _operatorRightBumper.onTrue(new EndEffectorOuttake( _endEffector));
         _operatorStartButton.onTrue(new StopWheels(_endEffector));
         _operatorBackButton.onTrue(Commands.none());
 
         // Operator POV Buttons
+        /*
         _operatorPOVUp.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L4); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.LEFT);}));
         _operatorPOVDown.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L1); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.LEFT);}));
         _operatorPOVLeft.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L2); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.LEFT);}));
         _operatorPOVRight.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L3); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.LEFT);}));
+        */
 
         /*
         new Trigger(_driverLeftTriggerButton::get).onTrue(new IntakeCoralFunnel(_endEffector, _arm, _elevator));
