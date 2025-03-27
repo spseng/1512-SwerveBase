@@ -1,45 +1,41 @@
 package frc.robot.commands.Score;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
+import frc.robot.commands.EndEffectorIntake;
+import frc.robot.commands.Elevator.ElevatorIntake;
+import frc.robot.commands.EndEffector.ArmIntake;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.EndEffector;
 
-public class Intake extends Command {
+public class Intake extends SequentialCommandGroup {
 
     private final Elevator _elevator;
   
     private final Arm _arm;
+    private final EndEffector _endEffector;
 
-    private boolean colision = false;
-
-    public Intake(Elevator elevator, Arm arm){
+    
+    public Intake(Elevator elevator, Arm arm, EndEffector endEffector){
 
         _elevator = elevator;
         _arm = arm;
+        _endEffector = endEffector;
+
+        addCommands(
+            new ElevatorIntake(_elevator, _arm),
+            new WaitCommand(.5),
+            new ArmIntake(arm),
+            new EndEffectorIntake(endEffector)
+
+        );
 
     }
-    @Override
-    public void initialize() {
-
-        colision = _arm.isColision();
-       
-    }
-    @Override
-    public void execute() {
-        // TODO Auto-generated method stub
-        super.execute();
-        if (colision){
-            _arm.setArmPosition(Constants.Arm.ARM_SAFE_ANGLE);
-        } else {
-            _elevator.setTargetHeight(Constants.Elevator.INTAKE_HEIGHT);
-            _arm.setArmPosition(Constants.Arm.ARM_INTAKE_ANGLE);
-        }
-    }
-    @Override
-    public boolean isFinished() {
-        // TODO Auto-generated method stub
-        return true;
-    }
+    
+    
+    
     
 }
