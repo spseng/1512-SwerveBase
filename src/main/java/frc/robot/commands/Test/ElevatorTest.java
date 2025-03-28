@@ -25,7 +25,7 @@ public class ElevatorTest extends Command {
     public ElevatorTest(OI oi, Elevator elevator){
         _oi = oi;
         _elevator = elevator;
-        targetHeight = 0;
+        targetHeight = _elevator.getCurrentDesiredHeight();
         addRequirements(_elevator);
     }
     @Override
@@ -55,6 +55,8 @@ public class ElevatorTest extends Command {
         double v = _oi.getElevatorX();
 
         SmartDashboard.putNumber("v", v);
+
+        targetHeight = _elevator.getCurrentDesiredHeight();
 
         targetHeight += 0.1*v;
 

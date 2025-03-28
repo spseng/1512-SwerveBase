@@ -210,10 +210,12 @@ public class Constants {
         public static final double L1_ANGLE = 0;
         public static final double L2_ANGLE = 0.483;
         public static final double L3_ANGLE = 0.483;
-        public static final double L4_ANGLE = 0.407;
+        public static final double L4_ANGLE = 0.5;
         public static final double ARM_TOLERENCE = 0;
         public static final double STOW_POSITION = 0;
         public static final double ARM_SAFE_ANGLE = 0.25;
+
+        public static final double ARM_OFFSET = 0.129;
     }
 
     public static class Autonomous {

@@ -25,7 +25,8 @@ public class ArmTest extends Command {
     public ArmTest(OI oi, Arm arm){
         _oi = oi;
         _arm = arm;
-        targetAngle = 0.137;
+        //targetAngle = 0.137;
+        targetAngle = _arm.getSetpoint();
         addRequirements(_arm);
     }
 
@@ -55,6 +56,8 @@ public class ArmTest extends Command {
         */
 
         double v = _oi.getArmX();
+
+        targetAngle = _arm.getSetpoint();
 
         targetAngle = targetAngle + v * 0.01;
 

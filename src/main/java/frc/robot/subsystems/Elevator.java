@@ -73,6 +73,10 @@ public class Elevator extends SubsystemBase {
     public double getCurrentHeight() {
         return (_rotationCount + _elevatorEncoder.getPosition()) * (2.75 * Math.PI);
     }
+
+    public double getCurrentDesiredHeight() {
+        return _desiredHeight;
+    }
     
     public boolean isAtTarget(){
         return Math.abs(_desiredHeight - getCurrentHeight()) < Constants.Elevator.ELEVATOR_TOLERANCE;
