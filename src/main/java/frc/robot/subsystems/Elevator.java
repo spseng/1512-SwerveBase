@@ -84,6 +84,9 @@ public class Elevator extends SubsystemBase {
 
     private void updateMotorPower() {
         double output = _elevatorPIDController.calculate(getCurrentHeight(), _desiredHeight);
+        if(Math.abs(output) > Constants.Elevator.MAX_SPEED) {
+            output = Math.copySign(Constants.Elevator.MAX_SPEED, output);
+        }
         _elevatorLeaderMotor.set(-output * Constants.Elevator.MAX_SPEED);
     }
     

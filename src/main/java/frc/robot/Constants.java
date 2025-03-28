@@ -205,15 +205,17 @@ public class Constants {
         public static final double ARM_MAX_ANGLE = 0.56; // rotations
 
         public static final double AMP_SCORING_ANGLE = 0; // Rads
-        public static final double ARM_INTAKE_ANGLE = 0.05; // Rad
+        public static final double ARM_INTAKE_ANGLE = 0.00; // Rad
         public static final double ALGAE_POSITION = 0;
         public static final double L1_ANGLE = 0;
         public static final double L2_ANGLE = 0.483;
         public static final double L3_ANGLE = 0.483;
-        public static final double L4_ANGLE = 0.407;
+        public static final double L4_ANGLE = 0.5;
         public static final double ARM_TOLERENCE = 0;
         public static final double STOW_POSITION = 0;
         public static final double ARM_SAFE_ANGLE = 0.25;
+
+        public static final double ARM_OFFSET = 0.129;
     }
 
     public static class Autonomous {
@@ -260,16 +262,16 @@ public class Constants {
         public static final double ELEVATOR_MOTOR_MIN_OUTPUT = -1;
         public static final double ELEVATOR_MOTOR_MAX_OUTPUT = 1;
 
-        public static final double ELEVATOR_MAX_HEIGHT = 37; // in inches
+        public static final double ELEVATOR_MAX_HEIGHT = 36; // in inches
 
         public static final int ELEVATOR_CURRENT_LIMIT = 40;
-        public static final double INTAKE_HEIGHT = 4.02;
+        public static final double INTAKE_HEIGHT = 0.05;
         public static final double L1_HEIGHT = 5;
         public static final double L2_HEIGHT = 10;
         public static final double L3_HEIGHT = 20;
         public static final double L4_HEIGHT = 36;
         public static final double STOW_HEIGHT = 0;
-        public static final double MAX_SPEED = 0.5;
+        public static final double MAX_SPEED = 1.0;
     }
 
     public static class Climb {

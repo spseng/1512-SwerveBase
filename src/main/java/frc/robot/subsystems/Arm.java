@@ -19,7 +19,7 @@ public class Arm extends SubsystemBase {
     private final PIDController _armPIDController;
     private final SparkMaxConfig _armMotorConfig;
 
-    private final double _armOffset = 0.073;
+    private final double _armOffset = Constants.Arm.ARM_OFFSET;
     private double _setpoint;
 
     private static final double K_FF = 0.1;
