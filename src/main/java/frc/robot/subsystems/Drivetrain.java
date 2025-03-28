@@ -1,7 +1,10 @@
 package frc.robot.subsystems;
 
-import com.kauailabs.navx.frc.AHRS;
 import com.ctre.phoenix6.hardware.Pigeon2;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.controllers.PathFollowingController;
 import com.pathplanner.lib.trajectory.PathPlannerTrajectoryState;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -16,6 +19,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -38,7 +42,7 @@ public class Drivetrain extends SubsystemBase {
     private static final int NORTH_WEST_IDX = 1;
     private static final int SOUTH_EAST_IDX = 2;
     private static final int SOUTH_WEST_IDX = 3;
-    private final SwerveSetpointGenerator _setpointGenerator;
+    private final SwerveSetpointGenerator _setPointGenerator;
     private KinematicLimits _limits;
     private final SwerveDriveKinematics _kinematics; // physical layout of chassis
     //private final AHRS _gyro; // navX might will be changed to pigeon 2.0 soon
@@ -70,7 +74,7 @@ public class Drivetrain extends SubsystemBase {
         _pigeon = new Pigeon2(RobotMap.CAN.PIGEON_CAN);
 
         //_yawOffset = _gyro.getYaw(); // zero gyro on init
-        _yawOffset = _pigeon.getYaw().getValueAsDouble();
+        _yawOffset = - 1 *  _pigeon.getYaw().getValueAsDouble();
         readIMU(); // method to update gyro
 
         _modules = new SwerveModule[4];
@@ -97,7 +101,7 @@ public class Drivetrain extends SubsystemBase {
         _current_pose = _odometry.getPoseMeters();
         _previous_pose = _current_pose;
 
-        _setpointGenerator = new SwerveSetpointGenerator(
+        _setPointGenerator = new SwerveSetpointGenerator(
                 _kinematics,
                 new Translation2d[]{
                         _modules[NORTH_EAST_IDX].getSwerveModuleLocation(),
@@ -112,22 +116,29 @@ public class Drivetrain extends SubsystemBase {
         readModules(); // gets encoders
         setSetpointFromMeasuredModules(); // cheesy stuff
 
-        PathFollowingController _controller = new PathFollowingController() {
-            @Override
-            public ChassisSpeeds calculateRobotRelativeSpeeds(Pose2d currentPose, PathPlannerTrajectoryState targetState) {
-                return null;
-            }
+        _controller = new PPHolonomicDriveController(
+            new PIDConstants(Constants.Drivetrain.AUTO_KP, Constants.Drivetrain.AUTO_KI, Constants.Drivetrain.AUTO_KD), // Translation PID
+            new PIDConstants(Constants.Drivetrain.HEADING_kP, Constants.Drivetrain.HEADING_kI, Constants.Drivetrain.HEADING_kD), // Rotation PID
+            Constants.UPDATE_PERIOD // Custom control loop period
+        );
 
-            @Override
-            public void reset(Pose2d currentPose, ChassisSpeeds currentSpeeds) {
+        RobotConfig config = null;
+        try {
+            config = RobotConfig.fromGUISettings();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-            }
-
-            @Override
-            public boolean isHolonomic() {
-                return true;
-            }
-        };
+        AutoBuilder.configure(
+            this::getCurrentPose,
+            this::resetCurrentPose,
+            this::getMeasuredChassisSpeeds,
+            (speeds, feedforwards) -> this.setVelocity(speeds),
+            _controller,
+            config,
+            this::isRedAlliance,
+            this
+        );
     }
 
     public void setRawChassisSpeeds(ChassisSpeeds speeds) {
@@ -166,7 +177,7 @@ public class Drivetrain extends SubsystemBase {
                 twistVel.dy / Constants.UPDATE_PERIOD,
                 twistVel.dtheta / Constants.UPDATE_PERIOD); // all of this is to conserve heading
 
-        _Io.setpoint = _setpointGenerator.generateSetpoint(
+        _Io.setpoint = _setPointGenerator.generateSetpoint(
                 _limits,
                 _Io.setpoint,
                 updatedChassisSpeeds,
@@ -263,40 +274,41 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void updateShuffleBoard() {
-        SmartDashboard.putNumber("Vx", _Io.desiredChassisSpeeds.vxMetersPerSecond);
-        SmartDashboard.putNumber("Vy", _Io.desiredChassisSpeeds.vyMetersPerSecond);
-        SmartDashboard.putNumber("desired rotation", _Io.desiredChassisSpeeds.omegaRadiansPerSecond);
-        SmartDashboard.putNumber("heading degrees", getHeading().getDegrees());
-        SmartDashboard.putNumber("heading radians", -getHeading().getRadians());
-        SmartDashboard.putNumber("NW_DESIRED_HEADING", _Io.measuredPositions[NORTH_WEST_IDX].angle.getDegrees());
-        SmartDashboard.putNumber("NE_DESIRED_HEADING", _Io.measuredPositions[NORTH_EAST_IDX].angle.getDegrees());
-        SmartDashboard.putNumber("SW_DESIRED_HEADING", _Io.measuredPositions[SOUTH_WEST_IDX].angle.getDegrees());
-        SmartDashboard.putNumber("SE_DESIRED_HEADING", _Io.measuredPositions[SOUTH_EAST_IDX].angle.getDegrees());
-        SmartDashboard.putNumber("NW_ACTUAL_HEADING", _modules[NORTH_WEST_IDX].getSwervePosition().angle.getDegrees());
-        SmartDashboard.putNumber("NE_ACTUAL_HEADING", _modules[NORTH_EAST_IDX].getSwervePosition().angle.getDegrees());
-        SmartDashboard.putNumber("SW_ACTUAL_HEADING", _modules[SOUTH_WEST_IDX].getSwervePosition().angle.getDegrees());
-        SmartDashboard.putNumber("SE_ACTUAL_HEADING", _modules[SOUTH_EAST_IDX].getSwervePosition().angle.getDegrees());
-        SmartDashboard.putNumber("NW_ACTUAL_VELOCITY", _modules[NORTH_WEST_IDX].getDriveVelocity());
-        SmartDashboard.putNumber("NE_ACTUAL_VELOCITY", _modules[NORTH_EAST_IDX].getDriveVelocity());
-        SmartDashboard.putNumber("SW_ACTUAL_VELOCITY", _modules[SOUTH_WEST_IDX].getDriveVelocity());
-        SmartDashboard.putNumber("SE_ACTUAL_VELOCITY", _modules[SOUTH_EAST_IDX].getDriveVelocity());
-        SmartDashboard.putNumber("ACTUAL_VELOCITY_X", getMeasuredVelocityX());
-        SmartDashboard.putNumber("ACTUAL_VELOCITY_Y", getMeasuredVelocityY());
-        SmartDashboard.putNumber("ACTUAL_VELOCITY", getMeasuredVelocity());
+        //SmartDashboard.putNumber("Vx", _Io.desiredChassisSpeeds.vxMetersPerSecond);
+        //SmartDashboard.putNumber("Vy", _Io.desiredChassisSpeeds.vyMetersPerSecond);
+        //SmartDashboard.putNumber("desired rotation", _Io.desiredChassisSpeeds.omegaRadiansPerSecond);
+        //SmartDashboard.putNumber("heading degrees", getHeading().getDegrees());
+        //SmartDashboard.putNumber("heading radians", -getHeading().getRadians());
+        //SmartDashboard.putNumber("NW_DESIRED_HEADING", _Io.measuredPositions[NORTH_WEST_IDX].angle.getDegrees());
+        //SmartDashboard.putNumber("NE_DESIRED_HEADING", _Io.measuredPositions[NORTH_EAST_IDX].angle.getDegrees());
+        //SmartDashboard.putNumber("SW_DESIRED_HEADING", _Io.measuredPositions[SOUTH_WEST_IDX].angle.getDegrees());
+        //SmartDashboard.putNumber("SE_DESIRED_HEADING", _Io.measuredPositions[SOUTH_EAST_IDX].angle.getDegrees());
+        //SmartDashboard.putNumber("NW_ACTUAL_HEADING", _modules[NORTH_WEST_IDX].getSwervePosition().angle.getDegrees());
+        //SmartDashboard.putNumber("NE_ACTUAL_HEADING", _modules[NORTH_EAST_IDX].getSwervePosition().angle.getDegrees());
+        //SmartDashboard.putNumber("SW_ACTUAL_HEADING", _modules[SOUTH_WEST_IDX].getSwervePosition().angle.getDegrees());
+        //SmartDashboard.putNumber("SE_ACTUAL_HEADING", _modules[SOUTH_EAST_IDX].getSwervePosition().angle.getDegrees());
+        //SmartDashboard.putNumber("NW_ACTUAL_VELOCITY", _modules[NORTH_WEST_IDX].getDriveVelocity());
+        //SmartDashboard.putNumber("NE_ACTUAL_VELOCITY", _modules[NORTH_EAST_IDX].getDriveVelocity());
+        //SmartDashboard.putNumber("SW_ACTUAL_VELOCITY", _modules[SOUTH_WEST_IDX].getDriveVelocity());
+        //SmartDashboard.putNumber("SE_ACTUAL_VELOCITY", _modules[SOUTH_EAST_IDX].getDriveVelocity());
+        //SmartDashboard.putNumber("ACTUAL_VELOCITY_X", getMeasuredVelocityX());
+        //SmartDashboard.putNumber("ACTUAL_VELOCITY_Y", getMeasuredVelocityY());
+        //SmartDashboard.putNumber("ACTUAL_VELOCITY", getMeasuredVelocity());
         //SmartDashboard.putNumber("IMU_VELOCITY", getIMUVelocity());
         //SmartDashboard.putNumber("AVERAGE_VELOCITY", getAverageVelocity());
-
+        SmartDashboard.putNumber("Score Level", frc.robot.Utils.RobotState.getInstance().getScoringCoralLevel().ordinal());
+        SmartDashboard.putNumber("Score Direction", frc.robot.Utils.RobotState.getInstance().getScoringReefDirection().ordinal());
     }
 
     public void ZeroIMU() {
         //_yawOffset = _gyro.getYaw();
-        _yawOffset = _pigeon.getYaw().getValueAsDouble();
+        _yawOffset = -1 * _pigeon.getYaw().getValueAsDouble();
         readIMU();
     }
 
     public void readIMU() {
         //double yawDegrees = _gyro.getYaw();
-        double yawDegrees = _pigeon.getYaw().getValueAsDouble();
+        double yawDegrees =  - 1 * _pigeon.getYaw().getValueAsDouble();
         double yawAllianceOffsetDegrees = isRedAlliance() ? 180.0 : 0;
         _Io.heading = Rotation2d.fromDegrees(yawDegrees - _yawOffset + yawAllianceOffsetDegrees);
     }
@@ -409,6 +421,10 @@ public class Drivetrain extends SubsystemBase {
         return pose -> {
             _current_pose = pose;  // Assuming you want to reset _current_pose to the passed pose
         };
+    }
+
+    public void resetCurrentPose(Pose2d pose) {
+        _current_pose = pose;  // Reset the current pose
     }
 
     public BooleanSupplier isRedAllianceSupplier() {

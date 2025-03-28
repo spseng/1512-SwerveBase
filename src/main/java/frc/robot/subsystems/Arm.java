@@ -1,117 +1,95 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.hardware.CANcoder;
+import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.RobotMap;
 
-import static frc.robot.Constants.Arm.*;
-
-
 public class Arm extends SubsystemBase {
-    private SparkMax _motor;
-    private final CANcoder _encoder;
-    
-    private final DigitalInput _lowButton;
-    private final DigitalInput _highButton;
+    private final SparkMax _armMotor;
+    private final SparkAbsoluteEncoder _armEncoder;
+    private final PIDController _armPIDController;
+    private final SparkMaxConfig _armMotorConfig;
 
-    private final PIDController _angleController;
-    private double goalAngle;
-    private double motorOut;
-    
+    private final double _armOffset = 0.073;
+    private double _setpoint;
 
-    public Arm(){
-        _encoder = new CANcoder(RobotMap.CAN.ANGLE_ALIGNMENT_ENCODER_CAN);
-        _highButton = new DigitalInput(RobotMap.DIO.IS_HIGHEST_ANGLE_BUTTON_ID);
-        _lowButton= new DigitalInput(RobotMap.DIO.IS_LOWEST_ANGLE_BUTTON_ID);
+    private static final double K_FF = 0.1;
 
-        _motor = new SparkMax(RobotMap.CAN.ANGLE_ALIGNMENT_MOTOR_CAN, MotorType.kBrushed);
+    public Arm() {
+        _armMotor = new SparkMax(RobotMap.CAN.ARM_MOTOR_CAN, MotorType.kBrushless);
+        _armEncoder = _armMotor.getAbsoluteEncoder();
+        _armPIDController = new PIDController(Constants.Arm.ARM_POSITION_KP, 
+                                              Constants.Arm.ARM_POSITION_KI, 
+                                              Constants.Arm.ARM_POSITION_KD);
 
-        _angleController = new PIDController(SHOOTING_ANGLE_KP, SHOOTING_ANGLE_KI, SHOOTING_ANGLE_KD);
+        _armMotorConfig = new SparkMaxConfig();
+        _armMotorConfig.absoluteEncoder.inverted(Constants.Arm.ARM_ENCODER_INVERTED);
 
-        goalAngle = ARM_INTAKE_ANGLE;  
-        _encoder.setPosition(0.0);
-        
-    }
-    public void updateDashBoard(){
-        SmartDashboard.putBoolean("Is Lowest", isLowestAngle());
-        SmartDashboard.putBoolean("Is Highest", isHighestAngle());
+        _armMotorConfig.idleMode(IdleMode.kBrake);
 
-        SmartDashboard.putNumber("Angle", getAngle());
-        SmartDashboard.putNumber("Motor Out", motorOut);
-        SmartDashboard.putNumber("goal angle", getGoalRoatation());
-  
-    }
-    public boolean isLowestAngle(){
-        return !_lowButton.get();
-    }
-    public boolean isHighestAngle(){
-        return !_highButton.get() || getEncoderPosition() < ARM_MAX_ANGLE || getEncoderPosition() > 0.3;
-    }
-    public double getAngle(){
-        return _encoder.getAbsolutePosition().getValueAsDouble();
-    }
-    public void calibrate(){
-        if(isLowestAngle()){
-            _motor.stopMotor();
-          
-        }
-    }
-    public void setArmRotation(double angle){
-        goalAngle = angle;
-    }
-    public double getGoalRoatation(){
-        return goalAngle;
-    }
-    public void rotateArmAngle(double amount) {
-        if((amount < 0 && !isHighestAngle()) || (amount > 0 && !isLowestAngle())) {
-            goalAngle = Math.min(Math.max(goalAngle + amount, ARM_MAX_ANGLE), ARM_INTAKE_ANGLE);
-        }
-    }
-    public void setAngle(double angle){
-       setArmRotation(angle);
-       motorOut = Math.max(Math.min(_angleController.calculate(getEncoderPosition(), getGoalRoatation()), 1), -1);
-    if (isLowestAngle() && motorOut > 0) {
-        setArmRotation(getEncoderPosition());
-        motorOut = 0;
+        _armMotor.configure(_armMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        _setpoint = getCurrentAngle();
     }
 
-    if ((isHighestAngle()) && motorOut < 0) {
-        setArmRotation(getEncoderPosition());
-        motorOut = 0;
-    }
-    _motor.set(motorOut);
-    
-    }
-    
-    public double getEncoderPosition(){
-        return _encoder.getAbsolutePosition().getValueAsDouble();
-    }
-    public void setMotorDirect(double speed){
-        _motor.set(speed);
+    public double getCurrentAngle() {
+        return _armEncoder.getPosition(); // TODO: scaling??
     }
 
+    public void setArmPosition(double position) {
+        _setpoint = Math.max(Constants.Arm.ARM_MIN_ANGLE, Math.min(Constants.Arm.ARM_MAX_ANGLE, position));
+    }
 
-    
+    public double getSetpoint() {
+        return _setpoint;
+    }
+
+    public boolean isAtTarget() {
+        return Math.abs(getCurrentAngle() - _setpoint) < Constants.Arm.ARM_TOLERANCE;
+    }
+
     @Override
     public void periodic() {
-        // TODO Auto-generated method stub
-        SmartDashboard.putBoolean("Is Lowest", isLowestAngle());
-        SmartDashboard.putBoolean("Is Highest", isHighestAngle());
-
-        SmartDashboard.putNumber("Angle", getAngle());
-        SmartDashboard.putNumber("Motor Out", motorOut);
-        SmartDashboard.putNumber("goal angle", getGoalRoatation());
-
-        super.periodic();
+        //super.periodic();
+        updateMotorPower();
+        updateSmartDashboard();
     }
 
+    public void updateSmartDashboard() {
+        SmartDashboard.putNumber("Arm Setpoint", _setpoint);
+        SmartDashboard.putNumber("Arm Position", getCurrentAngle());
+        //SmartDashboard.putNumber("Arm PID Output", _armPIDController.calculate(getCurrentAngle(), _setpoint));
+        //SmartDashboard.putNumber("Arm FF Output", calculateFeedforward());
+    }
 
-    
+    private void updateMotorPower() {
+        double pidOutput = -_armPIDController.calculate(getCurrentAngle(), _setpoint);
+        double ffOutput = -calculateFeedforward();
+        double totalOutput = pidOutput + ffOutput;
+        //double totalOutput = ffOutput;
+        totalOutput = Math.max(-1.0, Math.min(1.0, totalOutput));
+        double sinOfAngle = Math.sin(getCurrentAngle() * 2 * Math.PI);
+        SmartDashboard.putNumber("Arm Sin of Angle", sinOfAngle);
+        SmartDashboard.putNumber("Arm Total Output", totalOutput);
+        SmartDashboard.putNumber("Arm PID Output", pidOutput);
+        SmartDashboard.putNumber("Arm FF Output", ffOutput);
+        _armMotor.set(totalOutput);
+    }
+
+    private double calculateFeedforward() {
+        double angle = getCurrentAngle() - _armOffset;
+        return K_FF * Math.sin(angle * 2 * Math.PI);
+    }
+    public boolean isColision(){
+        return (getCurrentAngle() < 0.159 );
+    }
 }
-

@@ -1,89 +1,193 @@
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Utils.AxisButton;
 import frc.robot.Utils.Gamepad;
 import frc.robot.Utils.Helpers;
-import frc.robot.commands.SimpleIntake;
+import frc.robot.Utils.RobotState;
+import frc.robot.commands.EndEffectorIntake;
+import frc.robot.commands.Autonomous.AutonomousScoreApproach;
 import frc.robot.commands.Drive.ResetIMU;
-import frc.robot.commands.Drive.SlowMode;
-import frc.robot.commands.Drive.Snap;
-import frc.robot.commands.TopLevel.ShootWoofer;
+import frc.robot.commands.Elevator.ElevatorIntake;
+import frc.robot.commands.Elevator.ElevatorL2;
+import frc.robot.commands.Elevator.ElevatorL3;
+import frc.robot.commands.Elevator.ElevatorL4;
+import frc.robot.commands.EndEffector.*;
+import frc.robot.commands.Score.Intake;
+import frc.robot.commands.Score.ScoreL1;
+import frc.robot.commands.Score.ScoreL2;
+import frc.robot.commands.Score.ScoreL3;
+import frc.robot.commands.Score.ScoreL4;
+import frc.robot.commands.EndEffectorIntake;
+import frc.robot.commands.EndEffectorOuttake;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Indexer;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.EndEffector;
+
 
 
 public class OI {
+    
+    private final Drivetrain _drivetrain;
+    private final Elevator _elevator;
+    private final Arm _arm;
+   // private final Climb _climb;
+    private final EndEffector _endEffector;
+    
 
-    protected Gamepad _driverGamepad;
-    protected Gamepad _operatorGamepad;
+ 
 
+    private Gamepad _driverGamepad;
+    private Gamepad _operatorGamepad;
 
-    protected AxisButton _driverLeftTriggerButton;
-    protected AxisButton _driverRightTriggerButton;
+    // Driver Buttons
+    private Trigger _driverAButton, _driverBButton, _driverXButton, _driverYButton;
+    private Trigger _driverLeftBumper, _driverRightBumper, _driverStartButton, _driverBackButton;
+    private Trigger _driverPOVUp, _driverPOVDown, _driverPOVLeft, _driverPOVRight;
 
-    protected Trigger _driverLeftTrigger;
-    protected Trigger _driverRightTrigger;
-    protected Trigger _povButtonLeft;
-    protected Trigger _povButtonRight;
-    protected Trigger _povButtonUp;
-    protected Trigger _povButtonDown;
-    protected Trigger _opPovButtonDown;
-    protected Trigger _opPovButtonRight;
-    protected Trigger _opPovButtonUp;
-    protected Trigger _opPovButtonLeft;
+    // Driver Axis Buttons
+    private AxisButton _driverLeftTriggerButton, _driverRightTriggerButton;
+    private AxisButton _driverLeftXAxis, _driverLeftYAxis, _driverRightXAxis, _driverRightYAxis;
 
-    public OI() {
+    // Operator Buttons
+    private Trigger _operatorAButton, _operatorBButton, _operatorXButton, _operatorYButton;
+    private Trigger _operatorLeftBumper, _operatorRightBumper, _operatorStartButton, _operatorBackButton;
+    private Trigger _operatorPOVUp, _operatorPOVDown, _operatorPOVLeft, _operatorPOVRight;
+
+    // Operator Axis Buttons
+    private AxisButton _operatorLeftTriggerButton, _operatorRightTriggerButton;
+    private AxisButton _operatorLeftXAxis, _operatorLeftYAxis, _operatorRightXAxis, _operatorRightYAxis;
+
+    public OI(Drivetrain drivetrain, Elevator elevator, Arm arm, EndEffector endEffector) {
+        
+        _drivetrain = drivetrain;
+        _elevator = elevator;
+        _arm = arm;
+       // _climb = new Climb();
+        _endEffector =endEffector;
+        
+        
 
         _driverGamepad = new Gamepad(0);
         _operatorGamepad = new Gamepad(1);
 
+        // Driver Buttons
+        _driverAButton = new Trigger(_driverGamepad.getAButton());
+        _driverBButton = new Trigger(_driverGamepad.getBButton());
+        _driverXButton = new Trigger(_driverGamepad.getXButton());
+        _driverYButton = new Trigger(_driverGamepad.getYButton());
+        _driverLeftBumper = new Trigger(_driverGamepad.getLeftBumper());
+        _driverRightBumper = new Trigger(_driverGamepad.getRightBumper());
+        _driverStartButton = new Trigger(_driverGamepad.getStartButton());
+        _driverBackButton = new Trigger(_driverGamepad.getBackButton());
 
-        _povButtonLeft = new Trigger(() -> _driverGamepad.getPOV() == 270);
-        _povButtonRight = new Trigger(() -> _driverGamepad.getPOV() == 90);
-        _povButtonUp = new Trigger(() -> _driverGamepad.getPOV() == 0);
-        _povButtonDown = new Trigger(() -> _driverGamepad.getPOV() == 180);
+        // Driver POV Buttons
+        _driverPOVUp = new Trigger(() -> _driverGamepad.getPOV() == 0);
+        _driverPOVDown = new Trigger(() -> _driverGamepad.getPOV() == 180);
+        _driverPOVLeft = new Trigger(() -> _driverGamepad.getPOV() == 270);
+        _driverPOVRight = new Trigger(() -> _driverGamepad.getPOV() == 90);
 
-
+        // Driver Axis Buttons (Threshold-Based)
         _driverLeftTriggerButton = new AxisButton(_driverGamepad, Gamepad.Axes.LEFT_TRIGGER.getNumber(), 0.05);
-        _driverLeftTrigger = new Trigger(_driverLeftTriggerButton::get);
-
         _driverRightTriggerButton = new AxisButton(_driverGamepad, Gamepad.Axes.RIGHT_TRIGGER.getNumber(), 0.05);
-        _driverRightTrigger = new Trigger(_driverRightTriggerButton::get);
+        _driverLeftXAxis = new AxisButton(_driverGamepad, Gamepad.Axes.LEFT_X.getNumber(), 0.2);
+        _driverLeftYAxis = new AxisButton(_driverGamepad, Gamepad.Axes.LEFT_Y.getNumber(), 0.2);
+        _driverRightXAxis = new AxisButton(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber(), 0.2);
+        _driverRightYAxis = new AxisButton(_driverGamepad, Gamepad.Axes.RIGHT_Y.getNumber(), 0.2);
+
+        // Operator Buttons
+        _operatorAButton = new Trigger(_operatorGamepad.getAButton());
+        _operatorBButton = new Trigger(_operatorGamepad.getBButton());
+        _operatorXButton = new Trigger(_operatorGamepad.getXButton());
+        _operatorYButton = new Trigger(_operatorGamepad.getYButton());
+        _operatorLeftBumper = new Trigger(_operatorGamepad.getLeftBumper());
+        _operatorRightBumper = new Trigger(_operatorGamepad.getRightBumper());
+        _operatorStartButton = new Trigger(_operatorGamepad.getStartButton());
+        _operatorBackButton = new Trigger(_operatorGamepad.getBackButton());
+
+        // Operator POV Buttons
+        _operatorPOVUp = new Trigger(() -> _operatorGamepad.getPOV() == 0);
+        _operatorPOVDown = new Trigger(() -> _operatorGamepad.getPOV() == 180);
+        _operatorPOVLeft = new Trigger(() -> _operatorGamepad.getPOV() == 270);
+        _operatorPOVRight = new Trigger(() -> _operatorGamepad.getPOV() == 90);
+
+        // Operator Axis Buttons (Threshold-Based)
+        _operatorLeftTriggerButton = new AxisButton(_operatorGamepad, Gamepad.Axes.LEFT_TRIGGER.getNumber(), 0.05);
+        _operatorRightTriggerButton = new AxisButton(_operatorGamepad, Gamepad.Axes.RIGHT_TRIGGER.getNumber(), 0.05);
+        _operatorLeftXAxis = new AxisButton(_operatorGamepad, Gamepad.Axes.LEFT_X.getNumber(), 0.2);
+        _operatorLeftYAxis = new AxisButton(_operatorGamepad, Gamepad.Axes.LEFT_Y.getNumber(), 0.2);
+        _operatorRightXAxis = new AxisButton(_operatorGamepad, Gamepad.Axes.RIGHT_X.getNumber(), 0.2);
+        _operatorRightYAxis = new AxisButton(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber(), 0.2);
     }
 
-    public void initializeButtons(
-        Drivetrain drivetrain,
-        Shooter shooter,
-        Indexer indexer,
-        Intake intake,
-        Arm arm
-    ){
-
-    _driverLeftTrigger.whileTrue(new SimpleIntake(intake, indexer));
-    _driverRightTrigger.whileTrue(new ShootWoofer(arm, shooter, indexer));
-
-    }
+    
     //this is where we map commands
-    public void initializeButtons(Drivetrain drivetrain) {
+    public void initializeButtons() {
+        _driverAButton.onTrue(new ElevatorIntake(_elevator, _arm));
+        _driverBButton.onTrue(new ResetIMU(_drivetrain));
+        _driverXButton.onTrue(new ElevatorL2(_elevator, _arm));
+        _driverYButton.onTrue(new ElevatorL3(_elevator, _arm));
+        _driverLeftBumper.onTrue(new ElevatorL4(_elevator, _arm));
+        _driverRightBumper.onTrue(new ArmIntake(_arm));
+        _driverStartButton.onTrue(new ArmScoreL3(_arm));
+        _driverBackButton.onTrue(Commands.none());
 
-        //this is where we map commands
+        // Driver POV Buttons
+        _driverPOVUp.onTrue(Commands.none());
+        _driverPOVDown.onTrue(Commands.none());
+        _driverPOVLeft.onTrue(Commands.none());
+        _driverPOVRight.onTrue(Commands.none());
 
-        //_driverGamepad.getAButton().onTrue(new ShootAmp(indexer, shooter));
-        //_driverGamepad.getYButton().onTrue(new ClimbUp(arm));
-        _driverGamepad.getBButton().onTrue(new ResetIMU(drivetrain));
-        _operatorGamepad.getAButton().onTrue(new Snap(drivetrain, new Rotation2d(Math.PI)));
-        _operatorGamepad.getXButton().onTrue(new Snap(drivetrain, new Rotation2d(90)));
-        _operatorGamepad.getYButton().onTrue(new Snap(drivetrain, new Rotation2d(0)));
-        _operatorGamepad.getBButton().onTrue(new Snap(drivetrain, new Rotation2d(270)));
-        _driverGamepad.getLeftBumper().whileTrue(new SlowMode(drivetrain, Constants.Drivetrain.DRIVE_KINEMATIC_LIMITS));
+        // Operator Buttons
+        /*
+        _operatorAButton.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L1); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.RIGHT);}));
+        _operatorBButton.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L3); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.RIGHT);}));
+        _operatorXButton.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L2); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.RIGHT);}));
+        _operatorYButton.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L4); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.RIGHT);}));
+        */
+        _operatorAButton.onTrue(new Intake(_elevator, _arm));
+        _operatorBButton.onTrue(new ScoreL3(_elevator, _arm));
+        _operatorXButton.onTrue(new ScoreL2(_elevator, _arm));
+        _operatorYButton.onTrue(new ScoreL4(_elevator, _arm));
 
+        _operatorLeftBumper.onTrue(new EndEffectorIntake( _endEffector));
+        _operatorRightBumper.onTrue(new EndEffectorOuttake( _endEffector));
+        _operatorStartButton.onTrue(new StopWheels(_endEffector));
+        _operatorBackButton.onTrue(Commands.none());
+
+        // Operator POV Buttons
+        /*
+        _operatorPOVUp.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L4); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.LEFT);}));
+        _operatorPOVDown.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L1); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.LEFT);}));
+        _operatorPOVLeft.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L2); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.LEFT);}));
+        _operatorPOVRight.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L3); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.LEFT);}));
+        */
+
+        /*
+        new Trigger(_driverLeftTriggerButton::get).onTrue(new IntakeCoralFunnel(_endEffector, _arm, _elevator));
+        new Trigger(_driverRightTriggerButton::get).onTrue(Commands.run(() -> {
+            if (RobotState.getInstance().getScoringReefDirection() == Constants.ReefDirection.LEFT) {
+                switch (RobotState.getInstance().getScoringCoralLevel()) {
+                    case L1: Commands.sequence(new ArmAvoidElevator(_arm), new AutonomousScoreApproach(_drivetrain, "LEFT_CAMERA"), new PlaceL1(_endEffector, _arm, _elevator)).schedule(); break;
+                    case L2: Commands.sequence(new ArmAvoidElevator(_arm), new AutonomousScoreApproach(_drivetrain, "LEFT_CAMERA"), new PlaceL2(_endEffector, _arm, _elevator)).schedule(); break;
+                    case L3: Commands.sequence(new ArmAvoidElevator(_arm), new AutonomousScoreApproach(_drivetrain, "LEFT_CAMERA"), new PlaceL3(_endEffector, _arm, _elevator)).schedule(); break;
+                    case L4: Commands.sequence(new ArmAvoidElevator(_arm), new AutonomousScoreApproach(_drivetrain, "LEFT_CAMERA"), new PlaceL4(_endEffector, _arm, _elevator)).schedule(); break;
+                }
+            } else if (RobotState.getInstance().getScoringReefDirection() == Constants.ReefDirection.RIGHT) {
+                switch (RobotState.getInstance().getScoringCoralLevel()) {
+                    case L1: Commands.sequence(new ArmAvoidElevator(_arm), new AutonomousScoreApproach(_drivetrain, "RIGHT_CAMERA"), new PlaceL1(_endEffector, _arm, _elevator)).schedule(); break;
+                    case L2: Commands.sequence(new ArmAvoidElevator(_arm), new AutonomousScoreApproach(_drivetrain, "RIGHT_CAMERA"), new PlaceL2(_endEffector, _arm, _elevator)).schedule(); break;
+                    case L3: Commands.sequence(new ArmAvoidElevator(_arm), new AutonomousScoreApproach(_drivetrain, "RIGHT_CAMERA"), new PlaceL3(_endEffector, _arm, _elevator)).schedule(); break;
+                    case L4: Commands.sequence(new ArmAvoidElevator(_arm), new AutonomousScoreApproach(_drivetrain, "RIGHT_CAMERA"), new PlaceL4(_endEffector, _arm, _elevator)).schedule(); break;
+                }
+            }
+        }));
+        */
     }
 
     public double getDriveY() {
@@ -100,14 +204,23 @@ public class OI {
 
     public double getElevatorX() {
         double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.LEFT_X.getNumber());
+
+        speed = Helpers.applyDeadband(speed, Constants.Elevator.ELEVATOR_DEADBAND);
+        return speed;
+    }
+
+    public double getArmX() {
+        double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_X.getNumber());
+        speed = Helpers.applyDeadband(speed, Constants.Arm.ARM_DEADBAND);
+
         speed = Helpers.applyDeadband(speed, Constants.Drivetrain.TRANSLATION_DEADBAND);
+
         return speed;
     }
 
     public double getRotationX() {
         double speed = getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber());
         speed = Helpers.applyDeadband(speed, Constants.Drivetrain.ROTATION_DEADBAND);
-
         return speed;
     }
 

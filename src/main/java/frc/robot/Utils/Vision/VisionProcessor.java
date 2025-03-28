@@ -12,15 +12,35 @@ import java.util.List;
 
 public class VisionProcessor extends SubsystemBase {
     private final Camera _testCam;
+    private final String _cameraName;
 
-    public VisionProcessor() {
-        _testCam = new Camera("camera2", 0.2, 0.0, 0.5, 0.0, 0.0, 0.0);
+    public VisionProcessor(String cameraName) {
+        _testCam = new Camera(cameraName, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+        _cameraName = cameraName;
+    }
+
+    public double getLargestTagX() {
+        double[] pose = _testCam.getLargestTagPose();
+        if (pose == null) return 0.0;
+        return pose[0];
+    }
+
+    public double getLargestTagY() {
+        double[] pose = _testCam.getLargestTagPose();
+        if (pose == null) return 0.0;
+        return pose[1];
+    }
+
+    public double getLargestTagTheta() {
+        double[] pose = _testCam.getLargestTagPose();
+        if (pose == null) return 0.0;
+        return pose[2];
     }
 
     public void updateDashboard() {
         if (!_testCam.isTargetinSight()) {
-            SmartDashboard.putNumber("AprilTags Detected", 0);
-            SmartDashboard.putString("AprilTag IDs", "None");
+            SmartDashboard.putNumber(_cameraName + ": AprilTags Detected", 0);
+            SmartDashboard.putString(_cameraName + ": AprilTag IDs", "None");
             return;
         }
 
@@ -34,13 +54,13 @@ public class VisionProcessor extends SubsystemBase {
         }
 
         double[] pose = _testCam.getLargestTagPose();
-        SmartDashboard.putNumber("AprilTags Detected", numTags);
-        SmartDashboard.putString("AprilTag IDs", tagIDs.toString());
+        SmartDashboard.putNumber(_cameraName + ": AprilTags Detected", numTags);
+        SmartDashboard.putString(_cameraName + ": AprilTag IDs", tagIDs.toString());
         
         if (pose != null) {
-            SmartDashboard.putNumber("Largest Tag X (m)", pose[0]);
-            SmartDashboard.putNumber("Largest Tag Y (m)", pose[1]);
-            SmartDashboard.putNumber("Largest Tag Theta (deg)", pose[2]);
+            SmartDashboard.putNumber(_cameraName + ": Largest Tag X (m)", pose[0]);
+            SmartDashboard.putNumber(_cameraName + ": Largest Tag Y (m)", pose[1]);
+            SmartDashboard.putNumber(_cameraName + ": Largest Tag Theta (deg)", pose[2]);
         }
     }
 

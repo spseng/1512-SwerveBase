@@ -151,7 +151,6 @@ public class Constants {
             SLOW_MODE_KINEMATIC_LIMITS.maxDriveVelocity = 3.0;
             SLOW_MODE_KINEMATIC_LIMITS.maxSteeringVelocity = 8.0;
         }
-
     }
 
     public static class Shooter {
@@ -163,7 +162,7 @@ public class Constants {
         public static final double SHOOTING_ANGLE_ERROR = 3; // Degrees
 
         // Field Constants
-        public static final double GRAVITY = 9.81; // Meters per second per second
+        public static final double GRAVITY = 9.81; // Meters per second^2
         public static final double GOAL_HEIGHT = 2.44; // Meters
         public static final long AMP_SCORE_TIME = 1500; //ms
         public static final long SHOOT_WOOF_DELAY = 2000; //ms
@@ -182,35 +181,39 @@ public class Constants {
     }
 
 
-    public static class In {
+    public static class EndEffector {
 
-        public static final double LOADING_SPEED = 0.45;
-        public static final double SHOOT_STATIC_SPEED = 1;
-        public static final long SHOOT_DELAY = 500; //ms
-
-        public static final double BACKOUT_SPEED = -0.4;
-        public static final long BACKOUT_TIME = 300; // ms
-
-        public static final double EJECT_SPEED = -1.0;
+        public static final double PLACE_SPEED = -1.0;
 
         public static final double INTAKE_SPEED = 0.80;
     }
 
     public static class Arm {
-        public static final double AMP_SCORING_ANGLE = -0.308; // Rads
-        public static final double ARM_INTAKE_ANGLE = 0.232; // Rad
-        public static final double ARM_MAX_ANGLE = -0.423; // TODO change this to what it is
+        public static final double ARM_POSITION_KP = 1.5;
+        public static final double ARM_POSITION_KI = 0.005;
+        public static final double ARM_POSITION_KD = 0.1;
+        public static final double ARM_TOLERANCE = 0.1;
+        public static final double ARM_OUTPUT_MIN = -1;
+        public static final double ARM_OUTPUT_MAX = 1;
+        public static final boolean ARM_ENCODER_INVERTED = false;
 
-        // Shooter Angle Alignment PID
-        public static final double SHOOTING_ANGLE_KP = 7.0;
-        public static final double SHOOTING_ANGLE_KI = 0.000;
-        public static final double SHOOTING_ANGLE_KD = 0.5;
-        public static final double TOLERANCE = 0.05;
+        public static final double ARM_DEADBAND = 0.05; // in inches
 
-        public static final double SHOOT_SUB_ANGLE = 0.00; //TODO change this
-        public static final double MANUAL_ARM_MOVE_SPEED = .45;
+        public static final double AVOID_ELEVATOR_POSITION = 0.5;
 
-        public static final double ARM_CLIMB_ANGLE = 0.0; //I do not know what it is supposed to be since it dissappeard in merging process. we need to figure out....
+        public static final double ARM_MIN_ANGLE = 0.05; // rotations
+        public static final double ARM_MAX_ANGLE = 0.56; // rotations
+
+        public static final double AMP_SCORING_ANGLE = 0; // Rads
+        public static final double ARM_INTAKE_ANGLE = 0.05; // Rad
+        public static final double ALGAE_POSITION = 0;
+        public static final double L1_ANGLE = 0;
+        public static final double L2_ANGLE = 0.483;
+        public static final double L3_ANGLE = 0.483;
+        public static final double L4_ANGLE = 0.407;
+        public static final double ARM_TOLERENCE = 0;
+        public static final double STOW_POSITION = 0;
+        public static final double ARM_SAFE_ANGLE = 0.25;
     }
 
     public static class Autonomous {
@@ -220,7 +223,68 @@ public class Constants {
                 "Hello_Path2",
                 "Hello_Path3"
         };
+
+        public static class Score {
+            public static final double DRIVE_X_KP = 0.5;
+            public static final double DRIVE_X_KI = 0.0;
+            public static final double DRIVE_X_KD = 0.02;
+
+            public static final double DRIVE_Y_KP = 0.5;
+            public static final double DRIVE_Y_KI = 0.0;
+            public static final double DRIVE_Y_KD = 0.02;
+
+            public static final double ROTATION_KP = 0.5;
+            public static final double ROTATION_KI = 0.0;
+            public static final double ROTATION_KD = 0.02;
+
+            public static final double DISTANCE_FACING_X = 1; // space between front of camera and april tag in meters
+
+        }
     }
 
-    // PID Constants
+    public static class Elevator {
+        public static final int MAX_HEIGHT = 37; // in inches
+        public static final int MIN_HEIGHT = 4; // in inches
+
+        public static final double ELEVATOR_DEADBAND = 0.05; // in inches
+
+        public static final double ELEVATOR_POSITION_KP = 0.1;
+        public static final double ELEVATOR_POSITION_KI = 0.0;
+        public static final double ELEVATOR_POSITION_KD = 0.0;
+        public static final double ELEVATOR_TOLERANCE = 0.1;
+
+        public static final double ELEVATOR_MOTOR_KP = 0.1;
+        public static final double ELEVATOR_MOTOR_KI = 0.0;
+        public static final double ELEVATOR_MOTOR_KD = 0.02;
+
+        public static final double ELEVATOR_MOTOR_MIN_OUTPUT = -1;
+        public static final double ELEVATOR_MOTOR_MAX_OUTPUT = 1;
+
+        public static final double ELEVATOR_MAX_HEIGHT = 37; // in inches
+
+        public static final int ELEVATOR_CURRENT_LIMIT = 40;
+        public static final double INTAKE_HEIGHT = 4.02;
+        public static final double L1_HEIGHT = 5;
+        public static final double L2_HEIGHT = 10;
+        public static final double L3_HEIGHT = 20;
+        public static final double L4_HEIGHT = 36;
+        public static final double STOW_HEIGHT = 0;
+        public static final double MAX_SPEED = 0.5;
+    }
+
+    public static class Climb {
+
+    }
+
+    public static enum CoralLevel {
+        L1,
+        L2,
+        L3,
+        L4
+    }
+
+    public static enum ReefDirection {
+        LEFT,
+        RIGHT
+    }
 }

@@ -14,24 +14,22 @@ public class RobotMap {
         public static final int FL_DRIVE_CAN = 7;
         public static final int BL_DRIVE_CAN = 8;
 
-        // Intake/Shooter IDs
-        public static final int INTAKE_MOTOR_CAN = 9;
-        public static final int LOADING_MOTOR_CAN = 10;
-        public static final int SHOOTER_MOTOR_CAN = 11;
-        public static final int ANGLE_ALIGNMENT_MOTOR_CAN = 2;
-        public static final int ANGLE_ALIGNMENT_ENCODER_CAN = 15;
+        public static final int ELEVATOR_MOTOR_LEFT_CAN = 23;
+        public static final int ELEVATOR_MOTOR_RIGHT_CAN = 22;
 
         public static final int CLIMB_MOTOR_CAN = 24;
+
+        public static final int ARM_MOTOR_CAN = 26;
+
+        public static final int ENDEFFECTOR_MOTOR_TOP_CAN = 20;
+        public static final int ENDEFFECTOR_MOTOR_BOTTOM_CAN = 21;
 
         public static final int PIGEON_CAN = 18;
     }
 
     public static class DIO {
         // Button IDs
-        public static final int SHOOTER_IS_LOADED_BUTTON_ID = 0;
-        public static final int IS_LOWEST_ANGLE_BUTTON_ID = 1;
-        public static final int IS_HIGHEST_ANGLE_BUTTON_ID = 2;
-
+        public static final int ENDEFFECTOR_PROX_SENSOR_ID = 0;
     }
 
     public static class PWM {
