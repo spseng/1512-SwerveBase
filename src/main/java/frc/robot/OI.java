@@ -16,6 +16,8 @@ import frc.robot.commands.Elevator.ElevatorL2;
 import frc.robot.commands.Elevator.ElevatorL3;
 import frc.robot.commands.Elevator.ElevatorL4;
 import frc.robot.commands.EndEffector.*;
+import frc.robot.commands.Score.EndEffectorIntakeConditional;
+import frc.robot.commands.Score.EndEffectorOutakeConditional;
 import frc.robot.commands.Score.Intake;
 import frc.robot.commands.Score.ScoreL1;
 import frc.robot.commands.Score.ScoreL2;
@@ -109,6 +111,7 @@ public class OI {
         _operatorRightBumper = new Trigger(_operatorGamepad.getRightBumper());
         _operatorStartButton = new Trigger(_operatorGamepad.getStartButton());
         _operatorBackButton = new Trigger(_operatorGamepad.getBackButton());
+       
 
         // Operator POV Buttons
         _operatorPOVUp = new Trigger(() -> _operatorGamepad.getPOV() == 0);
@@ -128,14 +131,15 @@ public class OI {
     
     //this is where we map commands
     public void initializeButtons() {
-        _driverAButton.onTrue(new ElevatorIntake(_elevator, _arm));
-        _driverBButton.onTrue(new ResetIMU(_drivetrain));
-        _driverXButton.onTrue(new ElevatorL2(_elevator, _arm));
-        _driverYButton.onTrue(new ElevatorL3(_elevator, _arm));
-        _driverLeftBumper.onTrue(new ElevatorL4(_elevator, _arm));
-        _driverRightBumper.onTrue(new ArmIntake(_arm));
-        _driverStartButton.onTrue(new ArmScoreL3(_arm));
+        // _driverAButton.onTrue(new ElevatorIntake(_elevator, _arm));
+        // _driverBButton.onTrue(new ResetIMU(_drivetrain));
+         _driverXButton.onTrue(new StopWheels(_endEffector));
+        // _driverYButton.onTrue(new ElevatorL3(_elevator, _arm));
+        _driverLeftBumper.whileTrue(new EndEffectorIntakeConditional(_endEffector));
+        _driverRightBumper.whileTrue(new EndEffectorOutakeConditional(_endEffector));
+        _driverStartButton.onTrue(Commands.none());
         _driverBackButton.onTrue(Commands.none());
+        
 
         // Driver POV Buttons
         _driverPOVUp.onTrue(Commands.none());
@@ -150,15 +154,16 @@ public class OI {
         _operatorXButton.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L2); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.RIGHT);}));
         _operatorYButton.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L4); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.RIGHT);}));
         */
-        _operatorAButton.onTrue(new Intake(_elevator, _arm));
+        _operatorAButton.onTrue(new Intake(_elevator, _arm, _endEffector));
         _operatorBButton.onTrue(new ScoreL3(_elevator, _arm));
         _operatorXButton.onTrue(new ScoreL2(_elevator, _arm));
         _operatorYButton.onTrue(new ScoreL4(_elevator, _arm));
 
-        _operatorLeftBumper.onTrue(new EndEffectorIntake( _endEffector));
-        _operatorRightBumper.onTrue(new EndEffectorOuttake( _endEffector));
-        _operatorStartButton.onTrue(new StopWheels(_endEffector));
+        _operatorLeftBumper.onTrue(new Intake(_elevator, _arm, _endEffector));
+        _operatorRightBumper.onTrue(Commands.none());
+        _operatorStartButton.onTrue(Commands.none());
         _operatorBackButton.onTrue(Commands.none());
+        
 
         // Operator POV Buttons
         /*

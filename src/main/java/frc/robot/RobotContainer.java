@@ -87,7 +87,7 @@ public class RobotContainer {
         //_endEffector.setDefaultCommand(new PleaseDoNotMoveEndeffector(_endEffector));
         //_climb.setDefaultCommand(new PleaseDoNotMoveClimb(_climb));
 
-        //_drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
+        _drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
         //_elevator.setDefaultCommand(new ElevatorTest(_oi, _elevator));
         //_arm.setDefaultCommand(new ArmTest(_oi, _arm));
         _climb.setDefaultCommand(new ClimbTest(_oi, _climb));
