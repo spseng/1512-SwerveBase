@@ -14,7 +14,7 @@ public class MoveALittleBit extends Command {
 
     public MoveALittleBit(Drivetrain drivetrain) {
         _drivetrain = drivetrain;
-        //addRequirements(_drivetrain); 
+        addRequirements(_drivetrain); 
     }
 
     @Override
@@ -26,7 +26,7 @@ public class MoveALittleBit extends Command {
     @Override
     public void execute() {
         Rotation2d rotation = _drivetrain.getHeading();
-        _drivetrain.setVelocity(new ChassisSpeeds(1, 0, 0));
+        _drivetrain.setVelocity(new ChassisSpeeds(-1, 0, 0));
         SmartDashboard.putString("MoveALittleBit", "Executing");
     }
 

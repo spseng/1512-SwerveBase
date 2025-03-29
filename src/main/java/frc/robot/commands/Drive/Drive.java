@@ -55,6 +55,12 @@ public class Drive extends Command {
         rot = Math.signum(rot) * rot * rot; // square rot without loosing plus or minus
         rot = rot * Constants.Drivetrain.MAX_ANG_VEL;
 
+        if(_oi.isSlowMode()) {
+            vx *= Constants.Drivetrain.SLOW_MODE_MULTIPLIER;
+            vy *= Constants.Drivetrain.SLOW_MODE_MULTIPLIER;
+            rot *= Constants.Drivetrain.SLOW_MODE_MULTIPLIER;
+        }
+
         //SmartDashboard.putNumber("vx", vx);
         //SmartDashboard.putNumber("vy", vy);
         //SmartDashboard.putNumber("rot", rot);

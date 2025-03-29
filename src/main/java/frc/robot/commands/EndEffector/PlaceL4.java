@@ -41,7 +41,7 @@ public class PlaceL4 extends Command {
                 startSpinTime = Timer.getFPGATimestamp();
                 isSpinning = true;
             }
-            _endEffector.setIntakeSpeed(Constants.EndEffector.PLACE_SPEED);
+            _endEffector.setIntakeSpeed(Constants.EndEffector.OUTTAKE_SPEED);
         }
     }
     @Override

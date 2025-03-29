@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Utils.Vision.VisionProcessor;
+import frc.robot.commands.Autonomous.MoveALittleBit;
 //import frc.robot.commands.Autonomous.AutonomousScoreApproach;
 //import frc.robot.commands.Autonomous.MoveALittleBit;
 import frc.robot.commands.Drive.Drive;
@@ -88,11 +89,12 @@ public class RobotContainer {
         //_climb.setDefaultCommand(new PleaseDoNotMoveClimb(_climb));
 
         _drivetrain.setDefaultCommand(new Drive(_oi, _drivetrain));
-        _elevator.setDefaultCommand(new ElevatorTest(_oi, _elevator));
+        //_elevator.setDefaultCommand(new ElevatorTest(_oi, _elevator));
         _arm.setDefaultCommand(new ArmTest(_oi, _arm));
-        //_climb.setDefaultCommand(new ClimbTest(_oi, _climb));
+        _climb.setDefaultCommand(new ClimbTest(_oi, _climb));
         //_endEffector.setDefaultCommand(new EndeffectorTest(_oi, _endEffector));
 
+    
         _oi.initializeButtons();
     }
 
@@ -102,8 +104,8 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        //return new MoveALittleBit(_drivetrain).withTimeout(10);
-        return Commands.none();
+        return new MoveALittleBit(_drivetrain).withTimeout(10);
+        //return Commands.none();
         // An ExampleCommand will run in autonomous
         /*
         /*

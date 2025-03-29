@@ -27,7 +27,7 @@ public class SlowMode extends Command {
     @Override
     public boolean isFinished() {
         // TODO Auto-generated method stub
-        return false;
+        return super.isFinished();
     }
     @Override
     public void end(boolean interrupted) {

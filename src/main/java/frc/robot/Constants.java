@@ -151,6 +151,8 @@ public class Constants {
             SLOW_MODE_KINEMATIC_LIMITS.maxDriveVelocity = 3.0;
             SLOW_MODE_KINEMATIC_LIMITS.maxSteeringVelocity = 8.0;
         }
+
+        public static final double SLOW_MODE_MULTIPLIER = 0.1;
     }
 
     public static class Shooter {
@@ -183,9 +185,9 @@ public class Constants {
 
     public static class EndEffector {
 
-        public static final double PLACE_SPEED = -1.0;
+        public static final double OUTTAKE_SPEED = 1.0;
 
-        public static final double INTAKE_SPEED = 0.80;
+        public static final double INTAKE_SPEED = -1.0;
     }
 
     public static class Arm {
@@ -209,7 +211,7 @@ public class Constants {
         public static final double ARM_INTAKE_ANGLE = 0.05; // Rad
         public static final double ALGAE_POSITION = 0;
         public static final double L1_ANGLE = 0;
-        public static final double L2_ANGLE = 0.49;
+        public static final double L2_ANGLE = 0.43;
         public static final double L3_ANGLE = 0.49;
         public static final double L4_ANGLE = 0.4206;
         public static final double ARM_TOLERENCE = 0;
@@ -271,7 +273,7 @@ public class Constants {
         public static final int ELEVATOR_CURRENT_LIMIT = 40;
         public static final double INTAKE_HEIGHT = 0.005;
         public static final double L1_HEIGHT = 5;
-        public static final double L2_HEIGHT = 0.5;
+        public static final double L2_HEIGHT = 1.03;
         public static final double L3_HEIGHT = 4;
         public static final double L4_HEIGHT = 36;
         public static final double ALGAE_L2_3_HEIGHT = 5;

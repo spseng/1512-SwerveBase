@@ -5,20 +5,22 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 
-public class AlgaeIntakeL3_4 {
+public class AlgaeIntakeL3_4 extends Command {
     private final Elevator _elevator;
     private final Arm _arm;
     private boolean colision = false;
 
-    AlgaeIntakeL3_4(Elevator elevator, Arm arm) {
+    public AlgaeIntakeL3_4(Arm arm, Elevator elevator) {
         _elevator = elevator;
         _arm = arm;
     }
 
+    @Override
     public void initialize() {
         colision = _arm.isColision();
     }
 
+    @Override
     public void execute() {
         // TODO Auto-generated method stub
         if (colision) {
@@ -29,6 +31,7 @@ public class AlgaeIntakeL3_4 {
         }
     }
 
+    @Override
     public boolean isFinished() {
         // TODO Auto-generated method stub
         return true;

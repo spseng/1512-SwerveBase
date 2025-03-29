@@ -8,7 +8,6 @@ import frc.robot.Utils.AxisButton;
 import frc.robot.Utils.Gamepad;
 import frc.robot.Utils.Helpers;
 import frc.robot.Utils.RobotState;
-import frc.robot.commands.EndEffectorIntake;
 import frc.robot.commands.Autonomous.AutonomousScoreApproach;
 import frc.robot.commands.Climb.ClimbDown;
 import frc.robot.commands.Climb.ClimbUp;
@@ -20,6 +19,8 @@ import frc.robot.commands.Elevator.ElevatorL4;
 import frc.robot.commands.EndEffector.*;
 import frc.robot.commands.Score.EndEffectorIntakeConditional;
 import frc.robot.commands.Score.EndEffectorOutakeConditional;
+import frc.robot.commands.Score.AlgaeIntakeL2_3;
+import frc.robot.commands.Score.AlgaeIntakeL3_4;
 import frc.robot.commands.Score.Intake;
 import frc.robot.commands.Score.ScoreL1;
 import frc.robot.commands.Score.ScoreL2;
@@ -73,7 +74,7 @@ public class OI {
         _elevator = elevator;
         _arm = arm;
         _climb = climb;
-        _endEffector =endEffector;
+        _endEffector = endEffector;
         
         
 
@@ -133,11 +134,11 @@ public class OI {
     
     //this is where we map commands
     public void initializeButtons() {
-        // _driverAButton.onTrue(new ElevatorIntake(_elevator, _arm));
+        _driverAButton.whileTrue(new EndEffectorIntakeConditional(_endEffector));
         _driverBButton.onTrue(new ResetIMU(_drivetrain));
         _driverXButton.onTrue(new StopWheels(_endEffector));
-        // _driverYButton.onTrue(new ElevatorL3(_elevator, _arm));
-        _driverLeftBumper.whileTrue(new EndEffectorIntakeConditional(_endEffector));
+        //_driverYButton.onTrue(new EndEffectorOutakeConditional(_endEffector));
+        //_driverLeftBumper.whileTrue(new EndEffectorIntakeConditional(_endEffector));
         _driverRightBumper.whileTrue(new EndEffectorOutakeConditional(_endEffector));
         _driverStartButton.onTrue(Commands.none());
         _driverBackButton.onTrue(Commands.none());
@@ -163,8 +164,8 @@ public class OI {
 
         _operatorLeftBumper.onTrue(new Intake(_elevator, _arm, _endEffector));
         _operatorRightBumper.onTrue(Commands.none());
-        _operatorStartButton.onTrue(Commands.none());
-        _operatorBackButton.onTrue(Commands.none());
+        _operatorStartButton.onTrue(new AlgaeIntakeL3_4( _arm, _elevator));
+        _operatorBackButton.onTrue(new AlgaeIntakeL2_3(_arm, _elevator));
         
 
         // Operator POV Buttons
@@ -207,6 +208,10 @@ public class OI {
         double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_X.getNumber());
         speed = Helpers.applyDeadband(speed, Constants.Drivetrain.TRANSLATION_DEADBAND);
         return speed;
+    }
+
+    public boolean isSlowMode() {
+        return _driverLeftBumper.getAsBoolean();
     }
 
     public double getElevatorY() {

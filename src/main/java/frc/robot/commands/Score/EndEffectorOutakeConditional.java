@@ -29,7 +29,7 @@ public class EndEffectorOutakeConditional extends Command {
 
     @Override
     public void execute() {
-        _endEffector.setIntakeSpeed(1);
+        _endEffector.setIntakeSpeed(Constants.EndEffector.OUTTAKE_SPEED);
     }
     @Override
     public boolean isFinished() {
