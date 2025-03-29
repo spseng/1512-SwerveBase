@@ -132,8 +132,8 @@ public class OI {
     //this is where we map commands
     public void initializeButtons() {
         // _driverAButton.onTrue(new ElevatorIntake(_elevator, _arm));
-        // _driverBButton.onTrue(new ResetIMU(_drivetrain));
-         _driverXButton.onTrue(new StopWheels(_endEffector));
+        _driverBButton.onTrue(new ResetIMU(_drivetrain));
+        _driverXButton.onTrue(new StopWheels(_endEffector));
         // _driverYButton.onTrue(new ElevatorL3(_elevator, _arm));
         _driverLeftBumper.whileTrue(new EndEffectorIntakeConditional(_endEffector));
         _driverRightBumper.whileTrue(new EndEffectorOutakeConditional(_endEffector));

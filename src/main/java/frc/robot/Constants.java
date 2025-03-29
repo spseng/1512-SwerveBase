@@ -189,7 +189,7 @@ public class Constants {
     }
 
     public static class Arm {
-        public static final double ARM_POSITION_KP = 1.5;
+        public static final double ARM_POSITION_KP = 1.8;
         public static final double ARM_POSITION_KI = 0.005;
         public static final double ARM_POSITION_KD = 0.1;
         public static final double ARM_POSITION_KFF = 0.15;
@@ -209,9 +209,9 @@ public class Constants {
         public static final double ARM_INTAKE_ANGLE = 0.05; // Rad
         public static final double ALGAE_POSITION = 0;
         public static final double L1_ANGLE = 0;
-        public static final double L2_ANGLE = 0.483;
-        public static final double L3_ANGLE = 0.483;
-        public static final double L4_ANGLE = 0.5;
+        public static final double L2_ANGLE = 0.49;
+        public static final double L3_ANGLE = 0.49;
+        public static final double L4_ANGLE = 0.4206;
         public static final double ARM_TOLERENCE = 0;
         public static final double STOW_POSITION = 0;
         public static final double ARM_SAFE_ANGLE = 0.25;
@@ -246,7 +246,7 @@ public class Constants {
     }
 
     public static class Elevator {
-        public static final int MAX_HEIGHT = 37; // in inches
+        public static final int MAX_HEIGHT = 36; // in inches
         public static final int MIN_HEIGHT = 4; // in inches
 
         public static final double ELEVATOR_DEADBAND = 0.05; // in inches
@@ -263,16 +263,16 @@ public class Constants {
         public static final double ELEVATOR_MOTOR_MIN_OUTPUT = -1;
         public static final double ELEVATOR_MOTOR_MAX_OUTPUT = 1;
 
-        public static final double ELEVATOR_MAX_HEIGHT = 37; // in inches
+        public static final double ELEVATOR_MAX_HEIGHT = 36; // in inches
 
         public static final int ELEVATOR_CURRENT_LIMIT = 40;
-        public static final double INTAKE_HEIGHT = 0.05;
+        public static final double INTAKE_HEIGHT = 0.005;
         public static final double L1_HEIGHT = 5;
-        public static final double L2_HEIGHT = 10;
-        public static final double L3_HEIGHT = 20;
+        public static final double L2_HEIGHT = 0.5;
+        public static final double L3_HEIGHT = 4;
         public static final double L4_HEIGHT = 36;
         public static final double STOW_HEIGHT = 0;
-        public static final double MAX_SPEED = 0.55;
+        public static final double MAX_SPEED = 0.45;
     }
 
     public static class Climb {
