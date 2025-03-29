@@ -55,7 +55,7 @@ public class ArmTest extends Command {
         vy = vec.y();
         */
 
-        double v = _oi.getArmX();
+        double v = _oi.getArmY();
 
         targetAngle = _arm.getSetpoint();
 

@@ -276,7 +276,8 @@ public class Constants {
     }
 
     public static class Climb {
-
+        public static final double CLIMB_UP_SPEED = 1.0;
+        public static final double CLIMB_DOWN_SPEED = -1.0;
     }
 
     public static enum CoralLevel {

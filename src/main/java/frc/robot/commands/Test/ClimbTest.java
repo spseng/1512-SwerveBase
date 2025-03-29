@@ -49,14 +49,14 @@ public class ClimbTest extends Command {
         SmartDashboard.putNumber("vy", vy);
         */
 
-        double v = _oi.getElevatorX();
+        double v = _oi.getElevatorY();
+        /*/
         if(v == 0) {
             v = 0.0;
         }else {
             v -= 0.5;
         }
-
-        //double target_height = _arm.getCurrentAngle() + vx;
+        */
 
         _climb.setClimbSpeed(v);
     }

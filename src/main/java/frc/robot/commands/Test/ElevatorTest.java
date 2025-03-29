@@ -52,7 +52,7 @@ public class ElevatorTest extends Command {
         vy = vec.y();
         */
 
-        double v = _oi.getElevatorX();
+        double v = _oi.getElevatorY();
 
         SmartDashboard.putNumber("v", v);
 

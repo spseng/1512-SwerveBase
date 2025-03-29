@@ -10,6 +10,8 @@ import frc.robot.Utils.Helpers;
 import frc.robot.Utils.RobotState;
 import frc.robot.commands.EndEffectorIntake;
 import frc.robot.commands.Autonomous.AutonomousScoreApproach;
+import frc.robot.commands.Climb.ClimbDown;
+import frc.robot.commands.Climb.ClimbUp;
 import frc.robot.commands.Drive.ResetIMU;
 import frc.robot.commands.Elevator.ElevatorIntake;
 import frc.robot.commands.Elevator.ElevatorL2;
@@ -38,7 +40,7 @@ public class OI {
     private final Drivetrain _drivetrain;
     private final Elevator _elevator;
     private final Arm _arm;
-   // private final Climb _climb;
+    private final Climb _climb;
     private final EndEffector _endEffector;
     
 
@@ -65,12 +67,12 @@ public class OI {
     private AxisButton _operatorLeftTriggerButton, _operatorRightTriggerButton;
     private AxisButton _operatorLeftXAxis, _operatorLeftYAxis, _operatorRightXAxis, _operatorRightYAxis;
 
-    public OI(Drivetrain drivetrain, Elevator elevator, Arm arm, EndEffector endEffector) {
+    public OI(Drivetrain drivetrain, Elevator elevator, Arm arm, EndEffector endEffector, Climb climb) {
         
         _drivetrain = drivetrain;
         _elevator = elevator;
         _arm = arm;
-       // _climb = new Climb();
+        _climb = climb;
         _endEffector =endEffector;
         
         
@@ -142,8 +144,8 @@ public class OI {
         
 
         // Driver POV Buttons
-        _driverPOVUp.onTrue(Commands.none());
-        _driverPOVDown.onTrue(Commands.none());
+        _driverPOVUp.onTrue(new ClimbUp(_climb));
+        _driverPOVDown.onTrue(new ClimbDown(_climb));
         _driverPOVLeft.onTrue(Commands.none());
         _driverPOVRight.onTrue(Commands.none());
 
@@ -207,15 +209,15 @@ public class OI {
         return speed;
     }
 
-    public double getElevatorX() {
-        double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.LEFT_X.getNumber());
+    public double getElevatorY() {
+        double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.LEFT_Y.getNumber());
 
         speed = Helpers.applyDeadband(speed, Constants.Elevator.ELEVATOR_DEADBAND);
         return speed;
     }
 
-    public double getArmX() {
-        double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_X.getNumber());
+    public double getArmY() {
+        double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
         speed = Helpers.applyDeadband(speed, Constants.Arm.ARM_DEADBAND);
 
         speed = Helpers.applyDeadband(speed, Constants.Drivetrain.TRANSLATION_DEADBAND);

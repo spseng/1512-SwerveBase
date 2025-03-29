@@ -77,7 +77,7 @@ public class RobotContainer {
         _arm = new Arm();
         _endEffector = new EndEffector();
         _climb = new Climb();
-        _oi = new OI(_drivetrain, _elevator, _arm, _endEffector);
+        _oi = new OI(_drivetrain, _elevator, _arm, _endEffector, _climb);
         //_autonomous = new AutonomousConfigure();
         //_drivetrain.setDefaultCommand(new AutonomousScoreApproach(_drivetrain, "camera2"));
        
