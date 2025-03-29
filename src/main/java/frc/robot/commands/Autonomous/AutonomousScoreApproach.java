@@ -26,6 +26,10 @@ public class AutonomousScoreApproach extends Command {
         _driveXController = new PIDController(Constants.Autonomous.Score.DRIVE_X_KP, Constants.Autonomous.Score.DRIVE_X_KI, Constants.Autonomous.Score.DRIVE_X_KD);
         _driveYController = new PIDController(Constants.Autonomous.Score.DRIVE_Y_KP, Constants.Autonomous.Score.DRIVE_Y_KI, Constants.Autonomous.Score.DRIVE_Y_KD);
         _rotationController = new PIDController(Constants.Autonomous.Score.ROTATION_KP, Constants.Autonomous.Score.ROTATION_KI, Constants.Autonomous.Score.ROTATION_KD);
+
+        _driveXController.setTolerance(Constants.Autonomous.Score.DRIVE_X_TOLERANCE);
+        _driveYController.setTolerance(Constants.Autonomous.Score.DRIVE_Y_TOLERANCE);
+        _rotationController.setTolerance(Constants.Autonomous.Score.ROTATION_TOLERANCE);
         _rotationController.enableContinuousInput(-180, 180);
         addRequirements(_drivetrain);
     }
