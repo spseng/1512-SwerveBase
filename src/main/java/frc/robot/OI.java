@@ -8,7 +8,6 @@ import frc.robot.Utils.AxisButton;
 import frc.robot.Utils.Gamepad;
 import frc.robot.Utils.Helpers;
 import frc.robot.Utils.RobotState;
-import frc.robot.commands.Autonomous.AutonomousScoreApproach;
 import frc.robot.commands.Climb.ClimbDown;
 import frc.robot.commands.Climb.ClimbUp;
 import frc.robot.commands.Drive.ResetIMU;
