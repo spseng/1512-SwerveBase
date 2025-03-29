@@ -1,5 +1,6 @@
 package frc.robot.Utils.Vision;
 
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.util.Units;
@@ -9,14 +10,17 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class VisionProcessor extends SubsystemBase {
     private final Camera _testCam;
     private final String _cameraName;
 
-    public VisionProcessor(String cameraName) {
-        _testCam = new Camera(cameraName, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    public VisionProcessor(String cameraName, Transform3d relativePosition) {
+        _testCam = new Camera(cameraName, relativePosition);
         _cameraName = cameraName;
+        this.cameraName = cameraName;
+        this.relativePosition = relativePosition;
     }
 
     public double getLargestTagX() {
@@ -36,6 +40,18 @@ public class VisionProcessor extends SubsystemBase {
         if (pose == null) return 0.0;
         return pose[2];
     }
+
+    public Optional<Pose3d> getEstimatedPose() {
+        var result = _testCam.getLatestResult();
+        var multiTagResult = result.getMultiTagResult();
+        
+        if (multiTagResult.isPresent()) {
+            return Optional.of(multiTagResult.get().estimatedPose);
+        }
+        return Optional.empty();
+    }
+    
+    
 
     public void updateDashboard() {
         if (!_testCam.isTargetinSight()) {

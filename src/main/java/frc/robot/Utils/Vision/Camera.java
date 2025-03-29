@@ -10,13 +10,9 @@ public class Camera {
     private final PhotonCamera _photonCamera;
     private final Transform3d _cameraTransform;
 
-    public Camera(String camName, double x, double y, double z, 
-                 double pitch, double yaw, double roll) {
+    public Camera(String camName, Transform3d cameraTransform) {
         _photonCamera = new PhotonCamera(camName);
-        _cameraTransform = new Transform3d(
-            x, y, z,
-            new Rotation3d(pitch, yaw, roll)
-        );
+        _cameraTransform = cameraTransform;
     }
 
     public Transform3d getCameraLocation() {
