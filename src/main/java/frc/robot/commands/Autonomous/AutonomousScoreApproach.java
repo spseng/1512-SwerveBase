@@ -46,6 +46,9 @@ public class AutonomousScoreApproach extends Command {
         double Coefficient = 0.5;
         vx *= Coefficient;
         vy *= Coefficient;
+        SmartDashboard.putNumber("error_x", _visionProcessor.getLargestTagX() - Constants.Autonomous.Score.DISTANCE_FACING_X);
+        SmartDashboard.putNumber("error_y", _visionProcessor.getLargestTagY());
+        SmartDashboard.putNumber("error_theta", _visionProcessor.getLargestTagTheta());
         SmartDashboard.putNumber("autonomous_vx", vx);
         SmartDashboard.putNumber("autonomous_vy", vy);
         SmartDashboard.putNumber("autonomous_omega", omega);

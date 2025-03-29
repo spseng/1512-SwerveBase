@@ -68,11 +68,11 @@ public class Drivetrain extends SubsystemBase {
     private final ChassisSpeedsSupplier _currentChassisSpeedsSupplier = new ChassisSpeedsSupplier();
     PathFollowingController _controller;
 
-    private final VisionSubsystem _visionSubsystem;
+    //private final VisionSubsystem _visionSubsystem;
 
-    public Drivetrain(VisionSubsystem visionSubsystem) {
+    public Drivetrain() {
 
-        _visionSubsystem = visionSubsystem;
+        //_visionSubsystem = visionSubsystem;
 
         _Io = new SystemIO();
         //_gyro = new AHRS(SPI.Port.kMXP); // I think that this is right
@@ -385,8 +385,8 @@ public class Drivetrain extends SubsystemBase {
             _modules[SOUTH_EAST_IDX].getSwervePosition()
         });
     }
-    
 
+    /* 
     public void updateOdometry() {
         // Assuming you have a method to check if the vision data is valid:
         if (isVisionDataValid()) {
@@ -406,7 +406,7 @@ public class Drivetrain extends SubsystemBase {
         updateShuffleBoard();
         updateDesiredStates();
     }
-    
+    */
 
     public void updateSwerveOdometry() {
         _previous_pose = _current_pose;
@@ -477,7 +477,7 @@ public class Drivetrain extends SubsystemBase {
     public PathFollowingController getController() {
         return _controller;
     }
-
+    /*
     private boolean isVisionDataValid() {
         // Implement the logic to check if vision data is available and reliable
         // For example, you could check if the vision pose is not null or if a validity timestamp is recent.
@@ -488,5 +488,6 @@ public class Drivetrain extends SubsystemBase {
         // Retrieve the vision pose (could be from a vision subsystem or a direct vision feed)
         return _visionSubsystem.getLatestPose();
     }
+        */
     
 }
