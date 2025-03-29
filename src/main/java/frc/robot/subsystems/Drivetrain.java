@@ -68,7 +68,12 @@ public class Drivetrain extends SubsystemBase {
     private final ChassisSpeedsSupplier _currentChassisSpeedsSupplier = new ChassisSpeedsSupplier();
     PathFollowingController _controller;
 
-    public Drivetrain() {
+    private final VisionSubsystem _visionSubsystem;
+
+    public Drivetrain(VisionSubsystem visionSubsystem) {
+
+        _visionSubsystem = visionSubsystem;
+
         _Io = new SystemIO();
         //_gyro = new AHRS(SPI.Port.kMXP); // I think that this is right
         _pigeon = new Pigeon2(RobotMap.CAN.PIGEON_CAN);
@@ -368,6 +373,41 @@ public class Drivetrain extends SubsystemBase {
         }
     }
 
+    public void updateOdometryWithVision(Pose2d visionPose) {
+        // Update the current pose with vision data
+        _current_pose = visionPose;
+        
+        // Update the odometry object with the new pose
+        _odometry.update(getHeading(), new SwerveModulePosition[]{
+            _modules[NORTH_WEST_IDX].getSwervePosition(),
+            _modules[NORTH_EAST_IDX].getSwervePosition(),
+            _modules[SOUTH_WEST_IDX].getSwervePosition(),
+            _modules[SOUTH_EAST_IDX].getSwervePosition()
+        });
+    }
+    
+
+    public void updateOdometry() {
+        // Assuming you have a method to check if the vision data is valid:
+        if (isVisionDataValid()) {
+            Pose2d visionPose = getVisionPose();
+            updateOdometryWithVision(visionPose);
+        } else {
+            // If vision data isn't valid, use the odometry data from swerve module positions
+            _odometry.update(getHeading(), new SwerveModulePosition[]{
+                _modules[NORTH_WEST_IDX].getSwervePosition(),
+                _modules[NORTH_EAST_IDX].getSwervePosition(),
+                _modules[SOUTH_WEST_IDX].getSwervePosition(),
+                _modules[SOUTH_EAST_IDX].getSwervePosition()
+            });
+        }
+    
+        // Other periodic tasks...
+        updateShuffleBoard();
+        updateDesiredStates();
+    }
+    
+
     public void updateSwerveOdometry() {
         _previous_pose = _current_pose;
         _current_pose = _odometry.update(getHeading(), new SwerveModulePosition[]{
@@ -437,4 +477,16 @@ public class Drivetrain extends SubsystemBase {
     public PathFollowingController getController() {
         return _controller;
     }
+
+    private boolean isVisionDataValid() {
+        // Implement the logic to check if vision data is available and reliable
+        // For example, you could check if the vision pose is not null or if a validity timestamp is recent.
+        return _visionSubsystem.hasValidPose();
+    }
+    
+    private Pose2d getVisionPose() {
+        // Retrieve the vision pose (could be from a vision subsystem or a direct vision feed)
+        return _visionSubsystem.getLatestPose();
+    }
+    
 }

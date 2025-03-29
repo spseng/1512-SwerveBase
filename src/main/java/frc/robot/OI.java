@@ -9,7 +9,6 @@ import frc.robot.Utils.Gamepad;
 import frc.robot.Utils.Helpers;
 import frc.robot.Utils.RobotState;
 import frc.robot.commands.EndEffectorIntake;
-import frc.robot.commands.Autonomous.AutonomousScoreApproach;
 import frc.robot.commands.Drive.ResetIMU;
 import frc.robot.commands.Elevator.ElevatorIntake;
 import frc.robot.commands.Elevator.ElevatorL2;

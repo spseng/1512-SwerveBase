@@ -1,16 +1,17 @@
 package frc.robot.commands.Autonomous;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.Utils.Vision.VisionProcessor;
+import frc.robot.Utils.Vision.Camera;
 import frc.robot.subsystems.Drivetrain;
 
 public class AutonomousScoreApproach extends Command {
     private final Drivetrain _drivetrain;
-    private final VisionProcessor _visionProcessor;
+    private final Camera _visionProcessor;
 
     private final PIDController _driveXController;
     private final PIDController _driveYController;
@@ -21,7 +22,7 @@ public class AutonomousScoreApproach extends Command {
 
     public AutonomousScoreApproach(Drivetrain drivetrain, String cameraName) {
         _drivetrain = drivetrain;
-        _visionProcessor = new VisionProcessor(cameraName);
+        _visionProcessor = new Camera(cameraName, new Transform3d());
         _driveXController = new PIDController(Constants.Autonomous.Score.DRIVE_X_KP, Constants.Autonomous.Score.DRIVE_X_KI, Constants.Autonomous.Score.DRIVE_X_KD);
         _driveYController = new PIDController(Constants.Autonomous.Score.DRIVE_Y_KP, Constants.Autonomous.Score.DRIVE_Y_KI, Constants.Autonomous.Score.DRIVE_Y_KD);
         _rotationController = new PIDController(Constants.Autonomous.Score.ROTATION_KP, Constants.Autonomous.Score.ROTATION_KI, Constants.Autonomous.Score.ROTATION_KD);
@@ -58,7 +59,9 @@ public class AutonomousScoreApproach extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        //_drivetrain.setVelocity(new ChassisSpeeds()); // Stop when finished
+        if (interrupted) {
+            _drivetrain.setVelocity(new ChassisSpeeds());  // Stop the robot when interrupted
+        }
     }
 
     private double constraintOutput(double output) {
