@@ -35,10 +35,13 @@ public class Intake extends Command {
         super.execute();
         if (colision){
             _arm.setArmPosition(Constants.Arm.ARM_SAFE_ANGLE);
+        }else if(_elevator.getCurrentHeight() > 12) {
+            _elevator.setTargetHeight(Constants.Elevator.L2_HEIGHT);
+            _arm.setArmPosition(Constants.Arm.L2_ANGLE);
         } else {
             _elevator.setTargetHeight(Constants.Elevator.INTAKE_HEIGHT);
             _arm.setArmPosition(Constants.Arm.ARM_INTAKE_ANGLE);
-            _endEffector.setIntakeSpeed(1);
+            _endEffector.setIntakeSpeed(-1);
         }
     }
     @Override

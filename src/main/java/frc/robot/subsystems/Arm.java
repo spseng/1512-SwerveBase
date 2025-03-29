@@ -22,8 +22,6 @@ public class Arm extends SubsystemBase {
     private final double _armOffset = Constants.Arm.ARM_OFFSET;
     private double _setpoint;
 
-    private static final double K_FF = 0.1;
-
     public Arm() {
         _armMotor = new SparkMax(RobotMap.CAN.ARM_MOTOR_CAN, MotorType.kBrushless);
         _armEncoder = _armMotor.getAbsoluteEncoder();
@@ -87,7 +85,7 @@ public class Arm extends SubsystemBase {
 
     private double calculateFeedforward() {
         double angle = getCurrentAngle() - _armOffset;
-        return K_FF * Math.sin(angle * 2 * Math.PI);
+        return Constants.Arm.ARM_POSITION_KFF * Math.sin(angle * 2 * Math.PI);
     }
     public boolean isColision(){
         return (getCurrentAngle() < 0.159 );

@@ -192,6 +192,7 @@ public class Constants {
         public static final double ARM_POSITION_KP = 1.5;
         public static final double ARM_POSITION_KI = 0.005;
         public static final double ARM_POSITION_KD = 0.1;
+        public static final double ARM_POSITION_KFF = 0.15;
         public static final double ARM_TOLERANCE = 0.1;
         public static final double ARM_OUTPUT_MIN = -1;
         public static final double ARM_OUTPUT_MAX = 1;
@@ -265,13 +266,13 @@ public class Constants {
         public static final double ELEVATOR_MAX_HEIGHT = 37; // in inches
 
         public static final int ELEVATOR_CURRENT_LIMIT = 40;
-        public static final double INTAKE_HEIGHT = 4.02;
+        public static final double INTAKE_HEIGHT = 0.05;
         public static final double L1_HEIGHT = 5;
         public static final double L2_HEIGHT = 10;
         public static final double L3_HEIGHT = 20;
         public static final double L4_HEIGHT = 36;
         public static final double STOW_HEIGHT = 0;
-        public static final double MAX_SPEED = 0.5;
+        public static final double MAX_SPEED = 0.55;
     }
 
     public static class Climb {
