@@ -6,6 +6,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -68,8 +69,8 @@ public class SwerveModule extends SubsystemBase {
             .pidf(Constants.Drivetrain.DRIVE_KP, Constants.Drivetrain.DRIVE_KI, Constants.Drivetrain.DRIVE_KD, Constants.Drivetrain.DRIVE_FF)
             .outputRange(Constants.Drivetrain.MOTOR_MIN_OUTPUT, Constants.Drivetrain.MOTOR_MAX_OUTPUT);
 
-        _steerMotorConfig.idleMode(Constants.Drivetrain.STEER_IDLE_MODE);
-        _driveMotorConfig.idleMode(Constants.Drivetrain.DRIVE_IDLE_MODE);
+        _steerMotorConfig.idleMode(IdleMode.kBrake);
+        _driveMotorConfig.idleMode(IdleMode.kBrake);
 
         _steerMotorConfig.smartCurrentLimit(Constants.Drivetrain.STEER_CURRENT_LIMIT);
         _driveMotorConfig.smartCurrentLimit(Constants.Drivetrain.DRIVE_CURRENT_LIMIT);
