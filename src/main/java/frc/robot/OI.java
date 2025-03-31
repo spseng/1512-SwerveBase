@@ -158,7 +158,7 @@ public class OI {
         _operatorLeftBumper.onTrue(new EndEffectorIntake( _endEffector));
         _operatorRightBumper.onTrue(new EndEffectorOuttake( _endEffector));
         _operatorStartButton.onTrue(new StopWheels(_endEffector));
-        _operatorBackButton.onTrue(new AutonomousScoreApproach(_drivetrain, "camera2"));
+        _operatorBackButton.onTrue(new AutonomousScoreApproach(_drivetrain, "camera1"));
 
         // Operator POV Buttons
         /*

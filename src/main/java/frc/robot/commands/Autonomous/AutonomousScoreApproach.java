@@ -45,7 +45,7 @@ public class AutonomousScoreApproach extends Command {
     public void execute() {
         double vx = constraintOutput(_driveXController.calculate(_visionProcessor.getLargestTagX(), Constants.Autonomous.Score.DISTANCE_FACING_X));
         double vy = constraintOutput(_driveYController.calculate(_visionProcessor.getLargestTagY(), 0));
-        double omega = constraintOutput(_rotationController.calculate(_visionProcessor.getLargestTagTheta(), 180));
+        double omega = -constraintOutput(_rotationController.calculate(_visionProcessor.getLargestTagTheta(), 180));
         //double Coefficient = Constants.Drivetrain.MAX_DRIVE_SPEED_MPS / Math.sqrt(vx * vx + vy * vy) * 0.3;
         double Coefficient = 0.5;
         vx *= Coefficient;
@@ -56,7 +56,7 @@ public class AutonomousScoreApproach extends Command {
         SmartDashboard.putNumber("autonomous_vx", vx);
         SmartDashboard.putNumber("autonomous_vy", vy);
         SmartDashboard.putNumber("autonomous_omega", omega);
-        _drivetrain.setVelocity(new ChassisSpeeds(vx, vy, omega));
+        _drivetrain.setVelocity(new ChassisSpeeds(vx, 0, 0));
     }
 
     @Override
