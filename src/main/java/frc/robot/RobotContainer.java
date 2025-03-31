@@ -9,13 +9,20 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Utils.Vision.VisionProcessor;
 import frc.robot.commands.Autonomous.MoveALittleBit;
+import frc.robot.commands.Autonomous.MoveALittleBitBackwards;
 //import frc.robot.commands.Autonomous.AutonomousScoreApproach;
 //import frc.robot.commands.Autonomous.MoveALittleBit;
 import frc.robot.commands.Drive.Drive;
+import frc.robot.commands.EndEffector.AutoOuttake;
+import frc.robot.commands.Score.AutoIntake;
+import frc.robot.commands.Score.Intake;
+import frc.robot.commands.Score.ScoreL4;
 import frc.robot.commands.Test.ArmTest;
 import frc.robot.commands.Test.ClimbTest;
 import frc.robot.commands.Test.ElevatorTest;
@@ -104,7 +111,20 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return new MoveALittleBit(_drivetrain).withTimeout(10);
+        return new SequentialCommandGroup(
+            new MoveALittleBit(_drivetrain).withTimeout(7.5),
+            new AutoIntake(_endEffector),
+            new MoveALittleBitBackwards(_drivetrain).withTimeout(1.0),
+            new ScoreL4(_elevator, _arm),
+            new WaitCommand(1),
+            new ScoreL4(_elevator, _arm),
+            new WaitCommand(1),
+            new MoveALittleBit(_drivetrain).withTimeout(0.75),
+            new WaitCommand(2),
+            new AutoOuttake(_endEffector)
+            //new Intake(_elevator, _arm, _endEffector)
+        );
+
         //return Commands.none();
         // An ExampleCommand will run in autonomous
         /*

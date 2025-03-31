@@ -20,6 +20,7 @@ import frc.robot.commands.Score.EndEffectorIntakeConditional;
 import frc.robot.commands.Score.EndEffectorOutakeConditional;
 import frc.robot.commands.Score.AlgaeIntakeL2_3;
 import frc.robot.commands.Score.AlgaeIntakeL3_4;
+import frc.robot.commands.Score.AutoIntake;
 import frc.robot.commands.Score.Intake;
 import frc.robot.commands.Score.ScoreL1;
 import frc.robot.commands.Score.ScoreL2;
@@ -163,7 +164,7 @@ public class OI {
 
         _operatorLeftBumper.onTrue(new Intake(_elevator, _arm, _endEffector));
         _operatorRightBumper.onTrue(Commands.none());
-        _operatorStartButton.onTrue(new AlgaeIntakeL3_4( _arm, _elevator));
+        _operatorStartButton.onTrue(new AutoIntake(_endEffector));
         _operatorBackButton.onTrue(new AlgaeIntakeL2_3(_arm, _elevator));
         
 

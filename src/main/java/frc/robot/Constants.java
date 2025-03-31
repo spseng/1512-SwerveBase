@@ -57,7 +57,7 @@ public class Constants {
         public static final double SPEED_MOD = 1.0;
         public static final double MAX_ANG_VEL = 19.0 * SPEED_MOD;
         //public static final double MAX_DRIVE_SPEED_MPS = (Units.rotationsPerMinuteToRadiansPerSecond(6784) / DRIVING_REDUCTION * (WHEEL_DIAMETER / 2));
-        public static final double MAX_DRIVE_SPEED_MPS = 20.0;
+        public static final double MAX_DRIVE_SPEED_MPS = 13.0;
         public static final double TRANSLATION_DEADBAND = 0.05;
         public static final double ROTATION_DEADBAND = 0.05;
 
@@ -99,7 +99,7 @@ public class Constants {
         public static final double HEADING_kP = 8.0;
         public static final double HEADING_kD = 1.0;
         public static final int STEER_CURRENT_LIMIT = 15;
-        public static final int DRIVE_CURRENT_LIMIT = 60;
+        public static final int DRIVE_CURRENT_LIMIT = 80;
 
         //Encoder Offset set manually
 
@@ -208,7 +208,7 @@ public class Constants {
         public static final double ARM_MAX_ANGLE = 0.56; // rotations
 
         public static final double AMP_SCORING_ANGLE = 0; // Rads
-        public static final double ARM_INTAKE_ANGLE = 0.05; // Rad
+        public static final double ARM_INTAKE_ANGLE = 0.07; // Rad
         public static final double ALGAE_POSITION = 0;
         public static final double L1_ANGLE = 0;
         public static final double L2_ANGLE = 0.43;
@@ -274,7 +274,7 @@ public class Constants {
         public static final double INTAKE_HEIGHT = 0.005;
         public static final double L1_HEIGHT = 5;
         public static final double L2_HEIGHT = 1.03;
-        public static final double L3_HEIGHT = 4;
+        public static final double L3_HEIGHT = 4.25;
         public static final double L4_HEIGHT = 36;
         public static final double ALGAE_L2_3_HEIGHT = 5;
         public static final double ALGAE_L3_4_HEIGHT = 36;

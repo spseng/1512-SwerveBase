@@ -7,12 +7,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 
-public class MoveALittleBit extends Command {
+public class MoveALittleBitBackwards extends Command {
     private final Drivetrain _drivetrain;
     private double startTime;
     private static final double DURATION = 3.0;
 
-    public MoveALittleBit(Drivetrain drivetrain) {
+    public MoveALittleBitBackwards(Drivetrain drivetrain) {
         _drivetrain = drivetrain;
         addRequirements(_drivetrain); 
     }
@@ -26,7 +26,7 @@ public class MoveALittleBit extends Command {
     @Override
     public void execute() {
         Rotation2d rotation = _drivetrain.getHeading();
-        _drivetrain.setVelocity(new ChassisSpeeds(-1, 0, 0));
+        _drivetrain.setVelocity(new ChassisSpeeds(1, 0, 0));
         SmartDashboard.putString("MoveALittleBit", "Executing");
     }
 

@@ -26,7 +26,7 @@ public class EndEffector extends SubsystemBase{
     }
 
     public boolean isCoralInIntake(){
-        return _proxsensor.get();
+        return !_proxsensor.get();
     }
 
     public void setIntakeSpeed(double speed){
