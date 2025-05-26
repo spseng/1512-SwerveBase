@@ -233,17 +233,20 @@ public class Constants {
         };
 
         public static class Score {
-            public static final double DRIVE_X_KP = 0.5;
+            public static final double DRIVE_X_KP = 0.1;
             public static final double DRIVE_X_KI = 0.0;
-            public static final double DRIVE_X_KD = 0.02;
+            public static final double DRIVE_X_KD = 0.03;
+            public static final double DRIVE_X_TOLERANCE = 0.05;
 
-            public static final double DRIVE_Y_KP = 0.5;
+            public static final double DRIVE_Y_KP = 0.1;
             public static final double DRIVE_Y_KI = 0.0;
-            public static final double DRIVE_Y_KD = 0.02;
+            public static final double DRIVE_Y_KD = 0.03;
+            public static final double DRIVE_Y_TOLERANCE = 0.05;
 
-            public static final double ROTATION_KP = 0.5;
+            public static final double ROTATION_KP = 0.1;
             public static final double ROTATION_KI = 0.0;
-            public static final double ROTATION_KD = 0.02;
+            public static final double ROTATION_KD = 0.03;
+            public static final double ROTATION_TOLERANCE = 3;
 
             public static final double DISTANCE_FACING_X = 1; // space between front of camera and april tag in meters
 

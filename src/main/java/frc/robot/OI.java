@@ -28,6 +28,7 @@ import frc.robot.commands.Score.ScoreL3;
 import frc.robot.commands.Score.ScoreL4;
 import frc.robot.commands.EndEffectorIntake;
 import frc.robot.commands.EndEffectorOuttake;
+import frc.robot.commands.Autonomous.AutonomousScoreApproach;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
@@ -163,7 +164,7 @@ public class OI {
         _operatorYButton.onTrue(new ScoreL4(_elevator, _arm));
 
         _operatorLeftBumper.onTrue(new Intake(_elevator, _arm, _endEffector));
-        _operatorRightBumper.onTrue(Commands.none());
+        _operatorRightBumper.onTrue(new AutonomousScoreApproach(_drivetrain, "camera1"));
         _operatorStartButton.onTrue(new AutoIntake(_endEffector));
         _operatorBackButton.onTrue(new AlgaeIntakeL2_3(_arm, _elevator));
         
