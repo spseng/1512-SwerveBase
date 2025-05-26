@@ -135,7 +135,7 @@ public class OI {
         _driverLeftBumper.onTrue(new ElevatorL4(_elevator, _arm));
         _driverRightBumper.onTrue(new ArmIntake(_arm));
         _driverStartButton.onTrue(new ArmScoreL3(_arm));
-        _driverBackButton.onTrue(Commands.none());
+        _driverBackButton.onTrue(new AutonomousScoreApproach(_drivetrain, "camera1"));
 
         // Driver POV Buttons
         _driverPOVUp.onTrue(Commands.none());

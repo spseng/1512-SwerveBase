@@ -266,10 +266,10 @@ public class Drivetrain extends SubsystemBase {
             double adjustedAngleRadians = (_Io.measuredStates[module].angle.getRadians());
             _Io.measuredStates[module].angle = new Rotation2d(adjustedAngleRadians);
             // Log encoder values for debugging
-            SmartDashboard.putNumber("Module " + module + " Position", _Io.measuredPositions[module].distanceMeters);
-            SmartDashboard.putNumber("Module " + module + " Angle", _Io.measuredPositions[module].angle.getDegrees());
-            SmartDashboard.putNumber("Module " + module + " State Velocity", _Io.measuredStates[module].speedMetersPerSecond);
-            SmartDashboard.putNumber("Module " + module + " State Angle", _Io.measuredStates[module].angle.getDegrees());
+            //SmartDashboard.putNumber("Module " + module + " Position", _Io.measuredPositions[module].distanceMeters);
+            //SmartDashboard.putNumber("Module " + module + " Angle", _Io.measuredPositions[module].angle.getDegrees());
+            //SmartDashboard.putNumber("Module " + module + " State Velocity", _Io.measuredStates[module].speedMetersPerSecond);
+            //SmartDashboard.putNumber("Module " + module + " State Angle", _Io.measuredStates[module].angle.getDegrees());
         }
         this.measuredSwerveStatePublisher.set(_Io.measuredStates);
     }
@@ -282,8 +282,8 @@ public class Drivetrain extends SubsystemBase {
         //SmartDashboard.putNumber("Vx", _Io.desiredChassisSpeeds.vxMetersPerSecond);
         //SmartDashboard.putNumber("Vy", _Io.desiredChassisSpeeds.vyMetersPerSecond);
         //SmartDashboard.putNumber("desired rotation", _Io.desiredChassisSpeeds.omegaRadiansPerSecond);
-        //SmartDashboard.putNumber("heading degrees", getHeading().getDegrees());
-        //SmartDashboard.putNumber("heading radians", -getHeading().getRadians());
+        SmartDashboard.putNumber("heading degrees", getHeading().getDegrees());
+        SmartDashboard.putNumber("heading radians", -getHeading().getRadians());
         //SmartDashboard.putNumber("NW_DESIRED_HEADING", _Io.measuredPositions[NORTH_WEST_IDX].angle.getDegrees());
         //SmartDashboard.putNumber("NE_DESIRED_HEADING", _Io.measuredPositions[NORTH_EAST_IDX].angle.getDegrees());
         //SmartDashboard.putNumber("SW_DESIRED_HEADING", _Io.measuredPositions[SOUTH_WEST_IDX].angle.getDegrees());

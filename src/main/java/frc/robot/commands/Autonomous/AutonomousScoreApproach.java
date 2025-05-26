@@ -47,21 +47,27 @@ public class AutonomousScoreApproach extends Command {
         double vy = constraintOutput(_driveYController.calculate(_visionProcessor.getLargestTagY(), 0));
         double omega = -constraintOutput(_rotationController.calculate(_visionProcessor.getLargestTagTheta(), 180));
         //double Coefficient = Constants.Drivetrain.MAX_DRIVE_SPEED_MPS / Math.sqrt(vx * vx + vy * vy) * 0.3;
-        double Coefficient = 0.5;
+        double Coefficient = 20;
         vx *= Coefficient;
         vy *= Coefficient;
-        SmartDashboard.putNumber("error_x", _visionProcessor.getLargestTagX() - Constants.Autonomous.Score.DISTANCE_FACING_X);
-        SmartDashboard.putNumber("error_y", _visionProcessor.getLargestTagY());
-        SmartDashboard.putNumber("error_theta", _visionProcessor.getLargestTagTheta());
+        omega *= 0.3;
+        if(_visionProcessor.isTargetinSight() == false) {
+            vx = 0;
+            vy = 0;
+            omega = 0;
+        }
+        SmartDashboard.putNumber("autonomous_error_x", _visionProcessor.getLargestTagX() - Constants.Autonomous.Score.DISTANCE_FACING_X);
+        SmartDashboard.putNumber("autonomous_error_y", _visionProcessor.getLargestTagY());
+        SmartDashboard.putNumber("autonomous_error_theta", _rotationController.getAccumulatedError());
         SmartDashboard.putNumber("autonomous_vx", vx);
         SmartDashboard.putNumber("autonomous_vy", vy);
         SmartDashboard.putNumber("autonomous_omega", omega);
-        _drivetrain.setVelocity(new ChassisSpeeds(vx, 0, 0));
+        _drivetrain.setVelocity(new ChassisSpeeds(vx, vy, omega));
     }
 
     @Override
     public boolean isFinished() {
-        return (_driveXController.atSetpoint() && _driveYController.atSetpoint() && _rotationController.atSetpoint()); // This command never finishes on its own, it needs to be interrupted
+        return ((_driveXController.atSetpoint() && _driveYController.atSetpoint() && _rotationController.atSetpoint()) || !_visionProcessor.isTargetinSight()); // This command never finishes on its own, it needs to be interrupted
     }
 
     @Override
