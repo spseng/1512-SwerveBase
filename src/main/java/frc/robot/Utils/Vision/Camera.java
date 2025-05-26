@@ -1,8 +1,16 @@
 package frc.robot.Utils.Vision;
 
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.MultiTargetPNPResult;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -10,13 +18,9 @@ public class Camera {
     private final PhotonCamera _photonCamera;
     private final Transform3d _cameraTransform;
 
-    public Camera(String camName, double x, double y, double z, 
-                 double pitch, double yaw, double roll) {
+    public Camera(String camName, Transform3d cameraTransform) {
         _photonCamera = new PhotonCamera(camName);
-        _cameraTransform = new Transform3d(
-            x, y, z,
-            new Rotation3d(pitch, yaw, roll)
-        );
+        _cameraTransform = cameraTransform;
     }
 
     public Transform3d getCameraLocation() {
@@ -53,4 +57,34 @@ public class Camera {
 
         return new double[]{x, y, theta};
     }
+
+    public double getLargestTagX() {
+        double[] pose = getLargestTagPose();
+        if (pose == null) return 0.0;
+        return pose[0];
+    }
+
+    public double getLargestTagY() {
+        double[] pose = getLargestTagPose();
+        if (pose == null) return 0.0;
+        return pose[1];
+    }
+
+    public double getLargestTagTheta() {
+        double[] pose = getLargestTagPose();
+        if (pose == null) return 0.0;
+        return pose[2];
+    }
+
+    public Optional<Transform3d> getEstimatedPose() {
+        var result = _photonCamera.getLatestResult();
+        Optional<MultiTargetPNPResult> multiTagResult = result.getMultiTagResult();
+        
+        if (multiTagResult.isPresent()) {
+            var pnpResult = multiTagResult.get();
+            return Optional.of(pnpResult.estimatedPose.alt);
+        }
+        return Optional.empty();
+    }
+    
 }

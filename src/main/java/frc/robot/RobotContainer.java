@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Utils.Vision.VisionProcessor;
 import frc.robot.commands.Autonomous.MoveALittleBit;
 import frc.robot.commands.Autonomous.MoveALittleBitBackwards;
 //import frc.robot.commands.Autonomous.AutonomousScoreApproach;
