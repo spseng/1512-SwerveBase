@@ -11,13 +11,14 @@ import frc.robot.Utils.Vector2d;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.EndEffector;
+import frc.robot.subsystems.EndEffectorCTR;
 
 public class StopWheels extends Command {
-    private EndEffector _endEffector;
+    private EndEffectorCTR _endEffector;
 
 
 
-    public StopWheels( EndEffector endEffector){
+    public StopWheels( EndEffectorCTR endEffector){
  
         _endEffector = endEffector;
         addRequirements(_endEffector);

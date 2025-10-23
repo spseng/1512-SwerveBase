@@ -185,9 +185,9 @@ public class Constants {
 
     public static class EndEffector {
 
-        public static final double OUTTAKE_SPEED = 1.0;
+        public static final double OUTTAKE_SPEED = 0.05;
 
-        public static final double INTAKE_SPEED = -1.0;
+        public static final double INTAKE_SPEED = -0.05;
     }
 
     public static class Arm {

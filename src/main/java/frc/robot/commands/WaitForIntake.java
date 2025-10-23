@@ -2,12 +2,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.EndEffector;
+import frc.robot.subsystems.EndEffectorCTR;
 
 public class WaitForIntake extends Command {
 
-    private EndEffector _endEffector;
+    private EndEffectorCTR _endEffector;
 
-    public WaitForIntake(EndEffector endEffector){
+    public WaitForIntake(EndEffectorCTR endEffector){
         _endEffector = endEffector;
 
     }

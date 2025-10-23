@@ -6,13 +6,14 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.EndEffector;
+import frc.robot.subsystems.EndEffectorCTR;
 
 public class IntakeCoralFunnel extends Command {
-    private final EndEffector _endEffector;
+    private final EndEffectorCTR _endEffector;
     private final Arm _arm;
     private final Elevator _elevator;
 
-    public IntakeCoralFunnel(EndEffector endEffector, Arm arm, Elevator elevator){
+    public IntakeCoralFunnel(EndEffectorCTR endEffector, Arm arm, Elevator elevator){
 
         _endEffector = endEffector;
         _arm = arm;

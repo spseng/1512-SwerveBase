@@ -5,12 +5,12 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.EndEffector;
-
+import frc.robot.subsystems.EndEffectorCTR;
 import edu.wpi.first.wpilibj.Timer;
 
 public class PlaceL2 extends Command {
 
-    private final EndEffector _endEffector;
+    private final EndEffectorCTR _endEffector;
     private final Arm _arm;
     private final Elevator _elevator;
 
@@ -18,7 +18,7 @@ public class PlaceL2 extends Command {
     private boolean isSpinning;
     private static final double SPIN_DURATION = 4.0;
     
-    public PlaceL2(EndEffector endEffector, Arm arm, Elevator elevator){
+    public PlaceL2(EndEffectorCTR endEffector, Arm arm, Elevator elevator){
         _endEffector = endEffector;
         _arm = arm;
         _elevator = elevator;

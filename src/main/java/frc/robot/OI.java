@@ -34,6 +34,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.EndEffector;
+import frc.robot.subsystems.EndEffectorCTR;
 
 
 
@@ -43,7 +44,7 @@ public class OI {
     private final Elevator _elevator;
     private final Arm _arm;
     private final Climb _climb;
-    private final EndEffector _endEffector;
+    private final EndEffectorCTR _endEffector;
     
 
  
@@ -69,7 +70,7 @@ public class OI {
     private AxisButton _operatorLeftTriggerButton, _operatorRightTriggerButton;
     private AxisButton _operatorLeftXAxis, _operatorLeftYAxis, _operatorRightXAxis, _operatorRightYAxis;
 
-    public OI(Drivetrain drivetrain, Elevator elevator, Arm arm, EndEffector endEffector, Climb climb) {
+    public OI(Drivetrain drivetrain, Elevator elevator, Arm arm, EndEffectorCTR endEffector, Climb climb) {
         
         _drivetrain = drivetrain;
         _elevator = elevator;
