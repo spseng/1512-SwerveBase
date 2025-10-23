@@ -6,12 +6,13 @@ import frc.robot.commands.EndEffectorIntake;
 import frc.robot.commands.WaitForIntake;
 import frc.robot.commands.EndEffector.StopWheels;
 import frc.robot.subsystems.EndEffector;
+import frc.robot.subsystems.EndEffectorCTR;
 
 public class AutoIntake extends SequentialCommandGroup {
 
-    private EndEffector _endEffector;
+    private EndEffectorCTR _endEffector;
 
-    public AutoIntake(EndEffector endEffector){
+    public AutoIntake(EndEffectorCTR endEffector){
 
         _endEffector = endEffector;
 

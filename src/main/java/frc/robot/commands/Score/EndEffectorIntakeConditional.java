@@ -11,13 +11,14 @@ import frc.robot.Utils.Vector2d;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.EndEffector;
+import frc.robot.subsystems.EndEffectorCTR;
 
 public class EndEffectorIntakeConditional extends Command {
-    private EndEffector _endEffector;
+    private EndEffectorCTR _endEffector;
 
 
 
-    public EndEffectorIntakeConditional( EndEffector endEffector){
+    public EndEffectorIntakeConditional( EndEffectorCTR endEffector){
       
         _endEffector = endEffector;
         addRequirements(_endEffector);

@@ -5,18 +5,19 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.EndEffector;
+import frc.robot.subsystems.EndEffectorCTR;
 
 public class Intake extends Command {
 
     private final Elevator _elevator;
 
-    private final EndEffector _endEffector;
+    private final EndEffectorCTR _endEffector;
   
     private final Arm _arm;
 
     private boolean colision = false;
 
-    public Intake(Elevator elevator, Arm arm, EndEffector endEffector){
+    public Intake(Elevator elevator, Arm arm, EndEffectorCTR endEffector){
 
         _elevator = elevator;
         _arm = arm;

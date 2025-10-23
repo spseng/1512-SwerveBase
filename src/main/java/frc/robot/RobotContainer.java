@@ -30,6 +30,7 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.EndEffector;
+import frc.robot.subsystems.EndEffectorCTR;
 import frc.robot.subsystems.Drivetrain;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -47,7 +48,7 @@ public class RobotContainer {
     //private AutonomousConfigure _autonomous;
     private Elevator _elevator;
     private Arm _arm;
-    private EndEffector _endEffector;
+    private EndEffectorCTR _endEffector;
     private Climb _climb;
     // Replace with CommandPS4Controller or CommandJoystick if needed
     //add controller in OI
@@ -82,7 +83,7 @@ public class RobotContainer {
         _drivetrain = new Drivetrain();
         _elevator = new Elevator();
         _arm = new Arm();
-        _endEffector = new EndEffector();
+        _endEffector = new EndEffectorCTR();
         _climb = new Climb();
         _oi = new OI(_drivetrain, _elevator, _arm, _endEffector, _climb);
         //_autonomous = new AutonomousConfigure();
