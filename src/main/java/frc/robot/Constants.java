@@ -194,7 +194,7 @@ public class Constants {
         public static final double ARM_POSITION_KP = 1.8;
         public static final double ARM_POSITION_KI = 0.005;
         public static final double ARM_POSITION_KD = 0.1;
-        public static final double ARM_POSITION_KFF = 0.15;
+        public static final double ARM_POSITION_KFF = 0.055;
         public static final double ARM_TOLERANCE = 0.1;
         public static final double ARM_OUTPUT_MIN = -1;
         public static final double ARM_OUTPUT_MAX = 1;
@@ -221,7 +221,7 @@ public class Constants {
         public static final double ALGAE_L2_3_ANGLE = 0.49;
         public static final double ALGAE_L3_4_ANGLE = 0.4206;
 
-        public static final double ARM_OFFSET = 0.129;
+        public static final double ARM_OFFSET = 0.085;
     }
 
     public static class Autonomous {
