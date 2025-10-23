@@ -42,7 +42,7 @@ public class Intake extends Command {
         } else {
             _elevator.setTargetHeight(Constants.Elevator.INTAKE_HEIGHT);
             _arm.setArmPosition(Constants.Arm.ARM_INTAKE_ANGLE);
-            _endEffector.setIntakeSpeed(-1);
+            _endEffector.setIntakeSpeed(Constants.EndEffector.INTAKE_SPEED);
         }
     }
     @Override
