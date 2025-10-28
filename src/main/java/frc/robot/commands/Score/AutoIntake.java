@@ -1,5 +1,6 @@
 package frc.robot.commands.Score;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.EndEffectorIntake;
@@ -16,17 +17,15 @@ public class AutoIntake extends SequentialCommandGroup {
     private Elevator _elevator;
     private Arm _arm;
 
-    public AutoIntake(EndEffectorCTR endEffector, Elevator elevator, Arm arm){
+    public AutoIntake(EndEffectorCTR endEffector){
 
         _endEffector = endEffector;
-        _elevator = elevator;
-        _arm = arm;
 
         addCommands(
-            new Intake(_elevator, _arm, _endEffector),
+            new EndEffectorIntake(_endEffector),
             new WaitForIntake(_endEffector),
             new WaitCommand(.2),
-            new StopWheels(endEffector)
+            new StopWheels(_endEffector)
         );
     }
     
