@@ -185,16 +185,16 @@ public class Constants {
 
     public static class EndEffector {
 
-        public static final double OUTTAKE_SPEED = 0.20;
+        public static final double OUTTAKE_SPEED = 0.40;
 
-        public static final double INTAKE_SPEED = -0.20;
+        public static final double INTAKE_SPEED = -0.30;
     }
 
     public static class Arm {
-        public static final double ARM_POSITION_KP = 1.8;
-        public static final double ARM_POSITION_KI = 0.005;
+        public static final double ARM_POSITION_KP = 2.5;
+        public static final double ARM_POSITION_KI = 0.00;
         public static final double ARM_POSITION_KD = 0.1;
-        public static final double ARM_POSITION_KFF = 0.055;
+        public static final double ARM_POSITION_KFF = 0.044;
         public static final double ARM_TOLERANCE = 0.1;
         public static final double ARM_OUTPUT_MIN = -1;
         public static final double ARM_OUTPUT_MAX = 1;
@@ -204,24 +204,24 @@ public class Constants {
 
         public static final double AVOID_ELEVATOR_POSITION = 0.5;
 
-        public static final double ARM_MIN_ANGLE = 0.05; // rotations
+        public static final double ARM_MIN_ANGLE = 0.04; // rotations
         public static final double ARM_MAX_ANGLE = 0.56; // rotations
 
-        public static final double AMP_SCORING_ANGLE = 0; // Rads
-        public static final double ARM_INTAKE_ANGLE = 0.07; // Rad
-        public static final double ALGAE_POSITION = 0;
+        public static final double AMP_SCORING_ANGLE = 0.6; // Rads
+        public static final double ARM_INTAKE_ANGLE = 0.066; // Rad
+        public static final double ALGAE_POSITION = 0.07;
         public static final double L1_ANGLE = 0;
         public static final double L2_ANGLE = 0.43;
         public static final double L3_ANGLE = 0.49;
-        public static final double L4_ANGLE = 0.4206;
-        public static final double ARM_TOLERENCE = 0;
-        public static final double STOW_POSITION = 0;
+        public static final double L4_ANGLE = 0.53006;
+        public static final double ARM_TOLERENCE = 0.07;
+        public static final double STOW_POSITION = .07;
         public static final double ARM_SAFE_ANGLE = 0.25;
 
         public static final double ALGAE_L2_3_ANGLE = 0.49;
         public static final double ALGAE_L3_4_ANGLE = 0.4206;
 
-        public static final double ARM_OFFSET = 0.085;
+        public static final double ARM_OFFSET = 0.0;
     }
 
     public static class Autonomous {

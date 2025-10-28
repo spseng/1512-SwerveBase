@@ -113,7 +113,7 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         return new SequentialCommandGroup(
             new MoveALittleBit(_drivetrain).withTimeout(7.5),
-            new AutoIntake(_endEffector),
+            new AutoIntake(_endEffector, _elevator, _arm),
             new MoveALittleBitBackwards(_drivetrain).withTimeout(1.0),
             new ScoreL4(_elevator, _arm),
             new WaitCommand(1),
