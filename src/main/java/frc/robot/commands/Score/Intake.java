@@ -34,7 +34,7 @@ public class Intake extends Command {
     public void execute() {
         // TODO Auto-generated method stub
         super.execute();
-        if (colision){
+        if (colision && (_elevator.getCurrentHeight() > 4)){
             _arm.setArmPosition(Constants.Arm.ARM_SAFE_ANGLE);
         }else if(_elevator.getCurrentHeight() > 12) {
             _elevator.setTargetHeight(Constants.Elevator.L2_HEIGHT);

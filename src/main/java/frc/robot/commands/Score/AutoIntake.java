@@ -24,7 +24,7 @@ public class AutoIntake extends SequentialCommandGroup {
         addCommands(
             new EndEffectorIntake(_endEffector),
             new WaitForIntake(_endEffector),
-            new WaitCommand(.2),
+            new WaitCommand(.04),
             new StopWheels(_endEffector)
         );
     }

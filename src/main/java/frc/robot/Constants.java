@@ -187,13 +187,13 @@ public class Constants {
 
         public static final double OUTTAKE_SPEED = 0.40;
 
-        public static final double INTAKE_SPEED = -0.30;
+        public static final double INTAKE_SPEED = -0.15;
     }
 
     public static class Arm {
-        public static final double ARM_POSITION_KP = 2.5;
-        public static final double ARM_POSITION_KI = 0.00;
-        public static final double ARM_POSITION_KD = 0.1;
+        public static final double ARM_POSITION_KP = 1.5;
+        public static final double ARM_POSITION_KI = 0.09;
+        public static final double ARM_POSITION_KD = 0.15;
         public static final double ARM_POSITION_KFF = 0.044;
         public static final double ARM_TOLERANCE = 0.1;
         public static final double ARM_OUTPUT_MIN = -1;
@@ -204,11 +204,11 @@ public class Constants {
 
         public static final double AVOID_ELEVATOR_POSITION = 0.5;
 
-        public static final double ARM_MIN_ANGLE = 0.04; // rotations
+        public static final double ARM_MIN_ANGLE = 0.03; // rotations
         public static final double ARM_MAX_ANGLE = 0.56; // rotations
 
         public static final double AMP_SCORING_ANGLE = 0.6; // Rads
-        public static final double ARM_INTAKE_ANGLE = 0.066; // Rad
+        public static final double ARM_INTAKE_ANGLE = 0.075; // Rad
         public static final double ALGAE_POSITION = 0.07;
         public static final double L1_ANGLE = 0;
         public static final double L2_ANGLE = 0.43;
