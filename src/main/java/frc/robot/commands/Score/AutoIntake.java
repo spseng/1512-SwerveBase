@@ -17,12 +17,15 @@ public class AutoIntake extends SequentialCommandGroup {
     private Elevator _elevator;
     private Arm _arm;
 
-    public AutoIntake(EndEffectorCTR endEffector){
+    public AutoIntake(EndEffectorCTR endEffector, Arm arm, Elevator elevator){
 
         _endEffector = endEffector;
+        _arm = arm;
+        _elevator = elevator;
 
         addCommands(
-            new EndEffectorIntake(_endEffector),
+            new HalfDownIntake(_elevator, _arm, endEffector),
+            new FullDownIntake(_elevator, _arm, endEffector),
             new WaitForIntake(_endEffector),
             new WaitCommand(.04),
             new StopWheels(_endEffector)

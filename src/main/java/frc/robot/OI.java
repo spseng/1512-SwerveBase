@@ -160,12 +160,13 @@ public class OI {
         _operatorXButton.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L2); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.RIGHT);}));
         _operatorYButton.onTrue(Commands.run(() -> {RobotState.getInstance().setScoringCoralLevel(Constants.CoralLevel.L4); RobotState.getInstance().setScoringReefDirection(Constants.ReefDirection.RIGHT);}));
         */
-        _operatorAButton.onTrue(new ParallelCommandGroup(new Intake(_elevator, _arm, _endEffector), new AutoIntake(_endEffector)));
+       // _operatorAButton.onTrue(new ParallelCommandGroup(new Intake(_elevator, _arm, _endEffector), new AutoIntake(_endEffector)));
+        _operatorAButton.onTrue(new AutoIntake(_endEffector, _arm, _elevator));
         _operatorBButton.onTrue(new ScoreL3(_elevator, _arm));
         _operatorXButton.onTrue(new ScoreL2(_elevator, _arm));
         _operatorYButton.onTrue(new ScoreL4(_elevator, _arm));
 
-        _operatorLeftBumper.onTrue(new ParallelCommandGroup(new Intake(_elevator, _arm, _endEffector), new AutoIntake(_endEffector)));
+        _operatorAButton.onTrue(new AutoIntake(_endEffector, _arm, _elevator));
         _operatorRightBumper.onTrue(new AutonomousScoreApproach(_drivetrain, "camera1"));
        // _operatorStartButton.onTrue(new AutoIntake(_endEffector));
         _operatorBackButton.onTrue(new AlgaeIntakeL2_3(_arm, _elevator));

@@ -202,26 +202,27 @@ public class Constants {
 
         public static final double ARM_DEADBAND = 0.05; // in inches
 
-        public static final double AVOID_ELEVATOR_POSITION = 0.5;
+        public static final double AVOID_ELEVATOR_POSITION = 0.7;
 
-        public static final double ARM_MIN_ANGLE = 0.03; // rotations
-        public static final double ARM_MAX_ANGLE = 0.56; // rotations
+        public static final double ARM_MIN_ANGLE = 0.17; // rotations
+        public static final double ARM_MAX_ANGLE = 0.80; // rotations
 
-        public static final double AMP_SCORING_ANGLE = 0.6; // Rads
-        public static final double ARM_INTAKE_ANGLE = 0.075; // Rad
-        public static final double ALGAE_POSITION = 0.07;
-        public static final double L1_ANGLE = 0;
-        public static final double L2_ANGLE = 0.43;
-        public static final double L3_ANGLE = 0.49;
-        public static final double L4_ANGLE = 0.53006;
-        public static final double ARM_TOLERENCE = 0.07;
-        public static final double STOW_POSITION = .07;
-        public static final double ARM_SAFE_ANGLE = 0.25;
+        public static final double AMP_SCORING_ANGLE = 0.861; // Rads
+        public static final double ARM_INTAKE_ANGLE = 0.234; // Rad
+        public static final double ALGAE_POSITION = 0.331;
+        public static final double L1_ANGLE = 0.261;
+        public static final double L2_ANGLE = 0.691;
+        public static final double L3_ANGLE = 0.751;
+        public static final double L4_ANGLE = 0.79106;
+        public static final double ARM_TOLERENCE = 0.331;
+        public static final double STOW_POSITION = .331;
+        public static final double ARM_SAFE_ANGLE = 0.511;
 
-        public static final double ALGAE_L2_3_ANGLE = 0.49;
-        public static final double ALGAE_L3_4_ANGLE = 0.4206;
+        public static final double ALGAE_L2_3_ANGLE = 0.751;
+        public static final double ALGAE_L3_4_ANGLE = 0.6816;
 
-        public static final double ARM_OFFSET = 0.0;
+        //public static final double ARM_OFFSET = 0.0;
+        public static final double ARM_OFFSET = 0.261;
     }
 
     public static class Autonomous {
