@@ -58,9 +58,9 @@ public class ClimbTest extends Command {
         }
         */
 
-       if (_climb.isDown()){
-            _climb.setClimbSpeed(0);
-       }else
+       //if (_climb.isDown()){
+        //    _climb.setClimbSpeed(0);
+       //}else
         _climb.setClimbSpeed(v);
     }
     @Override

@@ -167,7 +167,7 @@ public class OI {
         _operatorYButton.onTrue(new ScoreL4(_elevator, _arm));
 
         _operatorAButton.onTrue(new AutoIntake(_endEffector, _arm, _elevator));
-        _operatorRightBumper.onTrue(new AutonomousScoreApproach(_drivetrain, "camera1"));
+        _operatorRightBumper.onTrue(new AutonomousScoreApproach(_drivetrain, "camera2"));
        // _operatorStartButton.onTrue(new AutoIntake(_endEffector));
         _operatorBackButton.onTrue(new AlgaeIntakeL2_3(_arm, _elevator));
         
