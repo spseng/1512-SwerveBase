@@ -192,9 +192,9 @@ public class Constants {
 
     public static class Arm {
         public static final double ARM_POSITION_KP = 1.5;
-        public static final double ARM_POSITION_KI = 0.09;
+        public static final double ARM_POSITION_KI = 0.01;
         public static final double ARM_POSITION_KD = 0.15;
-        public static final double ARM_POSITION_KFF = 0.044;
+        public static final double ARM_POSITION_KFF = 0.03;
         public static final double ARM_TOLERANCE = 0.1;
         public static final double ARM_OUTPUT_MIN = -1;
         public static final double ARM_OUTPUT_MAX = 1;
@@ -204,15 +204,15 @@ public class Constants {
 
         public static final double AVOID_ELEVATOR_POSITION = 0.7;
 
-        public static final double ARM_MIN_ANGLE = 0.17; // rotations
-        public static final double ARM_MAX_ANGLE = 0.80; // rotations
+        public static final double ARM_MIN_ANGLE = 0.19; // rotations
+        public static final double ARM_MAX_ANGLE = 0.7; // rotations
 
         public static final double AMP_SCORING_ANGLE = 0.861; // Rads
         public static final double ARM_INTAKE_ANGLE = 0.234; // Rad
         public static final double ALGAE_POSITION = 0.331;
         public static final double L1_ANGLE = 0.261;
         public static final double L2_ANGLE = 0.691;
-        public static final double L3_ANGLE = 0.751;
+        public static final double L3_ANGLE = 0.700;
         public static final double L4_ANGLE = 0.79106;
         public static final double ARM_TOLERENCE = 0.331;
         public static final double STOW_POSITION = .331;
@@ -249,7 +249,12 @@ public class Constants {
             public static final double ROTATION_KD = 0.03;
             public static final double ROTATION_TOLERANCE = 3;
 
-            public static final double DISTANCE_FACING_X = 1; // space between front of camera and april tag in meters
+            public static final double DISTANCE_FACING_X = 0.05; // space between front of camera and april tag in meters
+
+            public static final double CAMERA_1_ANGLE_OFFSET = 0;
+            public static final double CAMERA_2_ANGLE_OFFSET = 0;
+
+            public static final double FINAL_X_SPEED = 2;
 
         }
     }
@@ -278,7 +283,7 @@ public class Constants {
         public static final double INTAKE_HEIGHT = 0.005;
         public static final double L1_HEIGHT = 5;
         public static final double L2_HEIGHT = 1.03;
-        public static final double L3_HEIGHT = 4.25;
+        public static final double L3_HEIGHT = 5.89;
         public static final double L4_HEIGHT = 36;
         public static final double ALGAE_L2_3_HEIGHT = 5;
         public static final double ALGAE_L3_4_HEIGHT = 36;

@@ -63,8 +63,8 @@ public class ArmTest extends Command {
 
         if(targetAngle < 0.0) { 
             targetAngle = 0.05;
-        }else if (targetAngle > 0.63) {
-            targetAngle = 0.63;
+        }else if (targetAngle > Constants.Arm.ARM_MAX_ANGLE) {
+            targetAngle = Constants.Arm.ARM_MAX_ANGLE;
         }
 
         SmartDashboard.putNumber("arm vx", v);

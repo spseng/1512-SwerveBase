@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -30,6 +31,9 @@ import frc.robot.commands.Score.ScoreL4;
 import frc.robot.commands.EndEffectorIntake;
 import frc.robot.commands.EndEffectorOuttake;
 import frc.robot.commands.Autonomous.AutonomousScoreApproach;
+import frc.robot.commands.Autonomous.AutonomousScoreApproachAngle;
+import frc.robot.commands.Autonomous.AutonomousScoreApproachHorizontal;
+import frc.robot.commands.Autonomous.MoveRobotForward;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
@@ -46,8 +50,6 @@ public class OI {
     private final Arm _arm;
     private final Climb _climb;
     private final EndEffectorCTR _endEffector;
-    
-
  
 
     private Gamepad _driverGamepad;
@@ -140,18 +142,22 @@ public class OI {
         _driverAButton.whileTrue(new EndEffectorIntakeConditional(_endEffector));
         _driverBButton.onTrue(new ResetIMU(_drivetrain));
         _driverXButton.onTrue(new StopWheels(_endEffector));
-        //_driverYButton.onTrue(new EndEffectorOutakeConditional(_endEffector));
-        //_driverLeftBumper.whileTrue(new EndEffectorIntakeConditional(_endEffector));
+        _driverYButton.whileTrue(new MoveRobotForward(_drivetrain));
+        //_driverLeftBumper.onTrue(new AutonomousScoreApproach(this, _drivetrain, "camera1"));
+        //_driverRightBumper.onTrue(new AutonomousScoreApproach(this, _drivetrain, "camera2"));
+        //_driverLeftBumper.whileTrue(new MoveRobotForward(_drivetrain));
         _driverRightBumper.whileTrue(new EndEffectorOutakeConditional(_endEffector));
-        _driverStartButton.onTrue(Commands.none());
-        _driverBackButton.onTrue(Commands.none());
+        //_driverStartButton.whileTrue(new AutonomousScoreApproach(this, _drivetrain, "camera1"));
+        //_driverBackButton.whileTrue(new AutonomousScoreApproach(this, _drivetrain, "camera2"));
         
 
         // Driver POV Buttons
         _driverPOVUp.onTrue(new ClimbUp(_climb));
         _driverPOVDown.onTrue(new ClimbDown(_climb));
-        _driverPOVLeft.onTrue(Commands.none());
-        _driverPOVRight.onTrue(Commands.none());
+        _driverPOVLeft.whileTrue(Commands.none());
+        _driverPOVRight.whileTrue(Commands.none());
+        new Trigger(_driverLeftTriggerButton::get).whileTrue(new AutonomousScoreApproach(this, _drivetrain, "camera1"));
+        new Trigger(_driverRightTriggerButton::get).whileTrue(new AutonomousScoreApproach(this, _drivetrain, "camera2"));
 
         // Operator Buttons
         /*
@@ -167,7 +173,7 @@ public class OI {
         _operatorYButton.onTrue(new ScoreL4(_elevator, _arm));
 
         _operatorAButton.onTrue(new AutoIntake(_endEffector, _arm, _elevator));
-        _operatorRightBumper.onTrue(new AutonomousScoreApproach(_drivetrain, "camera2"));
+        _operatorRightBumper.onTrue(Commands.none());
        // _operatorStartButton.onTrue(new AutoIntake(_endEffector));
         _operatorBackButton.onTrue(new AlgaeIntakeL2_3(_arm, _elevator));
         
@@ -278,5 +284,12 @@ public class OI {
         return heading;
     }
 
+    public boolean getCamera1Bumper() {
+        return _driverGamepad.getStartButton().getAsBoolean();
+    }
+
+    public boolean getCamera2Bumper() {
+        return _driverGamepad.getBackButton().getAsBoolean();
+    }
 
 }
