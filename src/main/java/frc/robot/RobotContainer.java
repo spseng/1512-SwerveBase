@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Autonomous.AutonomousScoreApproach;
+import frc.robot.commands.Autonomous.AutonomousScoreApproachAuton;
 import frc.robot.commands.Autonomous.MoveALittleBit;
 import frc.robot.commands.Autonomous.MoveALittleBitBackwards;
 //import frc.robot.commands.Autonomous.AutonomousScoreApproach;
@@ -113,14 +114,10 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         return new SequentialCommandGroup(
-            new MoveALittleBit(_drivetrain).withTimeout(3),
-            new AutonomousScoreApproach(_oi, _drivetrain, "camera1"),
-            new MoveALittleBit(_drivetrain).withTimeout(3),
             new AutoIntake(_endEffector, _arm, _elevator),
-            new MoveALittleBitBackwards(_drivetrain).withTimeout(1.0),
             new ScoreL4(_elevator, _arm),
-            new WaitCommand(1),
-            new MoveALittleBit(_drivetrain).withTimeout(0.75),
+            new AutonomousScoreApproachAuton(_drivetrain, "camera1"),
+            new MoveALittleBit(_drivetrain).withTimeout(1.5),
             new WaitCommand(2),
             new AutoOuttake(_endEffector)
             //new Intake(_elevator, _arm, _endEffector)
