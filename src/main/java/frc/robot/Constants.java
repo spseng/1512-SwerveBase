@@ -211,9 +211,9 @@ public class Constants {
         public static final double ARM_INTAKE_ANGLE = 0.234; // Rad
         public static final double ALGAE_POSITION = 0.331;
         public static final double L1_ANGLE = 0.261;
-        public static final double L2_ANGLE = 0.691;
-        public static final double L3_ANGLE = 0.700;
-        public static final double L4_ANGLE = 0.79106;
+        public static final double L2_ANGLE = 0.27;
+        public static final double L3_ANGLE = 0.67;
+        public static final double L4_ANGLE = 0.64;
         public static final double ARM_TOLERENCE = 0.331;
         public static final double STOW_POSITION = .331;
         public static final double ARM_SAFE_ANGLE = 0.511;
@@ -282,9 +282,9 @@ public class Constants {
         public static final int ELEVATOR_CURRENT_LIMIT = 40;
         public static final double INTAKE_HEIGHT = 0.005;
         public static final double L1_HEIGHT = 5;
-        public static final double L2_HEIGHT = 1.03;
+        public static final double L2_HEIGHT = 7.63;
         public static final double L3_HEIGHT = 5.89;
-        public static final double L4_HEIGHT = 36;
+        public static final double L4_HEIGHT = 33;
         public static final double ALGAE_L2_3_HEIGHT = 5;
         public static final double ALGAE_L3_4_HEIGHT = 36;
 
